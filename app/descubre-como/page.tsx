@@ -7,21 +7,26 @@ const slides = [
     contenido: [
       "Edad mínima 23 años.",
       "Tener empleo activo (mínimo 6 meses de antigüedad).",
-      "Trabajar en oficina en zonas 4, 9, 10, 13, 14 de Ciudad de Guatemala.",
-      "Presentar DPI vigente y en buen estado.",
-      "Estar en planilla y recibir tu salario en una cuenta bancaria a tu nombre.",
-      "Agregar recibo de energía eléctrica de tu residencia del mes anterior.",
-      "Estado de cuenta bancario de los últimos 2 meses donde se refleje el pago de la quincena.",
+      "Trabajar en oficina en zonas 4, 9, 10, 13, 14, de la Ciudad de Guatemala.",
+      {
+        titulo: "Presentar:",
+        subitems: [
+          "DPI vigente y en buen estado.",
+          "Estar en planilla y recibir tu salario en una cuenta bancaria a tu nombre.",
+          "Agregar recibo de energía eléctrica de tu residencia del mes anterior.",
+          "Estado de cuenta bancario de los últimos 2 meses donde se refleje el pago de la quincena.",
+        ],
+      },
     ],
   },
   {
-    titulo: "Paso siguiente",
-    subtitulo: "Cómo solicitar tu adelanto",
+    titulo: "Descubre ¿cómo?",
+    subtitulo: "Monto del adelanto",
     contenido: [
-      "Ingresa al formulario de solicitud.",
-      "Llena tus datos personales y laborales.",
-      "Sube tus documentos requeridos.",
-      "Recibe la confirmación y el depósito directo a tu cuenta.",
+      "Adelanto máximo: 20% del salario neto.",
+      "Anticipo mínimo: Q500.",
+      "Anticipo máximo: Q1,500.",
+      "Comisión por servicio: del 10% al 15% dependiendo del monto del crédito. Esta comisión se descuenta en el momento del desembolso.",
     ],
   },
 ]

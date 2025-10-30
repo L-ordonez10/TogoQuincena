@@ -5,7 +5,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react"
 interface Slide {
   titulo: string
   subtitulo?: string
-  contenido: string[]
+  contenido: (string | { titulo: string; subitems: string[] })[]
 }
 
 interface SliderInfoProps {
@@ -22,9 +22,9 @@ export default function SliderInfo({ slides }: SliderInfoProps) {
 
   return (
     <div className="flex flex-col items-center text-center">
-      <h2 className="text-2xl md:text-3xl font-bold mb-2">{slide.titulo}</h2>
+      <h2 className="text-2xl md:text-[50px] font-bold mb-2">{slide.titulo}</h2>
       {slide.subtitulo && (
-        <h3 className="text-[#97D22A] text-xl md:text-2xl font-semibold mb-6">
+        <h3 className="text-[#97D22A] text-xl md:text-[40px] font-semibold mb-6">
           {slide.subtitulo}
         </h3>
       )}
@@ -33,16 +33,29 @@ export default function SliderInfo({ slides }: SliderInfoProps) {
         {/* Flecha izquierda */}
         <button
           onClick={prevSlide}
-          className="absolute left-[-2rem] md:left-[-4rem] text-[#97D22A] hover:scale-110 transition"
+          className="absolute left-[-2rem] md:left-[-6rem] text-[#97D22A] hover:scale-110 transition"
         >
           <ChevronLeft size={75} />
         </button>
 
         {/* Contenido */}
         <div className="bg-white shadow-md rounded-xl p-6 md:p-10 text-left leading-relaxed">
-          <ul className="list-disc pl-6 space-y-3 text-gray-800">
+          <ul className="list-disc pl-6 space-y-3 text-gray-800 text-[15px] md:text-[24px] marker:text-[#97D22A]">
             {slide.contenido.map((item, i) => (
-              <li key={i}>{item}</li>
+              <li key={i}>
+                {typeof item === "string" ? (
+                  item
+                ) : (
+                  <>
+                    <span className="font-semibold">{item.titulo}</span>
+                    <ul className="list-disc pl-8 mt-2 space-y-2 marker:text-[#97D22A]">
+                      {item.subitems.map((sub, j) => (
+                        <li key={j}>{sub}</li>
+                      ))}
+                    </ul>
+                  </>
+                )}
+              </li>
             ))}
           </ul>
         </div>
@@ -50,7 +63,7 @@ export default function SliderInfo({ slides }: SliderInfoProps) {
         {/* Flecha derecha */}
         <button
           onClick={nextSlide}
-          className="absolute right-[-2rem] md:right-[-4rem] text-[#97D22A] hover:scale-110 transition"
+          className="absolute right-[-2rem] md:right-[-6rem] text-[#97D22A] hover:scale-110 transition"
         >
           <ChevronRight size={75} />
         </button>
