@@ -73,7 +73,7 @@ export default function CotizadorPage() {
               el máximo es de Q.1,500.00.
             </p>
             <CardTitle className="text-[20px] sm:text-[22px] md:text-[24px]">
-              Ingresa el monto de tu salario
+              Ingresa el monto de tu salário
             </CardTitle>
           </CardHeader>
 

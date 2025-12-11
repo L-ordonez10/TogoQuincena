@@ -5,7 +5,7 @@ export default function Home() {
   return (
     <>
       {/* Banner principal */}
-      <section className="relative flex flex-col lg:flex-row items-center justify-between bg-white overflow-hidden">
+      <section className="relative flex flex-col lg:flex-row items-center  justify-between bg-white overflow-hidden">
         <div className="absolute inset-0 flex justify-end">
           <Image
             src="/imagenes/buying-ginger-2025-02-11-13-59-05-utc.webp"
@@ -171,7 +171,7 @@ export default function Home() {
           24 horas
         </p>
         <p className="text-gray-600 text-[12px] sm:text-[13px] font-medium">
-          después de haber firmado tu pagaré.
+          después de haber firmado tu pagaré. 
         </p>
       </div>
     </div>
