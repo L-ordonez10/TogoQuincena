@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Upload, FileText, Trash2, CheckCircle } from 'lucide-react';
 
 interface FileUploaderProps {
@@ -23,6 +23,12 @@ const FileUploader: React.FC<FileUploaderProps> = ({
     onChange,
 }) => {
     const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
+    const inputRef = useRef<HTMLInputElement | null>(null);
+
+    const openFileDialog = (e?: React.MouseEvent) => {
+        e?.stopPropagation();
+        inputRef.current?.click();
+    };
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const files = e.target.files;
@@ -84,20 +90,17 @@ const FileUploader: React.FC<FileUploaderProps> = ({
            
 
                     {/* Botón Cambiar (Reutiliza el input file) */}
-                    <label className="cursor-pointer transition-transform active:scale-95 hover:brightness-105">
+                    <button
+                        type="button"
+                        onClick={(e) => openFileDialog(e)}
+                        className="cursor-pointer transition-transform active:scale-95 hover:brightness-105"
+                    >
                         <div className="rounded-xl bg-[#90C928] px-6 py-3 text-sm font-bold text-white shadow-md hover:opacity-90">
                             Cambiar archivo
                         </div>
-                        <input
-                            type="file"
-                            className="hidden"
-                            accept={accept}
-                            multiple={multiple}
-                            onChange={handleChange}
-                        />
-                    </label>
-                             <button
-                        onClick={handleRemove}
+                    </button>
+                    <button
+                        onClick={(e) => { e.stopPropagation(); handleRemove(e); }}
                         className="rounded-xl border border-red-200 bg-red-50 p-3 text-red-500 transition-colors hover:bg-red-100"
                         title="Eliminar archivo"
                     >
@@ -110,7 +113,7 @@ const FileUploader: React.FC<FileUploaderProps> = ({
 
     // VISTA: Estado inicial (Vacío)
     return (
-        <div className={`group cursor-pointer flex h-full min-h-[275px] flex-col items-center justify-start font-sans ${className}`}>
+        <div onClick={openFileDialog} className={`group cursor-pointer flex h-full min-h-[275px] flex-col items-center justify-start font-sans ${className}`}>
             <div className="mb-6 flex size-32 items-center justify-center rounded-2xl bg-white shadow-[0px_4px_4px_0px_rgba(0,0,0,0.13)] cursor-pointer transition-colors duration-200 group-hover:bg-[#90C928]">
                 <Upload size={48} className="text-[#90C928] transition-colors duration-200 group-hover:text-white" />
             </div>
@@ -121,18 +124,24 @@ const FileUploader: React.FC<FileUploaderProps> = ({
             </div>
             
             <div className="mt-auto">
-                <label className="cursor-pointer transition-transform active:scale-95 hover:brightness-105">
+                <button
+                    type="button"
+                    onClick={(e) => { e.stopPropagation(); openFileDialog(e); }}
+                    className="cursor-pointer transition-transform active:scale-95 hover:brightness-105"
+                >
                     <div className="rounded-xl bg-[#90C928] px-4 py-3 text-sm font-bold text-white shadow-md hover:opacity-90">
                         {buttonText}
                     </div>
-                    <input
-                        type="file"
-                        className="hidden"
-                        accept={accept}
-                        multiple={multiple}
-                        onChange={handleChange}
-                    />
-                </label>
+                </button>
+                {/* input usado por todo el componente (se dispara al click en cualquier parte) */}
+                <input
+                    ref={inputRef}
+                    type="file"
+                    className="hidden"
+                    accept={accept}
+                    multiple={multiple}
+                    onChange={handleChange}
+                />
             </div>
         </div>
     );
