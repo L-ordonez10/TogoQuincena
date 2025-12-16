@@ -1,14 +1,61 @@
 "use client"
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import Image from "next/image"
 import { Target, Star, Lightbulb, ChevronDown } from "lucide-react"
 
 export default function NosotrosPage() {
   const [openCard, setOpenCard] = useState<number | null>(null)
 
+  // Duración de la animación (ms). Debe coincidir con "duration-500" en las clases Tailwind.
+  const TRANSITION_MS = 500
+
+  const timerRef = useRef<number | null>(null)
+  const animatingRef = useRef(false)
+
   const toggleCard = (index: number) => {
-    setOpenCard(openCard === index ? null : index)
+    // Si ya hay un timer pendiente, limpiarlo
+    if (timerRef.current) {
+      window.clearTimeout(timerRef.current)
+      timerRef.current = null
+      animatingRef.current = false
+    }
+
+    // Si el usuario clickea el mismo card, simplemente alternamos (cerrar)
+    if (openCard === index) {
+      setOpenCard(null)
+      return
+    }
+
+    // Si no hay ningún card abierto, abrir directamente
+    if (openCard === null) {
+      setOpenCard(index)
+      return
+    }
+
+    // Si hay otro card abierto: cerrarlo primero y luego abrir el nuevo
+    if (openCard !== index) {
+      // Iniciamos el cierre
+      setOpenCard(null)
+      animatingRef.current = true
+
+      // Al terminar la animación de cierre, abrimos el nuevo
+      timerRef.current = window.setTimeout(() => {
+        setOpenCard(index)
+        animatingRef.current = false
+        timerRef.current = null
+      }, TRANSITION_MS)
+    }
   }
+
+  // Limpieza al desmontar para evitar timers huérfanos
+  useEffect(() => {
+    return () => {
+      if (timerRef.current) {
+        window.clearTimeout(timerRef.current)
+        timerRef.current = null
+      }
+    }
+  }, [])
 
   return (
     <>
@@ -61,7 +108,7 @@ export default function NosotrosPage() {
       {/* Sección de tarjetas */}
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-10">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-10 items-start">
             {[
               {
                 title: "Nuestros objetivos",
@@ -105,7 +152,7 @@ export default function NosotrosPage() {
             ].map((card, index) => (
               <div
                 key={index}
-                className={`bg-white shadow-lg rounded-xl text-center p-6 border transition-all duration-300 ${
+                className={`bg-white shadow-lg rounded-xl text-center p-6 border transition-all duration-300 self-start ${
                   openCard === index ? "border-[#017EFF]" : "border-gray-100"
                 }`}
               >
@@ -131,8 +178,14 @@ export default function NosotrosPage() {
 
                   {/* Botón azul */}
                   <button
-                    onClick={() => toggleCard(index)}
+                    onClick={() => {
+                      // bloquear clicks mientras animamos cierre/apertura
+                      if (animatingRef.current) return
+                      toggleCard(index)
+                    }}
                     className="mt-4 text-[#017EFF] hover:text-blue-600 transition transform hover:scale-110"
+                    aria-expanded={openCard === index}
+                    aria-controls={`card-content-${index}`}
                   >
                     <ChevronDown
                       className={`w-6 h-6 transition-transform duration-500 ${
