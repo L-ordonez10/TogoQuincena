@@ -4,7 +4,13 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   PrimaryGeneratedColumn,
+  OneToOne,
+  JoinColumn,
+  OneToMany,
 } from 'typeorm';
+import { PersonalEntity } from './personal.entity';
+import { UploadsEntity } from './uploads.entity';
+import { LegalEntity } from './legal.entity';
 
 export enum EstadoSolicitud {
   PENDIENTE = 'PENDIENTE',
@@ -17,96 +23,37 @@ export class ApplicationEntity {
   @PrimaryGeneratedColumn('increment')
   id: number;
 
-  @Column({ length: 100 })
-  primerNombre: string;
+  @OneToOne(() => PersonalEntity, { cascade: true, eager: true })
+  @JoinColumn()
+  personal: PersonalEntity;
 
-  @Column({ length: 100, nullable: true })
-  segundoNombre?: string;
+  @OneToOne(() => UploadsEntity, { cascade: true, eager: true, nullable: true })
+  @JoinColumn()
+  uploads?: UploadsEntity;
 
-  @Column({ length: 100, nullable: true })
-  tercerNombre?: string;
+  @OneToMany('ReferenceEntity', 'application', {
+    cascade: true,
+  })
+  references: any[];
 
-  @Column({ length: 100 })
-  primerApellido: string;
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  salary?: string;
 
-  @Column({ length: 100, nullable: true })
-  segundoApellido?: string;
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  source?: string;
 
-  @Column({ length: 100, nullable: true })
-  apellidoPorMatrimonio?: string;
-
-  @Column({ type: 'date' })
-  fechaNacimiento: Date;
-
-  @Column({ length: 20 })
-  telefono: string;
-
-  @Column({ length: 20 })
-  dpi: string;
-
-  @Column({ length: 150, nullable: true })
-  correoElectronico?: string;
-
-  @Column({ type: 'decimal', precision: 10, scale: 2, nullable: true })
-  salarioMensual?: number;
-
-  // Adjuntos: rutas o URLs relativas dentro del servidor
-  @Column({ length: 255, nullable: true })
-  adjuntoDpi?: string;
-
-  @Column({ length: 255, nullable: true })
-  adjuntoEstadoCuenta?: string;
-
-  @Column({ length: 255, nullable: true })
-  adjuntoReciboServicio?: string;
-
-  @Column({ length: 255, nullable: true })
-  adjuntoFotografia?: string;
-
-  // Referencias personales
-  @Column({ length: 100, nullable: true })
-  referenciaPersonal1Nombre?: string;
-
-  @Column({ length: 20, nullable: true })
-  referenciaPersonal1Telefono?: string;
-
-  @Column({ length: 100, nullable: true })
-  referenciaPersonal2Nombre?: string;
-
-  @Column({ length: 20, nullable: true })
-  referenciaPersonal2Telefono?: string;
-
-  // Referencias laborales
-  @Column({ length: 100, nullable: true })
-  referenciaLaboral1Nombre?: string;
-
-  @Column({ length: 20, nullable: true })
-  referenciaLaboral1Telefono?: string;
-
-  @Column({ length: 100, nullable: true })
-  referenciaLaboral2Nombre?: string;
-
-  @Column({ length: 20, nullable: true })
-  referenciaLaboral2Telefono?: string;
-
-  // Información adicional
-  @Column({ length: 255, nullable: true })
-  medioEnterado?: string;
-
-  // Checkboxes / consentimientos
-  @Column({ type: 'boolean', default: false })
-  trabajoMasDeSeisMeses: boolean;
-
-  @Column({ type: 'boolean', default: false })
-  aceptaClausulaAceptacion: boolean;
-
-  @Column({ type: 'boolean', default: false })
-  aceptaClausulaConsentimiento: boolean;
+  @OneToOne(() => LegalEntity, { cascade: true, eager: true, nullable: true })
+  @JoinColumn()
+  legal?: LegalEntity;
 
   @CreateDateColumn()
   fechaSolicitud: Date;
 
-  @Column({ type: 'varchar', length: 20, default: EstadoSolicitud.PENDIENTE })
+  @Column({
+    type: 'enum',
+    enum: EstadoSolicitud,
+    default: EstadoSolicitud.PENDIENTE,
+  })
   estadoSolicitud: EstadoSolicitud;
 
   @UpdateDateColumn()

@@ -1,33 +1,34 @@
 import { EstadoSolicitud } from '../entities/application.entity';
 
 export class CreateApplicationDto {
-  primerNombre: string;
-  segundoNombre?: string;
-  tercerNombre?: string;
-  primerApellido: string;
-  segundoApellido?: string;
-  apellidoPorMatrimonio?: string;
-  fechaNacimiento: Date;
-  telefono: string;
-  dpi: string;
-  correoElectronico?: string;
-  salarioMensual?: number;
+  personal: {
+    firstName: string;
+    secondName?: string;
+    thirdName?: string;
+    lastName: string;
+    secondLastName?: string;
+    marriedLastName?: string;
+    birthDate?: string;
+    phone?: string;
+    dpi?: string;
+    email?: string;
+    hasSixMonths?: boolean;
+  };
 
-  referenciaPersonal1Nombre?: string;
-  referenciaPersonal1Telefono?: string;
-  referenciaPersonal2Nombre?: string;
-  referenciaPersonal2Telefono?: string;
+  uploads?: {
+    dpi?: any;
+    bankStatements?: any[];
+    electricityBill?: any;
+    selfieWithDpi?: any;
+  };
 
-  referenciaLaboral1Nombre?: string;
-  referenciaLaboral1Telefono?: string;
-  referenciaLaboral2Nombre?: string;
-  referenciaLaboral2Telefono?: string;
+  personalRefs?: { name: string; phone: string }[];
+  workRefs?: { name: string; phone: string }[];
 
-  medioEnterado?: string;
+  salary?: string;
+  source?: string;
 
-  trabajoMasDeSeisMeses: boolean;
-  aceptaClausulaAceptacion: boolean;
-  aceptaClausulaConsentimiento: boolean;
+  legal?: { acceptance: boolean; consent: boolean };
 
   estadoSolicitud?: EstadoSolicitud;
 }
