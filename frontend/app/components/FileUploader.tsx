@@ -43,6 +43,7 @@ const FileUploader: React.FC<FileUploaderProps> = ({
         e.preventDefault();
         setSelectedFiles([]);
         onChange?.(null);
+        conole.log('Archivo(s) eliminado(s)');
     };
 
     const renderTitle = () => {
