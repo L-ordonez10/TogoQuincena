@@ -65,7 +65,7 @@ export const SubmitControls: React.FC = () => {
 
       {successMessage && (
         <div role="status" aria-live="polite" className="w-full max-w-2xl mx-auto bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded-md shadow-sm flex items-start gap-3">
-          <div className="flex-shrink-0 mt-0.5">
+          <div className="shrink-0 mt-0.5">
             <svg className="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
             </svg>
