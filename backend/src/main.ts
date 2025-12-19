@@ -4,9 +4,11 @@ import * as express from 'express';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  const allowedOrigins = process.env.FRONTEND_ORIGIN?.split(',') || [
-    'http://localhost:3000',
-  ];
+  // En desarrollo: permitir todos los orígenes, en producción usar variable de entorno
+  const allowedOrigins =
+    process.env.NODE_ENV === 'production'
+      ? process.env.FRONTEND_ORIGIN?.split(',') || ['http://localhost:3000']
+      : true; // Permite todos los orígenes en desarrollo
 
   app.enableCors({
     origin: allowedOrigins,
