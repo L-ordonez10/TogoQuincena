@@ -9,12 +9,7 @@ export function DocumentUploadList() {
         const file = files && files.length > 0 ? files[0] : null;
         setField(path, file);
     };
-
-    const handleMultiple = (path: string) => (files: FileList | null) => {
-        const arr = files ? Array.from(files) : [];
-        setField(path, arr);
-    };
-
+    
     return (
         <div >
             <h2 className="text-[#94CE29] hover:text-black transition-colors duration-200 text-left font-bold text-lg lg:text-4xl mb-12">
@@ -44,7 +39,7 @@ export function DocumentUploadList() {
                             accept=".pdf,.jpg,.jpeg"
                             multiple
                             buttonText="Seleccionar archivo"
-                            onChange={handleMultiple('uploads.bankStatements')}
+                            onChange={handleSingle('uploads.bankStatements')}
                         />
                     </div>
                     {errors['uploads.bankStatements'] && (

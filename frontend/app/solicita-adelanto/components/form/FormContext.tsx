@@ -18,7 +18,7 @@ type Personal = {
 
 type Uploads = {
   dpi?: File | null;
-  bankStatements?: File[]; // últimos 2 meses
+  bankStatements?: File | null;
   electricityBill?: File | null;
   selfieWithDpi?: File | null;
 };
