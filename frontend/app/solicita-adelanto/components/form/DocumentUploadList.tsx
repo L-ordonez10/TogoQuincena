@@ -26,6 +26,7 @@ export function DocumentUploadList() {
                             accept=".pdf,.jpg,.jpeg"
                             buttonText="Seleccionar archivo"
                             onChange={handleSingle('uploads.dpi')}
+                            value={data.uploads.dpi ? [data.uploads.dpi] : null}
                         />
                     </div>
                     {errors['uploads.dpi'] && <p className="text-rose-500 font-bold text-sm text-center">{errors['uploads.dpi']}</p>}
@@ -40,6 +41,7 @@ export function DocumentUploadList() {
                             multiple
                             buttonText="Seleccionar archivo"
                             onChange={handleSingle('uploads.bankStatements')}
+                            value={data.uploads.bankStatements ? [data.uploads.bankStatements] : null}
                         />
                     </div>
                     {errors['uploads.bankStatements'] && (
@@ -55,6 +57,7 @@ export function DocumentUploadList() {
                             accept=".pdf,.jpg,.jpeg"
                             buttonText="Seleccionar archivo"
                             onChange={handleSingle('uploads.electricityBill')}
+                            value={data.uploads.electricityBill ? [data.uploads.electricityBill] : null}
                         />
                     </div>
                     {errors['uploads.electricityBill'] && (
@@ -71,6 +74,7 @@ export function DocumentUploadList() {
                             accept=".jpg,.jpeg"
                             buttonText="Seleccionar archivo"
                             onChange={handleSingle('uploads.selfieWithDpi')}
+                            value={data.uploads.selfieWithDpi ? [data.uploads.selfieWithDpi] : null}
                         />
                     </div>
                     {errors['uploads.selfieWithDpi'] && (

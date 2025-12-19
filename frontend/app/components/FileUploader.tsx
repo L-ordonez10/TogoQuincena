@@ -10,6 +10,8 @@ interface FileUploaderProps {
     iconColor?: string;
     className?: string;
     onChange?: (files: FileList | null) => void;
+    // valor controlado: si se proporciona, el componente sincroniza su estado interno
+    value?: File[] | null;
 }
 
 const FileUploader: React.FC<FileUploaderProps> = ({
@@ -21,9 +23,20 @@ const FileUploader: React.FC<FileUploaderProps> = ({
     iconColor = '#90C928',
     className = '',
     onChange,
+    value,
 }) => {
     const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
     const inputRef = useRef<HTMLInputElement | null>(null);
+
+    React.useEffect(() => {
+        // sincroniza el estado interno cuando `value` cambia desde afuera
+        if (value && value.length > 0) {
+            setSelectedFiles(value);
+        } else if (value === null) {
+            setSelectedFiles([]);
+            if (inputRef.current) inputRef.current.value = '';
+        }
+    }, [value]);
 
     const openFileDialog = (e?: React.MouseEvent) => {
         e?.stopPropagation();
@@ -43,6 +56,7 @@ const FileUploader: React.FC<FileUploaderProps> = ({
         e.preventDefault();
         setSelectedFiles([]);
         onChange?.(null);
+        if (inputRef.current) inputRef.current.value = '';
     };
 
     const renderTitle = () => {

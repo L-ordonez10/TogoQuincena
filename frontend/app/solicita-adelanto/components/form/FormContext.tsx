@@ -56,8 +56,25 @@ export const useFormCtx = () => {
 };
 
 const initialData: FormData = {
-  personal: { firstName: '', lastName: '', email: '', hasSixMonths: false },
-  uploads: {},
+  personal: {
+    firstName: '',
+    secondName: '',
+    thirdName: '',
+    lastName: '',
+    secondLastName: '',
+    marriedLastName: '',
+    birthDate: '',
+    phone: '',
+    dpi: '',
+    email: '',
+    hasSixMonths: false,
+  },
+  uploads: {
+    dpi: null,
+    bankStatements: null,
+    electricityBill: null,
+    selfieWithDpi: null,
+  },
   personalRefs: [{ name: '', phone: '' }, { name: '', phone: '' }],
   workRefs: [{ name: '', phone: '' }, { name: '', phone: '' }],
   salary: 0,
