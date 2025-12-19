@@ -9,7 +9,7 @@ export class UploadsEntity {
   dpi?: any;
 
   @Column({ type: 'json', nullable: true })
-  bankStatements?: any[];
+  bankStatements?: any;
 
   @Column({ type: 'json', nullable: true })
   electricityBill?: any;

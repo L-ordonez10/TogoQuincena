@@ -17,7 +17,7 @@ export class CreateApplicationDto {
 
   uploads?: {
     dpi?: any;
-    bankStatements?: any[];
+    bankStatements?: any;
     electricityBill?: any;
     selfieWithDpi?: any;
   };
