@@ -66,11 +66,24 @@ export class ApplicationService {
     return this.findOne(savedApplication.id);
   }
 
-  findAll() {
-    return this.repo.find({
+  async findAll(page: number = 1, limit: number = 10) {
+    const skip = (page - 1) * limit;
+    const [data, total] = await this.repo.findAndCount({
       order: { fechaSolicitud: 'DESC' },
       relations: ['personal', 'uploads', 'references', 'legal'],
+      skip,
+      take: limit,
     });
+
+    return {
+      data,
+      meta: {
+        total,
+        page,
+        limit,
+        totalPages: Math.ceil(total / limit),
+      },
+    };
   }
 
   async findOne(id: number) {
