@@ -14,58 +14,28 @@ export function PersonalDataForm() {
                 Completa datos personales
             </h2>
             <div className='grid grid-cols-1 md:grid-cols-2 gap-x-20 gap-y-6 max-w-2xl mx-auto'>
-                <Field>
-                    <FieldLabel className='text-base font-normal'>Primer nombre</FieldLabel>
+                <Field className='lg:col-span-2'>
+                    <FieldLabel className='text-base font-normal'>Nombres</FieldLabel>
                     <Input
                         type='text'
-                        value={data.personal.firstName}
+                        value={data.personal.names}
                         className='border-none shadow-[0px_4px_4px_0px_#00000040]'
-                        onChange={(e) => setField('personal.firstName', e.target.value)}
+                        onChange={(e) => setField('personal.names', e.target.value)}
                     />
-                    {errors['personal.firstName'] && <div className='text-rose-500 font-bold text-sm'>{errors['personal.firstName']}</div>}
+                    {errors['personal.names'] && <div className='text-rose-500 font-bold text-sm'>{errors['personal.names']}</div>}
                 </Field>
-                <Field>
-                    <FieldLabel className='text-base font-normal'>Segundo nombre</FieldLabel>
+                <Field className='lg:col-span-2'>
+                    <FieldLabel className='text-base font-normal'>Apellidos</FieldLabel>
                     <Input
                         type='text'
-                        value={data.personal.secondName}
+                        value={data.personal.surnames}
                         className='border-none shadow-[0px_4px_4px_0px_#00000040]'
-                        onChange={(e) => setField('personal.secondName', e.target.value)}
+                        onChange={(e) => setField('personal.surnames', e.target.value)}
                     />
-                    {errors['personal.secondName'] && <div className='text-rose-500 font-bold text-sm'>{errors['personal.secondName']}</div>}
+                    {errors['personal.surnames'] && <div className='text-rose-500 font-bold text-sm'>{errors['personal.surnames']}</div>}
                 </Field>
                 <Field>
-                    <FieldLabel className='text-base font-normal'>Tercer nombre</FieldLabel>
-                    <Input
-                        type='text'
-                        value={data.personal.thirdName}
-                        className='border-none shadow-[0px_4px_4px_0px_#00000040]'
-                        onChange={(e) => setField('personal.thirdName', e.target.value)}
-                    />
-                    {errors['personal.thirdName'] && <div className='text-rose-500 font-bold text-sm'>{errors['personal.thirdName']}</div>}
-                </Field>
-                <Field>
-                    <FieldLabel className='text-base font-normal'>Primer apellido</FieldLabel>
-                    <Input
-                        type='text'
-                        value={data.personal.lastName}
-                        className='border-none shadow-[0px_4px_4px_0px_#00000040]'
-                        onChange={(e) => setField('personal.lastName', e.target.value)}
-                    />
-                    {errors['personal.lastName'] && <div className='text-rose-500 font-bold text-sm'>{errors['personal.lastName']}</div>}
-                </Field>
-                <Field>
-                    <FieldLabel className='text-base font-normal'>Segundo apellido</FieldLabel>
-                    <Input
-                        type='text'
-                        value={data.personal.secondLastName}
-                        className='border-none shadow-[0px_4px_4px_0px_#00000040]'
-                        onChange={(e) => setField('personal.secondLastName', e.target.value)}
-                    />
-                    {errors['personal.secondLastName'] && <div className='text-rose-500 font-bold text-sm'>{errors['personal.secondLastName']}</div>}
-                </Field>
-                <Field>
-                    <FieldLabel className='text-base font-normal'>Apelido de casada</FieldLabel>
+                    <FieldLabel className='text-base font-normal'>Apellido de casada</FieldLabel>
                     <Input
                         type='text'
                         value={data.personal.marriedLastName}

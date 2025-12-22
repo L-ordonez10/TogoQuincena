@@ -52,6 +52,11 @@ body {
 
 :root {
   --radius: 0.625rem;
+  --brand-black: #000000;
+  --brand-green: #97d22a;
+  --brand-blue: #017eff;
+  --brand-gray: #dedede;
+  --brand-white: #ffffff;
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);

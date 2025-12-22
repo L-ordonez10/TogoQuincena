@@ -3,11 +3,8 @@
 import React, { createContext, useContext, useState } from 'react';
 
 type Personal = {
-  firstName: string;
-  secondName?: string;
-  thirdName?: string;
-  lastName: string;
-  secondLastName?: string;
+  names: string;
+  surnames: string;
   marriedLastName?: string;
   birthDate?: string;
   phone?: string;
@@ -57,11 +54,8 @@ export const useFormCtx = () => {
 
 const initialData: FormData = {
   personal: {
-    firstName: '',
-    secondName: '',
-    thirdName: '',
-    lastName: '',
-    secondLastName: '',
+    names: '',
+    surnames: '',
     marriedLastName: '',
     birthDate: '',
     phone: '',
@@ -110,8 +104,8 @@ export const FormProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const nextErrors: FormErrors = {};
     // Ejemplos de validación por sección
     if (section === 'personal') {
-      if (!data.personal.firstName) nextErrors['personal.firstName'] = 'Requerido';
-      if (!data.personal.lastName) nextErrors['personal.lastName'] = 'Requerido';
+        if (!data.personal.names) nextErrors['personal.names'] = 'Requerido';
+        if (!data.personal.surnames) nextErrors['personal.surnames'] = 'Requerido';
       if (!data.personal.birthDate) nextErrors['personal.birthDate'] = 'Requerido';
       if (data.personal.birthDate) {
         const birth = new Date(data.personal.birthDate);
@@ -131,9 +125,6 @@ export const FormProvider: React.FC<{ children: React.ReactNode }> = ({ children
       if (!data.personal.dpi || !/^\d+$/.test(data.personal.dpi)) nextErrors['personal.dpi'] = 'DPI inválido';
       if (!data.personal.email || !/^\S+@\S+\.\S+$/.test(data.personal.email))
         nextErrors['personal.email'] = 'Email inválido';
-      if (data.personal.hasSixMonths === false) {
-        nextErrors['personal.hasSixMonths'] = 'Debes tener al menos 6 meses en tu empleo actual';
-      }
       // edad ≥ 25 si hay fecha, etc.
     }
     if (section === 'uploads') {
