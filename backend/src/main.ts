@@ -1,14 +1,48 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
+import { ValidationPipe } from '@nestjs/common';
+import { AllExceptionsFilter } from './common/filters/all-exceptions.filter';
+import helmet from 'helmet';
 import * as express from 'express';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  // En desarrollo: permitir todos los orígenes, en producción usar variable de entorno
+
+  // Global exception filter
+  app.useGlobalFilters(new AllExceptionsFilter());
+
+  // Security headers with Helmet
+  app.use(
+    helmet({
+      crossOriginResourcePolicy: { policy: 'cross-origin' },
+      contentSecurityPolicy: {
+        directives: {
+          defaultSrc: ["'self'"],
+          styleSrc: ["'self'", "'unsafe-inline'"],
+          scriptSrc: ["'self'"],
+          imgSrc: ["'self'", 'data:', 'https:'],
+        },
+      },
+    }),
+  );
+
+  // Global validation pipe
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,
+      forbidNonWhitelisted: true,
+      transform: true,
+      transformOptions: {
+        enableImplicitConversion: true,
+      },
+    }),
+  );
+
+  // CORS configuration
   const allowedOrigins =
     process.env.NODE_ENV === 'production'
       ? process.env.FRONTEND_ORIGIN?.split(',') || ['http://localhost:3000']
-      : true; // Permite todos los orígenes en desarrollo
+      : true;
 
   app.enableCors({
     origin: allowedOrigins,
@@ -18,7 +52,10 @@ async function bootstrap() {
     optionsSuccessStatus: 200,
   });
 
+  // Serve static files securely
   app.use('/uploads', express.static('uploads'));
-  await app.listen(3001);
+
+  const port = process.env.PORT || 3001;
+  await app.listen(port);
 }
 bootstrap();
