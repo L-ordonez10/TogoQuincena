@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { APP_GUARD } from '@nestjs/core';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -10,6 +11,7 @@ import { UploadsEntity } from './application/entities/uploads.entity';
 import { ReferenceEntity } from './application/entities/reference.entity';
 import { LegalEntity } from './application/entities/legal.entity';
 import { FileUploadModule } from './file-upload/file-upload.module';
+import { ApiKeyGuard } from './common/guards';
 
 @Module({
   imports: [
@@ -42,6 +44,12 @@ import { FileUploadModule } from './file-upload/file-upload.module';
     FileUploadModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_GUARD,
+      useClass: ApiKeyGuard,
+    },
+  ],
 })
 export class AppModule {}
