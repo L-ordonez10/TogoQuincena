@@ -12,22 +12,10 @@ import { Type } from 'class-transformer';
 
 class PersonalDto {
   @IsString()
-  firstName: string;
-
-  @IsOptional()
-  @IsString()
-  secondName?: string;
-
-  @IsOptional()
-  @IsString()
-  thirdName?: string;
+  names: string;
 
   @IsString()
-  lastName: string;
-
-  @IsOptional()
-  @IsString()
-  secondLastName?: string;
+  surnames: string;
 
   @IsOptional()
   @IsString()
