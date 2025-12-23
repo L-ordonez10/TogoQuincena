@@ -70,10 +70,10 @@ export function DiscoverHowSection() {
     return (
         <section>
             <div className="w-full max-w-6xl mx-auto my-12">
-                <h1 className="hover:text-[#97D22A] transition-colors duration-200 text-xl sm:text-3xl md:text-[50px] text-center font-bold mb-2 leading-tight ">
+                <h1 className="hover:text-[#97D22A] transition-colors duration-200 text-xl sm:text-3xl md:text-[40px] text-center font-bold mb-2 leading-tight ">
                     Descubre ¿Cómo?
                 </h1>
-                <h2 className="text-[#97D22A] text-xl sm:text-2xl text-center md:text-[40px] font-bold mb-6 leading-snug">
+                <h2 className="text-[#97D22A] text-xl sm:text-2xl text-center md:text-[30px] font-bold mb-6 leading-snug">
                     {contentItems[activeIndex]?.title ?? "Requisitos para hacer tu solicitud"}
                 </h2>
 

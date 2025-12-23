@@ -2,10 +2,13 @@ import React from 'react';
 
 const HeaderSection: React.FC = () => {
   return (
-    <header className="w-full max-w-3xl mx-auto text-center py-8">
-      <h1 className="text-2xl font-bold">Cotizador</h1>
-      <p className="mt-4 text-xl font-semibold text-[#90C928]">Haz la cotización de tu adelanto de salario con nuestro cotizador</p>
-      <p className="mt-4 text-sm text-gray-600">El máximo a otorgar es el 20% de tu salario (mínimo Q.500.00 - máximo Q.1,500.00)</p>
+    <header className="w-full max-w-lg mx-auto text-center py-8">
+      <h1 className="hover:text-[#97D22A] transition-colors duration-200 text-xl sm:text-3xl md:text-[40px] text-center font-bold mb-2 leading-tight ">
+        Cotizador
+      </h1>
+      <h2 className="text-[#97D22A] text-xl sm:text-2xl text-center md:text-[30px] font-bold mb-6 leading-snug">
+        Haz la cotización de tu adelanto de salario con nuestro cotizador
+      </h2>
     </header>
   );
 };

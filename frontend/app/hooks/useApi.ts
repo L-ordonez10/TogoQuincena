@@ -1,9 +1,12 @@
 import axiosInstance from "@/lib/axios";
-import { SolicitudResponse } from "@/lib/types/solicitudes";
+import { Solicitud, SolicitudResponse } from "@/lib/types/solicitudes";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 // Ejemplo de hook para obtener datos
-export const useGetData = <T>(endpoint: string, queryKey: string[]) => {
+export const useGetData = <T>(
+  endpoint: string,
+  queryKey: (string | number)[]
+) => {
   return useQuery<T>({
     queryKey,
     queryFn: async () => {
@@ -13,7 +16,6 @@ export const useGetData = <T>(endpoint: string, queryKey: string[]) => {
   });
 };
 
-// Ejemplo de hook para crear/actualizar datos
 export const useMutateData = <TData, TVariables>(
   endpoint: string,
   method: "post" | "put" | "patch" | "delete" = "post",
@@ -44,6 +46,10 @@ export const useSolicitudes = () => {
   return useGetData<SolicitudResponse>("/applications", ["applications"]);
 };
 
+export const useSolicitud = (id: number) => {
+  return useGetData<Solicitud>(`/applications/${id}`, ["application", id]);
+};
+
 export const useFileUpload = () => {
   return useMutation<{ message: string; filePath: string }, Error, FormData>({
     mutationFn: async (formData: FormData) => {
@@ -57,9 +63,7 @@ export const useFileUpload = () => {
         throw error;
       }
     },
-    onSuccess: (data) => {
-    },
-    onError: (error) => {
-    },
+    onSuccess: (data) => {},
+    onError: (error) => {},
   });
 };
