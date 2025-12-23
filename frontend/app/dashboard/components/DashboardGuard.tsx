@@ -59,7 +59,7 @@ export function DashboardGuard({ children }: { children: React.ReactNode }) {
 
   if (!isAuthenticated) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 p-4">
+      <div className="flex min-h-screen items-center justify-center bg-linear-to-br from-gray-50 to-gray-100 p-4">
         <div className="w-full max-w-md">
           <div className="rounded-2xl bg-white p-8 shadow-2xl">
             <div className="mb-8 flex justify-center">
