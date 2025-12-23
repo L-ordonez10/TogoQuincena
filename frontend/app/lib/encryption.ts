@@ -1,56 +1,83 @@
-// Utilidades para encriptar y desencriptar IDs de solicitudes
+const SECRET_KEY = process.env.NEXT_PUBLIC_ENCRYPTION_KEY || "togoQuincenaSecretKey2025";
+const SEPARATOR = "_";
+const CHECKSUM_LENGTH = 4;
 
-// Función simple de encriptación usando base64 y una clave secreta
-const SECRET_KEY = "togoQuincenaSecretKey2025";
+const URL_SAFE_CHARS: Record<string, string> = {
+  "+": "-",
+  "/": "_",
+  "=": "",
+  "-": "+",
+  "_": "/",
+};
+
+const replaceChars = (str: string, charMap: Record<string, string>): string =>
+  str.replace(/[+/=\-_]/g, (char) => charMap[char] || char);
+
+const addBase64Padding = (base64: string): string =>
+  base64 + "=".repeat((4 - (base64.length % 4)) % 4);
+
+const generateChecksum = (value: string): string => {
+  let hash = 0;
+  for (let i = 0; i < value.length; i++) {
+    const char = value.charCodeAt(i);
+    hash = ((hash << 5) - hash) + char;
+    hash = hash & hash;
+  }
+  return Math.abs(hash).toString(16).padStart(CHECKSUM_LENGTH, "0").slice(0, CHECKSUM_LENGTH);
+};
+
+const validateChecksum = (value: string, checksum: string): boolean => {
+  return generateChecksum(value) === checksum;
+};
 
 export function encryptId(id: number | string): string {
-    try {
-        const idString = id.toString();
-        const combined = `${SECRET_KEY}_${idString}_${SECRET_KEY}`;
-        return btoa(combined).replace(/[+/=]/g, (match) => {
-            switch (match) {
-                case '+': return '-';
-                case '/': return '_';
-                case '=': return '';
-                default: return match;
-            }
-        });
-    } catch (error) {
-        console.error('Error encrypting ID:', error);
-        return '';
-    }
+  try {
+    const idStr = id.toString();
+    const checksum = generateChecksum(idStr);
+    const timestamp = Date.now().toString(36);
+    const combined = [SECRET_KEY, idStr, checksum, timestamp, SECRET_KEY].join(SEPARATOR);
+    const encoded = btoa(combined);
+    return replaceChars(encoded, { "+": "-", "/": "_", "=": "" });
+  } catch (error) {
+    console.error("Error encrypting ID:", error);
+    return "";
+  }
 }
 
 export function decryptId(encryptedId: string): number | null {
-    try {
-        // Revertir las sustituciones de caracteres
-        const base64 = encryptedId.replace(/[-_]/g, (match) => {
-            switch (match) {
-                case '-': return '+';
-                case '_': return '/';
-                default: return match;
-            }
-        });
-        
-        // Agregar padding si es necesario
-        const padded = base64 + '='.repeat((4 - base64.length % 4) % 4);
-        
-        const decoded = atob(padded);
-        const parts = decoded.split('_');
-        
-        if (parts.length === 3 && parts[0] === SECRET_KEY && parts[2] === SECRET_KEY) {
-            const id = parseInt(parts[1]);
-            return isNaN(id) ? null : id;
-        }
-        
+  try {
+    const base64 = replaceChars(encryptedId, { "-": "+", "_": "/" });
+    const padded = addBase64Padding(base64);
+    const decoded = atob(padded);
+    const parts = decoded.split(SEPARATOR);
+
+    if (parts.length === 5 && parts[0] === SECRET_KEY && parts[4] === SECRET_KEY) {
+      const idStr = parts[1];
+      const checksum = parts[2];
+      const timestamp = parseInt(parts[3], 36);
+      
+      if (!validateChecksum(idStr, checksum)) {
+        console.warn("Invalid checksum");
         return null;
-    } catch (error) {
-        console.error('Error decrypting ID:', error);
+      }
+
+      const ONE_YEAR = 365 * 24 * 60 * 60 * 1000;
+      if (Date.now() - timestamp > ONE_YEAR) {
+        console.warn("Encrypted ID expired");
         return null;
+      }
+
+      const id = parseInt(idStr, 10);
+      return Number.isNaN(id) ? null : id;
     }
+
+    return null;
+  } catch (error) {
+    console.error("Error decrypting ID:", error);
+    return null;
+  }
 }
 
-// Función para validar si un slug encriptado es válido
 export function isValidEncryptedId(encryptedId: string): boolean {
-    return decryptId(encryptedId) !== null;
+  return decryptId(encryptedId) !== null;
 }

@@ -9,10 +9,7 @@ const montserrat = Montserrat({
   weight: ["400", "500", "600", "700"],
 });
 
-export const metadata: Metadata = {
-  title: "QuincenaToGo",
-  description: "Adelantos de quincena fácil y rápido",
-};
+
 
 export default function RootLayout({
   children,
@@ -22,9 +19,7 @@ export default function RootLayout({
   return (
     <html lang="es">
       <body className={`${montserrat.variable} font-sans antialiased`}>
-        <QueryProvider>
-          {children}
-        </QueryProvider>
+        <QueryProvider>{children}</QueryProvider>
       </body>
     </html>
   );

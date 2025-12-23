@@ -1,5 +1,6 @@
-import React, { useState, useRef } from 'react';
-import { Upload, FileText, Trash2, CheckCircle } from 'lucide-react';
+import React, { useState, useRef, useCallback } from 'react';
+import { Upload, FileText, Trash2, CheckCircle, AlertCircle } from 'lucide-react';
+import { validateFileType, validateFileSize, ALLOWED_DOCUMENT_TYPES, MAX_FILE_SIZE_MB } from '@/lib/security';
 
 interface FileUploaderProps {
     title?: string | string[];
@@ -10,8 +11,9 @@ interface FileUploaderProps {
     iconColor?: string;
     className?: string;
     onChange?: (files: FileList | null) => void;
-    // valor controlado: si se proporciona, el componente sincroniza su estado interno
     value?: File[] | null;
+    maxSizeMB?: number;
+    allowedTypes?: string[];
 }
 
 const FileUploader: React.FC<FileUploaderProps> = ({
@@ -24,40 +26,78 @@ const FileUploader: React.FC<FileUploaderProps> = ({
     className = '',
     onChange,
     value,
+    maxSizeMB = MAX_FILE_SIZE_MB,
+    allowedTypes = ALLOWED_DOCUMENT_TYPES,
 }) => {
     const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
+    const [error, setError] = useState<string | null>(null);
     const inputRef = useRef<HTMLInputElement | null>(null);
 
     React.useEffect(() => {
-        // sincroniza el estado interno cuando `value` cambia desde afuera
         if (value && value.length > 0) {
             setSelectedFiles(value);
+            setError(null);
         } else if (value === null) {
             setSelectedFiles([]);
+            setError(null);
             if (inputRef.current) inputRef.current.value = '';
         }
     }, [value]);
 
-    const openFileDialog = (e?: React.MouseEvent) => {
+    const openFileDialog = useCallback((e?: React.MouseEvent) => {
         e?.stopPropagation();
         inputRef.current?.click();
-    };
+    }, []);
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const validateFiles = useCallback((files: FileList): { valid: boolean; error?: string } => {
+        const filesArray = Array.from(files);
+        
+        for (const file of filesArray) {
+            if (!validateFileType(file, allowedTypes)) {
+                return { 
+                    valid: false, 
+                    error: `Tipo de archivo no permitido: ${file.type}` 
+                };
+            }
+            
+            if (!validateFileSize(file, maxSizeMB)) {
+                return { 
+                    valid: false, 
+                    error: `Archivo muy grande: máximo ${maxSizeMB}MB` 
+                };
+            }
+        }
+        
+        return { valid: true };
+    }, [allowedTypes, maxSizeMB]);
+
+    const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
         const files = e.target.files;
+        setError(null);
+        
         if (files && files.length > 0) {
+            const validation = validateFiles(files);
+            
+            if (!validation.valid) {
+                setError(validation.error || 'Error al validar archivo');
+                if (inputRef.current) inputRef.current.value = '';
+                return;
+            }
+            
             const arr = Array.from(files);
             setSelectedFiles(arr);
             onChange?.(files);
         }
-    };
+    }, [onChange, validateFiles]);
 
-    const handleRemove = (e: React.MouseEvent) => {
+    const handleRemove = useCallback((e: React.MouseEvent) => {
         e.preventDefault();
+        e.stopPropagation();
         setSelectedFiles([]);
+        setError(null);
         onChange?.(null);
         if (inputRef.current) inputRef.current.value = '';
-    };
+    }, [onChange]);
 
     const renderTitle = () => {
         if (Array.isArray(title)) {
@@ -70,20 +110,16 @@ const FileUploader: React.FC<FileUploaderProps> = ({
         return <h3 className="text-lg text-gray-900 leading-tight">{title}</h3>;
     };
 
-    // VISTA: Cuando YA hay un archivo seleccionado
     if (selectedFiles.length > 0) {
         return (
             <div className={`group cursor-pointer flex h-full min-h-[275px] flex-col items-center justify-start font-sans ${className}`}>
-                {/* Icono de Archivo con indicador de éxito */}
                 <div className="relative mb-6 flex size-32 items-center justify-center rounded-2xl bg-white shadow-[0px_4px_4px_0px_rgba(0,0,0,0.13)] border-2 border-[#90C928]/20">
                     <FileText size={48} color={iconColor} />
-                    {/* Pequeño check flotante para indicar éxito */}
                     <div className="absolute -right-2 -top-2 rounded-full bg-white p-1 shadow-md">
                         <CheckCircle size={20} color={iconColor} fill="white" />
                     </div>
                 </div>
 
-                {/* Nombre del archivo */}
                 <div className="mb-8 flex w-full max-w-[200px] flex-col items-center text-center">
                     <p className="mb-1 w-full truncate text-lg font-bold text-gray-900" title={selectedFiles[0].name}>
                         {selectedFiles[0].name}
@@ -98,15 +134,10 @@ const FileUploader: React.FC<FileUploaderProps> = ({
                     )}
                 </div>
 
-                {/* Botones de acción */}
                 <div className="mt-auto flex items-center gap-3">
-                    {/* Botón Eliminar (rojo suave) */}
-           
-
-                    {/* Botón Cambiar (Reutiliza el input file) */}
                     <button
                         type="button"
-                        onClick={(e) => openFileDialog(e)}
+                        onClick={openFileDialog}
                         className="cursor-pointer transition-transform active:scale-95 hover:brightness-105"
                     >
                         <div className="rounded-xl bg-[#90C928] px-6 py-3 text-sm font-bold text-white shadow-md hover:opacity-90">
@@ -114,7 +145,8 @@ const FileUploader: React.FC<FileUploaderProps> = ({
                         </div>
                     </button>
                     <button
-                        onClick={(e) => { e.stopPropagation(); handleRemove(e); }}
+                        type="button"
+                        onClick={handleRemove}
                         className="rounded-xl border border-red-200 bg-red-50 p-3 text-red-500 transition-colors hover:bg-red-100"
                         title="Eliminar archivo"
                     >
@@ -125,7 +157,6 @@ const FileUploader: React.FC<FileUploaderProps> = ({
         );
     }
 
-    // VISTA: Estado inicial (Vacío)
     return (
         <div onClick={openFileDialog} className={`group cursor-pointer flex h-full min-h-[275px] flex-col items-center justify-start font-sans ${className}`}>
             <div className="mb-6 flex size-32 items-center justify-center rounded-2xl bg-white shadow-[0px_4px_4px_0px_rgba(0,0,0,0.13)] cursor-pointer transition-colors duration-200 group-hover:bg-[#90C928]">
@@ -135,6 +166,12 @@ const FileUploader: React.FC<FileUploaderProps> = ({
             <div className="mb-8 text-center px-4">
                 {renderTitle()}
                 <p className="text-base font-normal text-gray-900 mt-1">{note}</p>
+                {error && (
+                    <div className="mt-2 flex items-center gap-2 text-red-500 text-sm">
+                        <AlertCircle size={16} />
+                        <span>{error}</span>
+                    </div>
+                )}
             </div>
             
             <div className="mt-auto">
@@ -147,7 +184,6 @@ const FileUploader: React.FC<FileUploaderProps> = ({
                         {buttonText}
                     </div>
                 </button>
-                {/* input usado por todo el componente (se dispara al click en cualquier parte) */}
                 <input
                     ref={inputRef}
                     type="file"

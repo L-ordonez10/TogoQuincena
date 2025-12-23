@@ -19,18 +19,20 @@ export const SubmitControls: React.FC = () => {
     }
 
     try {
-      let uploadedFiles: Record<string, any> = {};
+      let uploadedFiles: Record<string, unknown> = {};
       if (data.uploads && (data.uploads.dpi || (data.uploads as any).bankStatements || data.uploads.electricityBill || data.uploads.selfieWithDpi)) {
         uploadedFiles = await uploadAllFiles(data, fileUpload);
       }
 
       const applicationPayload = {
-        personal: data.personal,
-        personalRefs: data.personalRefs,
-        workRefs: data.workRefs,
-        salary: data.salary,
-        source: data.source,
-        legal: data.legal,
+        personal: data.personal as Record<string, unknown>,
+        references: [
+          ...data.personalRefs.map(ref => ({ ...ref, kind: "personal" as const })),
+          ...data.workRefs.map(ref => ({ ...ref, kind: "work" as const }))
+        ] as Array<Record<string, unknown>>,
+        salary: data.salary.toString(),
+        source: data.source || "",
+        legal: data.legal as Record<string, unknown>,
         uploads: uploadedFiles,
       };
 

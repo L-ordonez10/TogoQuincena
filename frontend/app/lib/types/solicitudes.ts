@@ -1,4 +1,5 @@
-// Tipos para el sistema de solicitudes de adelanto de quincena
+export type EstadoSolicitud = "PENDIENTE" | "APROBADO" | "RECHAZADO";
+export type ReferenceKind = "personal" | "work";
 
 export interface Personal {
   id: number;
@@ -24,7 +25,7 @@ export interface Reference {
   id: number;
   name: string;
   phone: string;
-  kind: "personal" | "work";
+  kind: ReferenceKind;
 }
 
 export interface Legal {
@@ -42,7 +43,7 @@ export interface Solicitud {
   source: string;
   legal: Legal;
   fechaSolicitud: string;
-  estadoSolicitud: "PENDIENTE" | "APROBADO" | "RECHAZADO";
+  estadoSolicitud: EstadoSolicitud;
   actualizadoEn: string;
 }
 
@@ -57,6 +58,3 @@ export interface SolicitudResponse {
   solicitudes: Solicitud[];
   meta: MetaData;
 }
-
-// Tipos adicionales para la UI
-export type EstadoSolicitud = "PENDIENTE" | "APROBADO" | "RECHAZADO";

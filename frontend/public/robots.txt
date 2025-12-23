@@ -1,0 +1,24 @@
+# Robots.txt - QuincenaToGo
+# Esta configuración evita que Google y otros buscadores indexen el dashboard
+
+# Bloquear a todos los bots
+User-agent: *
+
+# Permitir páginas públicas
+Allow: /
+Allow: /solicita-adelanto
+Allow: /descubre-como
+Allow: /cotizador
+Allow: /nosotros
+
+# Bloquear dashboard y rutas privadas
+Disallow: /dashboard
+Disallow: /dashboard/*
+Disallow: /api/
+
+# Archivos estáticos (opcional)
+Allow: /imagenes/
+Allow: /_next/static/
+
+# Sitemap (si decides crear uno)
+Sitemap: https://tudominio.com/sitemap.xml

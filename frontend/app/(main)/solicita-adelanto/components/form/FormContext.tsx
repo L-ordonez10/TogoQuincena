@@ -1,66 +1,39 @@
-"use client"
+"use client";
 
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useCallback } from "react";
+import { FormData, FormErrors, FormSection } from "./types";
+import { validateSection as validateSectionFn, validateAll as validateAllFn } from "./validation";
 
-type Personal = {
-  names: string;
-  surnames: string;
-  marriedLastName?: string;
-  birthDate?: string;
-  phone?: string;
-  dpi?: string;
-  email?: string;
-  hasSixMonths?: boolean;
-};
-
-type Uploads = {
-  dpi?: File | null;
-  bankStatements?: File | null;
-  electricityBill?: File | null;
-  selfieWithDpi?: File | null;
-};
-
-type Reference = { name: string; phone: string };
-type Legal = { acceptance: boolean; consent: boolean };
-
-type FormData = {
-  personal: Personal;
-  uploads: Uploads;
-  personalRefs: Reference[];
-  workRefs: Reference[];
-  salary: number;
-  source?: string;
-  legal: Legal;
-};
-
-type FormErrors = Partial<Record<string, string>>;
-
-type FormContextValue = {
+interface FormContextValue {
   data: FormData;
   errors: FormErrors;
   setField: (path: string, value: unknown) => void;
-  validateSection: (section: string) => boolean;
+  validateSection: (section: FormSection) => boolean;
   validateAll: () => boolean;
   reset: () => void;
-};
+}
 
 const FormContext = createContext<FormContextValue | null>(null);
 
 export const useFormCtx = () => {
   const ctx = useContext(FormContext);
-  if (!ctx) throw new Error('FormContext not found');
+  if (!ctx) {
+    throw new Error("useFormCtx must be used within FormProvider");
+  }
   return ctx;
 };
 
-const initialData: FormData = {
+const createEmptyReference = () => ({ name: "", phone: "" });
+
+const INITIAL_DATA: FormData = {
   personal: {
-    names: '',
-    surnames: '',
-    marriedLastName: '',
-    birthDate: '',
-    phone: '',
-    dpi: '',
-    email: '',
+    names: "",
+    surnames: "",
+    marriedLastName: "",
+    birthDate: "",
+    phone: "",
+    dpi: "",
+    email: "",
     hasSixMonths: false,
   },
   uploads: {
@@ -69,105 +42,57 @@ const initialData: FormData = {
     electricityBill: null,
     selfieWithDpi: null,
   },
-  personalRefs: [{ name: '', phone: '' }, { name: '', phone: '' }],
-  workRefs: [{ name: '', phone: '' }, { name: '', phone: '' }],
+  personalRefs: [createEmptyReference(), createEmptyReference()],
+  workRefs: [createEmptyReference(), createEmptyReference()],
   salary: 0,
-  source: '',
+  source: "",
   legal: { acceptance: false, consent: false },
 };
 
+const setNestedValue = (obj: FormData, path: string, value: unknown): FormData => {
+  const parts = path.split(".");
+  const clone = structuredClone(obj) as any;
+  let cursor: any = clone;
+
+  for (let i = 0; i < parts.length - 1; i++) {
+    const key = parts[i];
+    cursor[key] = cursor[key] ?? {};
+    cursor = cursor[key];
+  }
+
+  cursor[parts[parts.length - 1]] = value;
+  return clone as FormData;
+};
+
 export const FormProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [data, setData] = useState<FormData>(initialData);
+  const [data, setData] = useState<FormData>(INITIAL_DATA);
   const [errors, setErrors] = useState<FormErrors>({});
 
-  const setField = (path: string, value: unknown) => {
-    setData(prev => {
-      const parts = path.split('.');
-      const clone: any = structuredClone(prev);
-      let cursor = clone;
-      for (let i = 0; i < parts.length - 1; i++) {
-        const key = parts[i];
-        cursor[key] = cursor[key] ?? {};
-        cursor = cursor[key];
-      }
-      cursor[parts[parts.length - 1]] = value;
-      return clone;
-    });
-    setErrors(prev => {
+  const setField = useCallback((path: string, value: unknown) => {
+    setData((prev) => setNestedValue(prev, path, value));
+    setErrors((prev) => {
       const next = { ...prev };
       delete next[path];
       return next;
     });
-  };
+  }, []);
 
-  const validateSection = (section: string) => {
-    const nextErrors: FormErrors = {};
-    // Ejemplos de validación por sección
-    if (section === 'personal') {
-        if (!data.personal.names) nextErrors['personal.names'] = 'Requerido';
-        if (!data.personal.surnames) nextErrors['personal.surnames'] = 'Requerido';
-      if (!data.personal.birthDate) nextErrors['personal.birthDate'] = 'Requerido';
-      if (data.personal.birthDate) {
-        const birth = new Date(data.personal.birthDate);
-        const today = new Date();
-        let age = today.getFullYear() - birth.getFullYear();
-        const m = today.getMonth() - birth.getMonth();
-        if (m < 0 || (m === 0 && today.getDate() < birth.getDate())) {
-          age--;
-        }
-        if (age < 18) {
-          nextErrors['personal.birthDate'] = 'Debes ser mayor de edad';
-        }
-      }
-      if (!data.personal.phone || !/^\d+$/.test(data.personal.phone)) nextErrors['personal.phone'] = 'Teléfono inválido';
-      if (!data.personal.phone) nextErrors['personal.phone'] = 'Requerido';
-      if (!data.personal.dpi) nextErrors['personal.dpi'] = 'Requerido';
-      if (!data.personal.dpi || !/^\d+$/.test(data.personal.dpi)) nextErrors['personal.dpi'] = 'DPI inválido';
-      if (!data.personal.email || !/^\S+@\S+\.\S+$/.test(data.personal.email))
-        nextErrors['personal.email'] = 'Email inválido';
-      // edad ≥ 25 si hay fecha, etc.
-    }
-    if (section === 'uploads') {
-      if (!data.uploads.dpi) nextErrors['uploads.dpi'] = 'DPI requerido';
-      if (!data.uploads.electricityBill) nextErrors['uploads.electricityBill'] = 'Recibo requerido';
-    }
-    if (section === 'personalRefs') {
-      data.personalRefs.forEach((r, i) => {
-        if (!r.name) nextErrors[`personalRefs.${i}.name`] = 'Requerido';
-        if (!r.phone) nextErrors[`personalRefs.${i}.phone`] = 'Requerido';
-      });
-    }
-    if (section === 'workRefs') {
-      data.workRefs.forEach((r, i) => {
-        if (!r.name) nextErrors[`workRefs.${i}.name`] = 'Requerido';
-        if (!r.phone) nextErrors[`workRefs.${i}.phone`] = 'Requerido';
-      });
-    }
-    if (section === 'summary') {
-      if (!data.salary || data.salary <= 0) nextErrors['salary'] = 'Salario inválido';
-      if (!data.source) nextErrors['source'] = 'Fuente requerida';
-      if (!data.legal.acceptance) nextErrors['legal.acceptance'] = 'Acepta la cláusula';
-      if (!data.legal.consent) nextErrors['legal.consent'] = 'Acepta el consentimiento';
-    }
-    setErrors(prev => ({ ...prev, ...nextErrors }));
-    return Object.keys(nextErrors).length === 0;
-  };
+  const validateSection = useCallback((section: FormSection): boolean => {
+    const sectionErrors = validateSectionFn(section, data);
+    setErrors((prev) => ({ ...prev, ...sectionErrors }));
+    return Object.keys(sectionErrors).length === 0;
+  }, [data]);
 
-  const validateAll = () => {
-    const sections = ['personal', 'uploads', 'personalRefs', 'workRefs', 'summary'];
+  const validateAll = useCallback((): boolean => {
+    const allErrors = validateAllFn(data);
+    setErrors(allErrors);
+    return Object.keys(allErrors).length === 0;
+  }, [data]);
+
+  const reset = useCallback(() => {
+    setData(INITIAL_DATA);
     setErrors({});
-    let allOk = true;
-    for (const s of sections) {
-      const ok = validateSection(s);
-      if (!ok) allOk = false;
-    }
-    return allOk;
-  };
-
-  const reset = () => {
-    setData(initialData);
-    setErrors({});
-  };
+  }, []);
 
   return (
     <FormContext.Provider value={{ data, errors, setField, validateSection, validateAll, reset }}>

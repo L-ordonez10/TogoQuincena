@@ -1,69 +1,104 @@
 import axiosInstance from "@/lib/axios";
 import { Solicitud, SolicitudResponse } from "@/lib/types/solicitudes";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { 
+  useMutation, 
+  useQuery, 
+  useQueryClient,
+  UseQueryOptions,
+  UseMutationOptions 
+} from "@tanstack/react-query";
+import { AxiosError } from "axios";
 
-// Ejemplo de hook para obtener datos
+type HttpMethod = "post" | "put" | "patch" | "delete";
+
+interface FileUploadResponse {
+  message: string;
+  filePath: string;
+}
+
+interface CreateApplicationPayload {
+  personal: Record<string, unknown>;
+  uploads: Record<string, unknown>;
+  references: Array<Record<string, unknown>>;
+  salary: string;
+  source: string;
+  legal: Record<string, unknown>;
+}
+
+const APPLICATIONS_QUERY_KEY = "applications";
+const APPLICATION_QUERY_KEY = "application";
+const FILE_UPLOAD_ENDPOINT = "/file-upload/upload";
+const APPLICATIONS_ENDPOINT = "/applications";
+
 export const useGetData = <T>(
   endpoint: string,
-  queryKey: (string | number)[]
+  queryKey: (string | number)[],
+  options?: Omit<UseQueryOptions<T, AxiosError>, "queryKey" | "queryFn">
 ) => {
-  return useQuery<T>({
+  return useQuery<T, AxiosError>({
     queryKey,
     queryFn: async () => {
       const { data } = await axiosInstance.get<T>(endpoint);
       return data;
     },
+    ...options,
   });
 };
 
 export const useMutateData = <TData, TVariables>(
   endpoint: string,
-  method: "post" | "put" | "patch" | "delete" = "post",
-  invalidateKeys?: string[]
+  method: HttpMethod = "post",
+  invalidateKeys?: string[],
+  options?: Omit<UseMutationOptions<TData, AxiosError, TVariables>, "mutationFn" | "onSuccess">
 ) => {
   const queryClient = useQueryClient();
 
-  return useMutation<TData, Error, TVariables>({
+  return useMutation<TData, AxiosError, TVariables>({
     mutationFn: async (variables) => {
       const { data } = await axiosInstance[method]<TData>(endpoint, variables);
       return data;
     },
-    onSuccess: () => {
-      if (invalidateKeys) {
-        invalidateKeys.forEach((key) => {
-          queryClient.invalidateQueries({ queryKey: [key] });
-        });
-      }
+    onSuccess: (data, variables, context) => {
+      invalidateKeys?.forEach((key) => {
+        queryClient.invalidateQueries({ queryKey: [key] });
+      });
+      options?.onSuccess?.(data, variables, context);
     },
+    ...options,
   });
 };
 
 export const useCreateApplication = () => {
-  return useMutateData<any, any>("/applications", "post", ["applications"]);
+  return useMutateData<Solicitud, CreateApplicationPayload>(
+    APPLICATIONS_ENDPOINT,
+    "post",
+    [APPLICATIONS_QUERY_KEY]
+  );
 };
 
 export const useSolicitudes = () => {
-  return useGetData<SolicitudResponse>("/applications", ["applications"]);
+  return useGetData<SolicitudResponse>(
+    APPLICATIONS_ENDPOINT,
+    [APPLICATIONS_QUERY_KEY]
+  );
 };
 
-export const useSolicitud = (id: number) => {
-  return useGetData<Solicitud>(`/applications/${id}`, ["application", id]);
+export const useSolicitud = (id: number, enabled = true) => {
+  return useGetData<Solicitud>(
+    `${APPLICATIONS_ENDPOINT}/${id}`,
+    [APPLICATION_QUERY_KEY, id],
+    { enabled: Boolean(id) && enabled }
+  );
 };
 
 export const useFileUpload = () => {
-  return useMutation<{ message: string; filePath: string }, Error, FormData>({
+  return useMutation<FileUploadResponse, AxiosError, FormData>({
     mutationFn: async (formData: FormData) => {
-      try {
-        const response = await axiosInstance.post(
-          "/file-upload/upload",
-          formData
-        );
-        return response.data;
-      } catch (error) {
-        throw error;
-      }
+      const { data } = await axiosInstance.post<FileUploadResponse>(
+        FILE_UPLOAD_ENDPOINT,
+        formData
+      );
+      return data;
     },
-    onSuccess: (data) => {},
-    onError: (error) => {},
   });
 };
