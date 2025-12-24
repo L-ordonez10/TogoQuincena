@@ -1,7 +1,6 @@
 "use client";
 
 import { usePathname, useParams } from "next/navigation";
-import { decryptId } from "@/lib/encryption";
 import { LogoutButton } from "./LogoutButton";
 
 export function HeaderTitle() {
@@ -26,7 +25,6 @@ export function HeaderTitle() {
         <p className="text-xs font-semibold uppercase tracking-wide text-[#017eff]">{section}</p>
         <h1 className="text-2xl font-semibold text-black">{title}</h1>
       </div>
-      <LogoutButton />
     </div>
   );
 }

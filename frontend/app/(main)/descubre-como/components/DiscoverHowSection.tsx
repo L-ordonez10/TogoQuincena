@@ -68,7 +68,7 @@ export function DiscoverHowSection() {
     }, [count, activeIndex])
 
     return (
-        <section>
+        <section className="w-full py-12 px-4 ">
             <div className="w-full max-w-6xl mx-auto my-12">
                 <h1 className="hover:text-[#97D22A] transition-colors duration-200 text-xl sm:text-3xl md:text-[40px] text-center font-bold mb-2 leading-tight ">
                     Descubre ¿Cómo?

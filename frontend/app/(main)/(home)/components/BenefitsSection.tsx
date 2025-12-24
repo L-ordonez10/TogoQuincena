@@ -1,7 +1,7 @@
 export function BenefitsSection() {
     return (
         <section
-            className="py-20 px-4 sm:px-10 md:px-16 lg:px-20 bg-cover bg-center bg-no-repeat text-black mb-16"
+            className="py-20 px-4 sm:px-10 md:px-16 lg:px-20 2xl:py-40 bg-cover bg-center bg-no-repeat text-black mb-16"
             style={{ backgroundImage: "url('/imagenes/botonesQ2.webp')" }}
         >
             <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-12">

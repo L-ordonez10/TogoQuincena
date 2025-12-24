@@ -20,6 +20,7 @@ import { DashboardNav } from "./components/DashboardNav";
 import { HeaderTitle } from "./components/HeaderTitle";
 import { DashboardGuard } from "./components/DashboardGuard";
 import { THEME } from "../lib/constants";
+import { LogoutButton } from "./components/LogoutButton";
 
 const { colors } = THEME;
 
@@ -81,28 +82,7 @@ export default function DashboardLayout({
           </SidebarContent>
           <SidebarSeparator />
           <SidebarFooter className="p-4">
-            <div
-              className="rounded-xl p-4 shadow-sm"
-              style={{ backgroundColor: colors.blueBackground }}
-            >
-              <p className="text-sm font-semibold" style={{ color: colors.black }}>
-                Nuevo adelanto
-              </p>
-              <p className="text-xs" style={{ color: colors.black }}>
-                Crea una solicitud rápida.
-              </p>
-              <Button
-                size="sm"
-                className="mt-3 w-full"
-                style={{
-                  backgroundColor: colors.green,
-                  color: colors.black,
-                }}
-                asChild
-              >
-                <Link href="/solicita-adelanto">Iniciar flujo</Link>
-              </Button>
-            </div>
+            <LogoutButton />
           </SidebarFooter>
         </Sidebar>
 

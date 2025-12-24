@@ -20,11 +20,6 @@ const menuItems = [
     label: "Solicitudes",
     icon: Inbox,
     href: "/dashboard",
-  },
-  {
-    label: "Archivos",
-    icon: Inbox,
-    href: "/dashboard/archivos",
   }
 ];
 
