@@ -76,7 +76,7 @@ export class ApplicationService {
     });
 
     return {
-      data,
+      solicitudes: data,
       meta: {
         total,
         page,

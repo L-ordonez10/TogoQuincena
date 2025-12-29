@@ -6,7 +6,7 @@ export class PersonalEntity {
   id: number;
 
   @Column({ length: 150 })
-  firstName: string;
+  names: string;
 
   @Column({ length: 150 })
   surnames: string;
