@@ -120,7 +120,7 @@ export function DiscoverHowSection() {
                         />
                     </Carousel>
 
-                    <div className="w-full hidden lg:flex justify-center gap-2 py-4">
+                    <div className="w-full flex justify-center gap-2 py-4">
                         {Array.from({ length: count }).map((_, index) => (
                             <button
                                 key={index}
