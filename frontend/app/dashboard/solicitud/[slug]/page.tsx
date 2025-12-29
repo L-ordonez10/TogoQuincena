@@ -1,57 +1,48 @@
 "use client";
 
-import { useParams, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
+import { useSolicitud } from "@/hooks/useApi";
+import { buildUrl } from "@/lib/constants";
+import { decryptId, isValidEncryptedId } from "@/lib/encryption";
+import type { Solicitud } from "@/lib/types/solicitudes";
 import {
     ArrowLeft,
-    User,
     Calendar,
-    Phone,
-    Mail,
-    CreditCard,
-    FileText,
-    Download,
     CheckCircle,
+    CreditCard,
+    Download,
+    FileText,
+    Mail,
+    Phone,
+    User,
     XCircle
 } from "lucide-react";
-import { decryptId, isValidEncryptedId } from "@/lib/encryption";
-import { buildUrl } from "@/lib/constants";
-import { useSolicitudes } from "@/hooks/useApi";
-import type { Solicitud } from "@/lib/types/solicitudes";
+import { useParams, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export default function SolicitudDetailPage() {
     const params = useParams();
     const router = useRouter();
-    const { data: { solicitudes } = { solicitudes: [] }, isLoading, isError } = useSolicitudes();
-    const [solicitud, setSolicitud] = useState<Solicitud | null>(null);
-    const [validSlug, setValidSlug] = useState(true);
     const [downloading, setDownloading] = useState<string | null>(null);
 
+    const slug = params.slug as string | undefined;
+    const decryptedId = slug && isValidEncryptedId(slug) ? decryptId(slug) : null;
+    const validSlug = Boolean(slug && decryptedId !== null);
+
+    // Debug: mostrar slug y resultado de desencriptado
+    console.log('slug:', slug);
+    console.log('decryptedId raw:', decryptedId);
+    console.log('validSlug:', validSlug);
+
+    const idParam = decryptedId ?? undefined;
+    const { data, isLoading, isError } = useSolicitud(idParam, Boolean(idParam));
+
+    const [solicitud, setSolicitud] = useState<Solicitud | null>(null);
     useEffect(() => {
-        const slug = params.slug as string;
-
-        // Validar y desencriptar el slug
-        if (!slug || !isValidEncryptedId(slug)) {
-            setValidSlug(false);
-            return;
-        }
-
-        const decryptedId = decryptId(slug);
-        if (decryptedId === null) {
-            setValidSlug(false);
-            return;
-        }
-
-        // Buscar la solicitud en los datos
-        if (solicitudes.length > 0) {
-            const foundSolicitud = solicitudes.find((s: Solicitud) => s.id === decryptedId);
-            setSolicitud(foundSolicitud || null);
-        }
-    }, [params.slug, solicitudes]);
+        if (data) setSolicitud(data);
+    }, [data]);
 
     const handleStatusChange = async (id: number, newStatus: string, comments?: string) => {
         try {

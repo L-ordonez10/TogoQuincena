@@ -1,11 +1,11 @@
 import axiosInstance from "@/lib/axios";
 import { Solicitud, SolicitudResponse } from "@/lib/types/solicitudes";
-import { 
-  useMutation, 
-  useQuery, 
+import {
+  useMutation,
+  useQuery,
   useQueryClient,
   UseQueryOptions,
-  UseMutationOptions 
+  UseMutationOptions,
 } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 
@@ -45,25 +45,36 @@ export const useGetData = <T>(
   });
 };
 
-export const useMutateData = <TData, TVariables>(
+export const useMutateData = <TData, TVariables, TContext = unknown>(
   endpoint: string,
   method: HttpMethod = "post",
   invalidateKeys?: string[],
-  options?: Omit<UseMutationOptions<TData, AxiosError, TVariables>, "mutationFn" | "onSuccess">
+  options?: Omit<
+    UseMutationOptions<TData, AxiosError, TVariables, TContext>,
+    "mutationFn"
+  >
 ) => {
   const queryClient = useQueryClient();
 
-  return useMutation<TData, AxiosError, TVariables>({
+  return useMutation<TData, AxiosError, TVariables, TContext>({
     mutationFn: async (variables) => {
       const { data } = await axiosInstance[method]<TData>(endpoint, variables);
       return data;
     },
-    onSuccess: (data, variables, context) => {
+
+    onSuccess: (data, variables, onMutateResult, context) => {
       invalidateKeys?.forEach((key) => {
         queryClient.invalidateQueries({ queryKey: [key] });
       });
-      options?.onSuccess?.(data, variables, context);
+
+      options?.onSuccess?.(
+        data,
+        variables,
+        onMutateResult,
+        context
+      );
     },
+
     ...options,
   });
 };
@@ -77,18 +88,19 @@ export const useCreateApplication = () => {
 };
 
 export const useSolicitudes = () => {
-  return useGetData<SolicitudResponse>(
-    APPLICATIONS_ENDPOINT,
-    [APPLICATIONS_QUERY_KEY]
-  );
+  return useGetData<SolicitudResponse>(APPLICATIONS_ENDPOINT, [
+    APPLICATIONS_QUERY_KEY,
+  ]);
 };
 
-export const useSolicitud = (id: number, enabled = true) => {
-  return useGetData<Solicitud>(
-    `${APPLICATIONS_ENDPOINT}/${id}`,
-    [APPLICATION_QUERY_KEY, id],
-    { enabled: Boolean(id) && enabled }
-  );
+export const useSolicitud = (id?: number, enabled = true) => {
+  const shouldEnable = typeof id === "number" && id > 0 && enabled;
+  const endpoint = id ? `${APPLICATIONS_ENDPOINT}/${id}` : "";
+  const queryKey: (string | number)[] =
+    typeof id === "number" && id > 0
+      ? [APPLICATIONS_QUERY_KEY, id]
+      : [APPLICATIONS_QUERY_KEY];
+  return useGetData<Solicitud>(endpoint, queryKey, { enabled: shouldEnable });
 };
 
 export const useFileUpload = () => {

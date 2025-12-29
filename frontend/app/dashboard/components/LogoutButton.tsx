@@ -29,7 +29,7 @@ export function LogoutButton() {
 
   return (
     <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
-      <AlertDialogTrigger asChild>
+      <AlertDialogTrigger>
         <Button
           variant="outline"
           size="sm"

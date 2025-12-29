@@ -7,6 +7,7 @@ import { PersonalEntity } from './entities/personal.entity';
 import { UploadsEntity } from './entities/uploads.entity';
 import { ReferenceEntity } from './entities/reference.entity';
 import { LegalEntity } from './entities/legal.entity';
+import { EmailModule } from '../email/email.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { LegalEntity } from './entities/legal.entity';
       ReferenceEntity,
       LegalEntity,
     ]),
+    EmailModule,
   ],
   controllers: [ApplicationController],
   providers: [ApplicationService],

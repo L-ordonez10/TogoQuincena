@@ -7,6 +7,7 @@ import { PersonalEntity } from './entities/personal.entity';
 import { UploadsEntity } from './entities/uploads.entity';
 import { ReferenceEntity, ReferenceKind } from './entities/reference.entity';
 import { LegalEntity } from './entities/legal.entity';
+import { EmailService } from '../email/email.service';
 
 @Injectable()
 export class ApplicationService {
@@ -21,6 +22,7 @@ export class ApplicationService {
     private readonly referenceRepo: Repository<ReferenceEntity>,
     @InjectRepository(LegalEntity)
     private readonly legalRepo: Repository<LegalEntity>,
+    private readonly emailService: EmailService,
   ) {}
 
   async create(dto: CreateApplicationDto) {
@@ -61,6 +63,16 @@ export class ApplicationService {
 
     if (references.length > 0) {
       await this.referenceRepo.save(references);
+    }
+
+    try {
+      await this.emailService.sendApplicationConfirmation(
+        dto.personal.email ?? '',
+        `${dto.personal.names} ${dto.personal.surnames}`,
+        savedApplication.id,
+      );
+    } catch (error) {
+      console.error('Error enviando email de confirmación:', error);
     }
 
     return this.findOne(savedApplication.id);
