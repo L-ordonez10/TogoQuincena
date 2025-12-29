@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export function AboutUsSection() {
     return (
         <section className="bg-white text-black py-16 px-6 md:px-20">
@@ -20,9 +22,9 @@ export function AboutUsSection() {
                         en línea.
                     </p>
                     <div className="flex justify-center lg:justify-start">
-                        <button className="bg-[#017EFF] hover:bg-[#000000] transition-colors duration-300 text-white px-6 py-3 text-base md:text-lg rounded-md font-bold hover:opacity-90 cursor-pointer shadow-md">
+                        <Link href="/nosotros" className="bg-[#017EFF] hover:bg-[#000000] transition-colors duration-300 text-white px-6 py-3 text-base md:text-lg rounded-md font-bold hover:opacity-90 cursor-pointer shadow-md">
                             Ver más
-                        </button>
+                        </Link>
                     </div>
                 </div>
             </div>

@@ -21,7 +21,7 @@ export function HeroSection() {
 
                 <div className="mt-8 flex flex-col gap-4">
                     <Link
-                        href="/solicitar-adelanto"
+                        href="/solicita-adelanto"
                         className="w-auto self-center lg:self-start bg-[#97D22A] text-white px-6 py-3 rounded-md font-semibold text-[20px] md:text-[27px] shadow-md hover:opacity-90 transition cursor-pointer text-center"
                     >
                         Solicitar adelanto

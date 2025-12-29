@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { FaFacebookF, FaInstagram, FaYoutube, FaXTwitter } from "react-icons/fa6";
 
 export default function Footer() {
@@ -11,15 +12,17 @@ export default function Footer() {
           {/* Columna 1: Logo y redes */}
           <div className="flex flex-col items-start space-y-4">
             <div className="flex flex-col">
-              <div className="flex items-center space-x-2">
-                <Image
-                  src="/imagenes/LogoQuincenaTooGo_negro.svg"
-                  alt="Logo"
-                  width={180}
-                  height={50}
-                />
-              </div>
-              <p className="text-sm mt-1 font-bold">Así de fácil.</p>
+              <Link href="/" aria-label="Ir al inicio">
+                <div className="flex items-center space-x-2">
+                  <Image
+                    src="/imagenes/LogoQuincenaTooGo_negro.svg"
+                    alt="Logo"
+                    width={250}
+                    height={120}
+                  />
+                </div>
+                <p className="text-base mt-1 font-bold">Así de fácil.</p>
+              </Link>
             </div>
 
             {/* Redes sociales */}
@@ -43,9 +46,9 @@ export default function Footer() {
           <div>
             <h3 className="font-semibold mb-3 md:text-[15px] lg:text-[18px]">Nosotros</h3>
             <ul className="space-y-2 md:text-[15px] lg:text-[18px]">
-              <li><a href="#">Nuestros objetivos</a></li>
-              <li><a href="#">Nuestra misión</a></li>
-              <li><a href="#">Nuestra visión</a></li>
+              <li><Link href="/nosotros?tab=objetivos">Nuestros objetivos</Link></li>
+              <li><Link href="/nosotros?tab=mision">Nuestra misión</Link></li>
+              <li><Link href="/nosotros?tab=vision">Nuestra visión</Link></li>
             </ul>
           </div>
 
@@ -65,12 +68,12 @@ export default function Footer() {
           <div>
             <h3 className="font-semibold mb-3 md:text-[15px] lg:text-[18px]">Cotizador</h3>
             <ul className="space-y-2 md:text-[15px] text-[18px]">
-              <li><a href="#">Cotizador</a></li>
+              <li><Link href="/cotizador">Cotizador</Link></li>
             </ul>
 
             <h3 className="font-semibold mt-5 mb-3 md:text-[15px] lg:text-[18px]">Contacto</h3>
             <ul className="space-y-2 md:text-[15px] lg:text-[18px]">
-              <li><a href="#">Formulario</a></li>
+              <li><Link href="/solicita-adelanto">Formulario</Link></li>
             </ul>
           </div>
         </div>

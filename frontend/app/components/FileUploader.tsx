@@ -137,20 +137,12 @@ const FileUploader: React.FC<FileUploaderProps> = ({
                 <div className="mt-auto flex items-center gap-3">
                     <button
                         type="button"
-                        onClick={openFileDialog}
-                        className="cursor-pointer transition-transform active:scale-95 hover:brightness-105"
-                    >
-                        <div className="rounded-xl bg-[#90C928] px-6 py-3 text-sm font-bold text-white shadow-md hover:opacity-90">
-                            Cambiar archivo
-                        </div>
-                    </button>
-                    <button
-                        type="button"
                         onClick={handleRemove}
-                        className="rounded-xl border border-red-200 bg-red-50 p-3 text-red-500 transition-colors hover:bg-red-100"
+                        className="rounded-xl border text-sm border-red-200 bg-red-50 px-4 py-3 text-red-500 transition-colors hover:bg-red-100 flex items-center gap-2"
                         title="Eliminar archivo"
                     >
-                        <Trash2 size={20} />
+                        <Trash2 size={16} />
+                        <span className="font-medium">Eliminar archivo</span>
                     </button>
                 </div>
             </div>
@@ -180,7 +172,7 @@ const FileUploader: React.FC<FileUploaderProps> = ({
                     onClick={(e) => { e.stopPropagation(); openFileDialog(e); }}
                     className="cursor-pointer transition-transform active:scale-95 hover:brightness-105"
                 >
-                    <div className="rounded-xl bg-[#90C928] px-4 py-3 text-sm font-bold text-white shadow-md hover:opacity-90">
+                    <div className="rounded-xl bg-[#90C928] px-4 py-3 text-sm font-bold text-white shadow-md">
                         {buttonText}
                     </div>
                 </button>

@@ -1,5 +1,6 @@
 "use client"
 import { useEffect, useRef, useState } from "react"
+import { useSearchParams } from "next/navigation"
 import Image from "next/image"
 import { Target, Star, Lightbulb, ChevronDown } from "lucide-react"
 
@@ -11,6 +12,8 @@ export default function NosotrosPage() {
 
   const timerRef = useRef<number | null>(null)
   const animatingRef = useRef(false)
+  const searchParams = useSearchParams()
+  const cardsRef = useRef<HTMLDivElement | null>(null)
 
   const toggleCard = (index: number) => {
     // Si ya hay un timer pendiente, limpiarlo
@@ -56,6 +59,42 @@ export default function NosotrosPage() {
       }
     }
   }, [])
+
+  // Abrir la tarjeta correcta según el parámetro `tab` en la query
+  useEffect(() => {
+    if (!searchParams) return
+    const tab = searchParams.get("tab")
+    if (!tab) return
+
+    const key = tab.toLowerCase()
+    const mapping: Record<string, number> = {
+      objetivos: 0,
+      valores: 1,
+      vision: 1,
+      mision: 2,
+    }
+
+    const idx = mapping[key]
+    if (typeof idx === "number") {
+      // Desplazar a la sección de tarjetas y luego abrir la tarjeta
+      let scrollTimer: number | null = null
+      if (cardsRef.current) {
+        cardsRef.current.scrollIntoView({ behavior: "smooth", block: "start" })
+        // Esperar un poco para que termine el desplazamiento y luego abrir la tarjeta
+        scrollTimer = window.setTimeout(() => {
+          setOpenCard((prev) => (prev === idx ? prev : idx))
+        }, 350)
+      } else {
+        setOpenCard((prev) => (prev === idx ? prev : idx))
+      }
+
+      return () => {
+        if (scrollTimer) {
+          window.clearTimeout(scrollTimer)
+        }
+      }
+    }
+  }, [searchParams?.toString()])
 
   return (
     <>
@@ -108,7 +147,7 @@ export default function NosotrosPage() {
       {/* Sección de tarjetas */}
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-10 items-start">
+          <div ref={cardsRef} className="grid sm:grid-cols-2 lg:grid-cols-3 gap-10 items-start">
             {[
               {
                 title: "Nuestros objetivos",
@@ -152,7 +191,21 @@ export default function NosotrosPage() {
             ].map((card, index) => (
               <div
                 key={index}
-                className={`bg-white shadow-lg rounded-xl text-center p-6 border transition-all duration-300 self-start ${
+                role="button"
+                tabIndex={0}
+                onClick={() => {
+                  if (animatingRef.current) return
+                  toggleCard(index)
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault()
+                    if (animatingRef.current) return
+                    toggleCard(index)
+                  }
+                }}
+                aria-expanded={openCard === index}
+                className={`bg-white shadow-lg rounded-xl text-center p-6 border transition-all duration-300 self-start cursor-pointer ${
                   openCard === index ? "border-[#017EFF]" : "border-gray-100"
                 }`}
               >
@@ -178,7 +231,8 @@ export default function NosotrosPage() {
 
                   {/* Botón azul */}
                   <button
-                    onClick={() => {
+                    onClick={(e) => {
+                      e.stopPropagation()
                       // bloquear clicks mientras animamos cierre/apertura
                       if (animatingRef.current) return
                       toggleCard(index)
