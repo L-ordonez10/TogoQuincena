@@ -56,11 +56,11 @@ export default function Footer() {
           <div>
             <h3 className="font-semibold mb-3 md:text-[15px] lg:text-[18px]">Producto</h3>
             <ul className="space-y-2 md:text-[15px] text-[18px]">
-              <li><a href="#">Requisitos</a></li>
-              <li><a href="#">Monto</a></li>
-              <li><a href="#">Formas de cancelar adelanto</a></li>
-              <li><a href="#">Control y seguridad</a></li>
-              <li><a href="#">Pasos</a></li>
+              <li><Link href="/descubre-como?section=requisitos">Requisitos</Link></li>
+              <li><Link href="/descubre-como?section=monto">Monto</Link></li>
+              <li><Link href="/descubre-como?section=cancelacion">Formas de cancelar adelanto</Link></li>
+              <li><Link href="/descubre-como?section=control">Control y seguridad</Link></li>
+              <li><Link href="/descubre-como?section=pasos">Pasos</Link></li>
             </ul>
           </div>
 

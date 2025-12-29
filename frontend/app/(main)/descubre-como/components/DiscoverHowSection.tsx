@@ -1,5 +1,6 @@
-'use client'
+"use client"
 import React, { useEffect, useRef, useState } from "react"
+import { useSearchParams } from "next/navigation"
 import type { CarouselApi } from '@/components/ui/carousel'
 import {
     Carousel,
@@ -18,6 +19,7 @@ export function DiscoverHowSection() {
     const count = contentItems.length
     const [carouselApi, setCarouselApi] = useState<CarouselApi | null>(null)
     const [heights, setHeights] = useState<number[]>([])
+    const searchParams = useSearchParams()
 
     useEffect(() => {
         const observer = new IntersectionObserver(
@@ -67,6 +69,41 @@ export function DiscoverHowSection() {
         return () => window.removeEventListener('resize', computeHeights)
     }, [count, activeIndex])
 
+    // Si viene ?section=... navegamos al slide correspondiente
+    useEffect(() => {
+        if (!searchParams) return
+        const section = searchParams.get('section')
+        if (!section) return
+
+        const key = section.toLowerCase()
+        const mapping: Record<string, number> = {
+            requisitos: 0,
+            monto: 1,
+            control: 2,
+            cancelacion: 3,
+        }
+
+        const idx = mapping[key]
+        if (typeof idx === 'number' && idx >= 0 && idx < contentItems.length) {
+            // scroll container into view
+            if (containerRef.current) {
+                containerRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' })
+            }
+
+            // si la API del carousel está lista, pedir scrollTo; si no, esperar
+            if (carouselApi) {
+                carouselApi.scrollTo(idx)
+                setActiveIndex(idx)
+            } else {
+                const t = window.setTimeout(() => {
+                    (carouselApi as CarouselApi | null)?.scrollTo(idx)
+                    setActiveIndex(idx)
+                }, 300)
+                return () => window.clearTimeout(t)
+            }
+        }
+    }, [searchParams?.toString(), carouselApi])
+
     return (
         <section className="w-full py-12 px-4 ">
             <div className="w-full max-w-6xl mx-auto my-12">
@@ -78,7 +115,7 @@ export function DiscoverHowSection() {
                 </h2>
 
                 <div className="mt-5 w-full max-w-4xl mx-auto">
-                    <Carousel opts={{ loop: true }} setApi={setCarouselApi} className="shadow-[0px_4px_4px_0px_rgba(0,0,0,0.15)] rounded-2xl p-6">
+                    <Carousel opts={{ loop: true }} setApi={(api: CarouselApi) => setCarouselApi(api)} className="shadow-[0px_4px_4px_0px_rgba(0,0,0,0.15)] rounded-2xl p-6">
                         <div ref={containerRef} className="overflow-hidden">
                             <CarouselContent>
                                 {contentItems.map((item, idx) => (
@@ -120,12 +157,12 @@ export function DiscoverHowSection() {
                         />
                     </Carousel>
 
-                    <div className="w-full hidden lg:flex justify-center gap-2 py-4">
+                    <div className="w-full flex justify-center gap-2 py-4">
                         {Array.from({ length: count }).map((_, index) => (
                             <button
                                 key={index}
                                 onClick={() => {
-                                    carouselApi?.scrollTo(index)
+                                    (carouselApi as CarouselApi | null)?.scrollTo(index)
                                     setActiveIndex(index)
                                 }}
                                 className={`h-2.5 w-2.5 rounded-full transition-colors duration-200 ${activeIndex === index ? 'bg-[#017EFF]' : 'bg-gray-300'}`}

@@ -5,7 +5,7 @@ import { steps } from "./data"
 export function StepSection() {
 
     return (
-        <div className="flex flex-col justify-center items-center  px-4 my-12 ">
+        <div id="steps-section" className="flex flex-col justify-center items-center  px-4 my-12 ">
 
             <h2 className="text-[#97D22A] max-w-2xl text-xl sm:text-2xl text-center md:text-[40px] font-bold mb-6 leading-snug ">
                 Los pasos para realizar tu <span className="text-black">adelanto de salario</span> son:
