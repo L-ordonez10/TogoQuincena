@@ -1,5 +1,12 @@
 import axiosInstance from "@/lib/axios";
-import { Solicitud, SolicitudResponse } from "@/lib/types/solicitudes";
+import {
+  Legal,
+  Personal,
+  Reference,
+  Solicitud,
+  SolicitudResponse,
+  Uploads,
+} from "@/lib/types/solicitudes";
 import {
   useMutation,
   useQuery,
@@ -17,12 +24,13 @@ interface FileUploadResponse {
 }
 
 interface CreateApplicationPayload {
-  personal: Record<string, unknown>;
-  uploads: Record<string, unknown>;
-  references: Array<Record<string, unknown>>;
+  personal: Personal;
+  uploads: Uploads;
+  personalRefs: Reference[];
+  workRefs: Reference[];
   salary: string;
   source: string;
-  legal: Record<string, unknown>;
+  legal: Legal;
 }
 
 const APPLICATIONS_QUERY_KEY = "applications";
@@ -67,12 +75,7 @@ export const useMutateData = <TData, TVariables, TContext = unknown>(
         queryClient.invalidateQueries({ queryKey: [key] });
       });
 
-      options?.onSuccess?.(
-        data,
-        variables,
-        onMutateResult,
-        context
-      );
+      options?.onSuccess?.(data, variables, onMutateResult, context);
     },
 
     ...options,

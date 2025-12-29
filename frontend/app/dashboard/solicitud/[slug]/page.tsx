@@ -31,7 +31,6 @@ export default function SolicitudDetailPage() {
     const decryptedId = slug && isValidEncryptedId(slug) ? decryptId(slug) : null;
     const validSlug = Boolean(slug && decryptedId !== null);
 
-    // Debug: mostrar slug y resultado de desencriptado
     console.log('slug:', slug);
     console.log('decryptedId raw:', decryptedId);
     console.log('validSlug:', validSlug);
@@ -46,7 +45,6 @@ export default function SolicitudDetailPage() {
 
     const handleStatusChange = async (id: number, newStatus: string, comments?: string) => {
         try {
-            // Aquí iría la llamada al API para actualizar el estado
             console.log(`Solicitud ${id} actualizada a ${newStatus}`, comments && `Comentarios: ${comments}`);
 
             // Actualizar el estado local
@@ -82,7 +80,6 @@ export default function SolicitudDetailPage() {
             URL.revokeObjectURL(objectUrl);
         } catch (err) {
             console.error('Error descargando archivo', err);
-            // feedback mínimo
             alert('No se pudo descargar el archivo. Verifica CORS o la URL.');
         } finally {
             setDownloading(null);
@@ -108,7 +105,6 @@ export default function SolicitudDetailPage() {
         }).format(num);
     };
 
-    // Estados de carga y error
     if (isLoading) {
         return (
             <div className="space-y-6">
@@ -251,11 +247,12 @@ export default function SolicitudDetailPage() {
                             <p className="text-3xl font-bold text-green-600">{formatCurrency(solicitud.salary)}</p>
                         </div>
                         <div>
-                            <p className="text-sm font-medium text-gray-500">Fuente de Ingresos</p>
+                            <p className="text-sm font-medium text-gray-500">¿Dónde escuchó del negocio?</p>
                             <p className="font-semibold">{solicitud.source}</p>
                         </div>
                     </CardContent>
                 </Card>
+
 
                 {/* Documentos */}
                 <Card className="lg:col-span-2">

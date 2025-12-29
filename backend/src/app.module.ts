@@ -37,7 +37,6 @@ import { ApiKeyGuard } from './common/guards';
           LegalEntity,
         ],
         synchronize: configService.get<string>('NODE_ENV') !== 'production',
-        logging: configService.get<string>('NODE_ENV') === 'development',
       }),
     }),
     ApplicationModule,

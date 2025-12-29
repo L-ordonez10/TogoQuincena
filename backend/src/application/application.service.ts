@@ -26,6 +26,7 @@ export class ApplicationService {
   ) {}
 
   async create(dto: CreateApplicationDto) {
+    console.log('Crear aplicación con DTO:', dto);
     // Crear la aplicación principal con entidades relacionadas simples (OneToOne)
     const application = this.repo.create({
       personal: dto.personal,

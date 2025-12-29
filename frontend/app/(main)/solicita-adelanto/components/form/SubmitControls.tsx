@@ -3,7 +3,7 @@ import React from "react";
 import { useFormCtx } from "./FormContext";
 import { useCreateApplication, useFileUpload } from "@/hooks/useApi";
 import { uploadAllFiles } from "./uploadFiles";
-
+import { Personal, Uploads, Reference, Legal, } from "@/lib/types/solicitudes";
 export const SubmitControls: React.FC = () => {
   const { data, validateAll, reset } = useFormCtx();
   const createApplication = useCreateApplication();
@@ -25,25 +25,16 @@ export const SubmitControls: React.FC = () => {
       }
 
       const applicationPayload = {
-        personal: data.personal as Record<string, unknown>,
-        references: [
-          ...data.personalRefs.map(ref => ({ ...ref, kind: "personal" as const })),
-          ...data.workRefs.map(ref => ({ ...ref, kind: "work" as const }))
-        ] as Array<Record<string, unknown>>,
+        personal: data.personal as unknown as Personal,
+        personalRefs: data.personalRefs as unknown as Reference[],
+        workRefs: data.workRefs as unknown as Reference[],
         salary: data.salary.toString(),
         source: data.source || "",
-        legal: data.legal as Record<string, unknown>,
-        uploads: uploadedFiles,
+        legal: data.legal as unknown as Legal,
+        uploads: uploadedFiles as unknown as Uploads,
       };
-
       await createApplication.mutateAsync(applicationPayload);
       setSuccessMessage('Solicitud enviada exitosamente. Pronto te contactaremos.');
-
-      // limpiar formulario
-      reset();
-
-      // opcional: limpiar mensaje después de 6 segundos
-      window.setTimeout(() => setSuccessMessage(null), 6000);
 
     } catch (error) {
       alert('Error al subir los archivos. Intenta de nuevo.');

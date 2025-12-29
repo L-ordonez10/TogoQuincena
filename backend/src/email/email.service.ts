@@ -63,7 +63,7 @@ export class EmailService {
               padding: 20px;
             }
             .header {
-              background-color: #4CAF50;
+              background-color: #90C928;
               color: white;
               padding: 20px;
               text-align: center;
@@ -83,7 +83,7 @@ export class EmailService {
             .button {
               display: inline-block;
               padding: 10px 20px;
-              background-color: #4CAF50;
+              background-color: #90C928;
               color: white;
               text-decoration: none;
               border-radius: 5px;

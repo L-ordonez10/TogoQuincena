@@ -46,7 +46,13 @@ export function encryptId(id: number | string): string {
 
 export function decryptId(encryptedId: string): number | null {
   try {
-    const base64 = replaceChars(encryptedId, { "-": "+", "_": "/" });
+    // Normalize input: decode URI components (in case the slug was encoded in the URL),
+    // convert URL-safe chars back to Base64 chars, remove any unexpected characters,
+    // and add padding before decoding.
+    const decodedSlug = decodeURIComponent(encryptedId);
+    let base64 = decodedSlug.replace(/-/g, "+").replace(/_/g, "/");
+    // Remove any characters not valid in base64 to avoid atob DOMException
+    base64 = base64.replace(/[^A-Za-z0-9+/=]/g, "");
     const padded = addBase64Padding(base64);
     const decoded = atob(padded);
     const parts = decoded.split(SEPARATOR);
