@@ -54,7 +54,7 @@ const ResultCard: React.FC<Props> = ({ salary }) => {
 
   const gastos = 75; // gastos legales fijos
   const deposit = Math.round((requested - gastos) * 100) / 100;
-  const toPay = Math.round((requested * 0.30 * 1.12) * 100) / 100;
+  const toPay = Math.round((requested + requested * 0.336) * 100) / 100;
 
   return (
     <div className="w-full max-w-md mx-auto mt-6 rounded-xl border border-[#D9F3B6] bg-white shadow-sm">

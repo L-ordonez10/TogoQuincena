@@ -9,16 +9,13 @@ import {
 } from '@nestjs/common';
 import { ApplicationService } from './application.service';
 import { CreateApplicationDto } from './dto/create-application.dto';
-import { Logger } from '@nestjs/common';
 
 @Controller('applications')
 export class ApplicationController {
   constructor(private readonly service: ApplicationService) {}
-  private readonly logger = new Logger(ApplicationController.name);
 
   @Post()
   create(@Body() dto: CreateApplicationDto) {
-    this.logger.log(`Crear aplicación con DTO: ${JSON.stringify(dto)}`);
     return this.service.create(dto);
   }
 
