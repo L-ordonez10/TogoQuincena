@@ -1,17 +1,60 @@
 "use client";
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { clamp, formatCurrency } from './utils';
 
 interface Props {
   salary: number;
 }
 
+const parseCurrency = (s: string) => {
+  const cleaned = s.replace(/[^\d.]/g, '');
+  const n = parseFloat(cleaned);
+  return isNaN(n) ? 0 : n;
+};
+
 const ResultCard: React.FC<Props> = ({ salary }) => {
-  const max = clamp(salary * 0.2, 500, 1500);
-  const requested = Math.round(max * 0.8 * 100) / 100; // ejemplo: 80% del max
-  const gastos = Math.round(requested * 0.0625 * 100) / 100; // 6.25%
+  const max = Math.min(salary * 0.2, 1500);
+  const defaultRequested = Math.round(max * 0.8 * 100) / 100; // 80% del max por defecto
+
+  const [requested, setRequested] = useState<number>(defaultRequested);
+  const [display, setDisplay] = useState<string>(formatCurrency(defaultRequested));
+  const isEditing = useRef(false);
+
+  useEffect(() => {
+    // si cambia el salario y el solicitado actual excede el nuevo máximo, ajustarlo
+    if (requested > max) {
+      const newReq = Math.round(max * 100) / 100;
+      setRequested(newReq);
+      if (!isEditing.current) setDisplay(formatCurrency(newReq));
+    }
+  }, [salary, max]);
+
+  useEffect(() => {
+    if (!isEditing.current) setDisplay(formatCurrency(requested));
+  }, [requested]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    isEditing.current = true;
+    const value = e.target.value;
+    setDisplay(value);
+    const n = parseCurrency(value);
+    const clamped = clamp(n, 0, Math.min(max, 1500));
+    setRequested(Math.round(clamped * 100) / 100);
+  };
+
+  const handleBlur = () => {
+    isEditing.current = false;
+    setDisplay(formatCurrency(requested));
+  };
+
+  const handleFocus = () => {
+    isEditing.current = true;
+    setDisplay(requested ? requested.toString() : '');
+  };
+
+  const gastos = 75; // gastos legales fijos
   const deposit = Math.round((requested - gastos) * 100) / 100;
-  const toPay = Math.round((deposit * 1.245867) * 100) / 100; // factor de ejemplo sacado de diseño
+  const toPay = Math.round((requested * 0.30 * 1.12) * 100) / 100;
 
   return (
     <div className="w-full max-w-md mx-auto mt-6 rounded-xl border border-[#D9F3B6] bg-white shadow-sm">
@@ -20,9 +63,17 @@ const ResultCard: React.FC<Props> = ({ salary }) => {
         <p className="text-2xl font-bold text-[#90C928] mt-2">{formatCurrency(max)}</p>
 
         <div className="mt-4 space-y-2 text-sm text-gray-700">
-          <div className="flex justify-between">
+          <div className="flex justify-between items-center">
             <span>Monto solicitado:</span>
-            <span>{formatCurrency(requested)}</span>
+            <input
+              type="text"
+              value={display}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              onFocus={handleFocus}
+              placeholder={formatCurrency(defaultRequested)}
+              className="mt-1 w-32 rounded-md bg-[#F7F7F7] py-1 text-right text-gray-700 shadow-sm border border-transparent placeholder-gray-400"
+            />
           </div>
           <div className="flex justify-between text-red-500">
             <span>Gastos legales:</span>
