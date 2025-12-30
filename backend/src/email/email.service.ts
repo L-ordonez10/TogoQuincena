@@ -30,10 +30,6 @@ export class EmailService {
     applicantName: string,
     applicationId: number,
   ) {
-    console.log(
-      '🚀 ~ EmailService ~ sendApplicationConfirmation ~ applicantName:',
-      applicantName,
-    );
     try {
       const { data, error } = await this.resend.emails.send({
         from: `QuincenaToGo <${this.fromEmail}>`,
