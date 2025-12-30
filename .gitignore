@@ -1,0 +1,56 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Testing
+coverage/
+*.log
+
+# Production
+build/
+dist/
+.next/
+out/
+
+# Environment files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env.prod
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Uploads
+uploads/
+*.upload
+
+# SSL Certificates
+nginx/ssl/*.pem
+nginx/ssl/*.key
+*.crt
+*.key
+
+# Logs
+logs/
+*.log
+nginx/logs/
+
+# Database
+*.sql
+*.db
+backups/
+
+# Docker volumes
+mysql-data/

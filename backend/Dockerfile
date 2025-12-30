@@ -35,8 +35,14 @@ RUN pnpm install --prod --frozen-lockfile
 # Copy built application from builder
 COPY --from=builder /app/dist ./dist
 
+# Create uploads directory
+RUN mkdir -p /app/uploads && chown -R node:node /app/uploads
+
+# Use non-root user
+USER node
+
 # Expose port
-EXPOSE 3000
+EXPOSE 3001
 
 # Start the application
 CMD ["node", "dist/main"]

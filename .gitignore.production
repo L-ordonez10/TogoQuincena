@@ -1,0 +1,17 @@
+# Production Environment Files
+.env.prod
+.env.production.local
+
+# SSL Certificates
+nginx/ssl/*.pem
+nginx/ssl/*.key
+
+# Logs
+nginx/logs/*.log
+
+# Backups
+backups/
+*.sql
+
+# MySQL data
+mysql-data/
