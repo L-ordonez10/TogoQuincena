@@ -56,7 +56,7 @@ async function bootstrap() {
     optionsSuccessStatus: 200,
   });
 
-  app.use('/app/uploads', express.static('uploads'));
+  app.use('/uploads', express.static(process.env.UPLOAD_PATH || 'uploads'));
 
   const port = process.env.PORT || 3001;
   await app.listen(port);
