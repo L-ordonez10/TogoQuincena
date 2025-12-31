@@ -31,10 +31,6 @@ export default function SolicitudDetailPage() {
     const decryptedId = slug && isValidEncryptedId(slug) ? decryptId(slug) : null;
     const validSlug = Boolean(slug && decryptedId !== null);
 
-    console.log('slug:', slug);
-    console.log('decryptedId raw:', decryptedId);
-    console.log('validSlug:', validSlug);
-
     const idParam = decryptedId ?? undefined;
     const { data, isLoading, isError } = useSolicitud(idParam, Boolean(idParam));
 
