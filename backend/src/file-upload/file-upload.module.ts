@@ -13,7 +13,7 @@ import * as path from 'path';
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
         storage: diskStorage({
-          destination: configService.get<string>('UPLOAD_PATH') || './uploads',
+          destination: configService.get<string>('UPLOAD_PATH'),
           filename: (req, file, cb) => {
             const sanitizedName = path
               .basename(file.originalname)
