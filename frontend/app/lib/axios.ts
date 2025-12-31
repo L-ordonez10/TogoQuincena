@@ -6,7 +6,7 @@ const API_KEY_HEADER = "x-api-key";
 const AUTH_TOKEN_KEY = "auth_token";
 
 const axiosInstance = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL,
+  baseURL: `${process.env.NEXT_PUBLIC_API_URL}/api`,
   timeout: REQUEST_TIMEOUT,
   headers: {
     "Content-Type": "application/json",
