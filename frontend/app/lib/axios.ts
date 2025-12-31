@@ -5,18 +5,23 @@ const REQUEST_TIMEOUT = 20000;
 const API_KEY_HEADER = "x-api-key";
 const AUTH_TOKEN_KEY = "auth_token";
 
-const baseApiUrl = process.env.NEXT_PUBLIC_API_URL
-  ? `${process.env.NEXT_PUBLIC_API_URL.replace(/\/$/, "")}/api`
-  : "/api";
-
 const axiosInstance = axios.create({
-  baseURL: baseApiUrl,
+  baseURL: process.env.NEXT_PUBLIC_API_URL,
   timeout: REQUEST_TIMEOUT,
   headers: {
     "Content-Type": "application/json",
   },
   withCredentials: false,
 });
+
+// Mostrar NEXT_PUBLIC_API_URL solo en producción (útil para depurar)
+if (process.env.NODE_ENV === "production") {
+  if (typeof window !== "undefined") {
+    console.info("NEXT_PUBLIC_API_URL:", process.env.NEXT_PUBLIC_API_URL);
+  } else {
+    console.info("NEXT_PUBLIC_API_URL (server):", process.env.NEXT_PUBLIC_API_URL);
+  }
+}
 
 axiosInstance.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
@@ -39,9 +44,6 @@ axiosInstance.interceptors.request.use(
   },
   (error: AxiosError) => Promise.reject(error)
 );
-
-// este interceptor maneja respuestas globales de error como 401 y 429 
-// para manejar autenticación y limitación de tasa
 
 axiosInstance.interceptors.response.use(
   (response) => response,
