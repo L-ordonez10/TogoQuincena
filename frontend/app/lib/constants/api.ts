@@ -10,7 +10,11 @@ const normalizeBaseUrl = (url: string): string =>
 export function buildUrl(path: string): string {
   if (!path) return "";
   
-  const normalizedPath = normalizePathSegment(path);
+  // Convert backend absolute path to public URL path
+  // e.g., "/app/uploads/file.jpg" -> "uploads/file.jpg"
+  const publicPath = path.replace(/^\/app\//, "");
+  
+  const normalizedPath = normalizePathSegment(publicPath);
 
   if (API_URL_CONFIGURED) {
     return `${normalizeBaseUrl(API_URL)}/${normalizedPath}`;
