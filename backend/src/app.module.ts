@@ -17,7 +17,7 @@ import { ApiKeyGuard } from './common/guards';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: '.env',
+      ignoreEnvFile: true,
     }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
@@ -36,7 +36,7 @@ import { ApiKeyGuard } from './common/guards';
           ReferenceEntity,
           LegalEntity,
         ],
-        synchronize: configService.get<string>('NODE_ENV') !== 'production',
+        synchronize: configService.get('NODE_ENV') !== 'production',
       }),
     }),
     ApplicationModule,
