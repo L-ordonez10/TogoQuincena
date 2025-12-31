@@ -36,6 +36,8 @@ export const SubmitControls: React.FC = () => {
       await createApplication.mutateAsync(applicationPayload);
       setSuccessMessage('Solicitud enviada exitosamente. Pronto te contactaremos.');
 
+      reset();
+      
     } catch (error) {
       alert('Error al subir los archivos. Intenta de nuevo.');
       console.error('Error al subir archivos:', error);
