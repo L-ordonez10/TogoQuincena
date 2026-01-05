@@ -8,7 +8,7 @@ export function StepSection() {
         <div id="steps-section" className="flex flex-col justify-center items-center  px-4 my-12 ">
 
             <h2 className="text-[#97D22A] max-w-2xl text-xl sm:text-2xl text-center md:text-[40px] font-bold mb-6 leading-snug ">
-                Los pasos para realizar tu <span className="text-black">adelanto de salario</span> son:
+                Los pasos para realizar tu <span className="text-black">add de salario</span> son:
             </h2>
 
             <div className="w-full max-w-xl mx-auto space-y-6 flex flex-col items-start ">
