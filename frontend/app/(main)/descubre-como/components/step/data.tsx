@@ -3,7 +3,7 @@ export const steps = [
         title: 'Ingresa a la plataforma',
         description: (
             <>
-                <p className="mb-2">Accede a <a href="https://www.quincenatogo.com.com" target="_blank" className="text-[#017EFF] font-bold">www.quincenatogo.com</a> desde tu celular o computadora.</p>
+                <p className="mb-2">Accede a <a href="https://www.quincenatogo.com.com.gt" target="_blank" className="text-[#017EFF] font-bold">www.quincenatogo.com</a> desde tu celular o computadora.</p>
             </>
         ),
     },
