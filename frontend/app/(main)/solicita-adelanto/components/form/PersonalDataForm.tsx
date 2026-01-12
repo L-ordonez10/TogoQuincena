@@ -20,6 +20,10 @@ export function PersonalDataForm() {
     setField("personal.phone", sanitizeDigitsOnly(e.target.value));
   };
 
+  const handlePhoneWorkChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setField("personal.phoneWork", sanitizeDigitsOnly(e.target.value));
+  }
+
   const handleDpiChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setField("personal.dpi", sanitizeDigitsOnly(e.target.value));
   };
@@ -142,7 +146,7 @@ export function PersonalDataForm() {
             pattern="[0-9]*"
             value={data.personal.phoneWork}
             className={INPUT_CLASSES}
-            onChange={handlePhoneChange}
+            onChange={handlePhoneWorkChange}
           />
           <ErrorMessage message={errors["personal.phoneWork"]} />
         </Field>

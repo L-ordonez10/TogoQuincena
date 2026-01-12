@@ -5,15 +5,15 @@ export class UploadsEntity {
   @PrimaryGeneratedColumn('increment')
   id: number;
 
-  @Column({ type: 'json', nullable: true })
+  @Column({ type: 'json' })
   dpi?: any;
 
-  @Column({ type: 'json', nullable: true })
+  @Column({ type: 'json' })
   bankStatements?: any;
 
-  @Column({ type: 'json', nullable: true })
+  @Column({ type: 'json' })
   electricityBill?: any;
 
-  @Column({ type: 'json', nullable: true })
+  @Column({ type: 'json' })
   selfieWithDpi?: any;
 }

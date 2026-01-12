@@ -21,21 +21,26 @@ class PersonalDto {
   @IsString()
   marriedLastName?: string;
 
-  @IsOptional()
   @IsString()
   birthDate?: string;
 
-  @IsOptional()
   @IsString()
   phone?: string;
 
-  @IsOptional()
   @IsString()
   dpi?: string;
 
-  @IsOptional()
   @IsEmail()
   email?: string;
+
+  @IsString()
+  address?: string;
+
+  @IsString()
+  addressWork?: string;
+
+  @IsString()
+  phoneWork?: string;
 
   @IsOptional()
   @IsBoolean()
@@ -94,7 +99,6 @@ export class CreateApplicationDto {
   @Type(() => ReferenceDto)
   workRefs?: ReferenceDto[];
 
-  @IsOptional()
   @IsString()
   salary?: string;
 

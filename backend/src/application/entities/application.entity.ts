@@ -36,7 +36,7 @@ export class ApplicationEntity {
   })
   references: any[];
 
-  @Column({ type: 'varchar', length: 255, nullable: true })
+  @Column({ type: 'varchar', length: 255 })
   salary?: string;
 
   @Column({ type: 'varchar', length: 255, nullable: true })
