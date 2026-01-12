@@ -53,6 +53,20 @@ const validatePersonal = (data: FormData, errors: FormErrors): void => {
   } else if (!isValidEmail(data.personal.email)) {
     errors["personal.email"] = "Email inválido";
   }
+
+  if (!data.personal.address) {
+    errors["personal.address"] = "Requerido";
+  }
+  
+  if (!data.personal.addressWork) {
+    errors["personal.addressWork"] = "Requerido";
+  }
+
+  if (!data.personal.phoneWork) {
+    errors["personal.phoneWork"] = "Requerido";
+  } else if (!isValidPhone(data.personal.phoneWork)) {
+    errors["personal.phoneWork"] = "Teléfono inválido (8-15 dígitos)";
+  }
 };
 
 const validateUploads = (data: FormData, errors: FormErrors): void => {

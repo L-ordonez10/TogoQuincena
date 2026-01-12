@@ -34,6 +34,9 @@ const INITIAL_DATA: FormData = {
     phone: "",
     dpi: "",
     email: "",
+    address: "",
+    addressWork: "",
+    phoneWork: "",
     hasSixMonths: false,
   },
   uploads: {

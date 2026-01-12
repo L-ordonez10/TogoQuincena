@@ -5,7 +5,6 @@ import Link from "next/link";
 
 export default function Header() {
   const [menuAbierto, setMenuAbierto] = useState(false);
-  const [bannerVisible, setBannerVisible] = useState(true);
 
   // 🔹 Menú dinámico
   const menuItems = [
@@ -16,22 +15,6 @@ export default function Header() {
 
   return (
     <header className="relative w-full z-50">
-      {/* 🔵 Banner superior */}
-      {bannerVisible && (
-        <div className="relative bg-[#017EFF] text-white flex justify-center items-center py-2 sm:py-3 text-xs sm:text-sm md:text-[18px] px-4">
-          <p className="text-center leading-snug">
-            Obtén descuento en tu primer adelanto con código{" "}
-            <span className="font-semibold">#PrimerAdelanto</span>
-          </p>
-          <button
-            onClick={() => setBannerVisible(false)}
-            className="absolute right-4 font-bold text-[18px] md:text-[22px] cursor-pointer"
-          >
-            ✕
-          </button>
-        </div>
-      )}
-
       {/* ⚪ Barra principal */}
       <div className="bg-white flex flex-col md:grid md:grid-cols-[1fr_auto_auto] lg:grid-cols-[1fr_2fr_1fr] items-center md:gap-x-10 px-4 sm:px-8 lg:px-12 py-3 sm:py-4 shadow-md relative">
         {/* Logo */}

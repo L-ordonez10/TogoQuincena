@@ -9,7 +9,7 @@ export function DocumentUploadList() {
         const file = files && files.length > 0 ? files[0] : null;
         setField(path, file);
     };
-    
+
     return (
         <div >
             <h2 className="text-[#94CE29] hover:text-black transition-colors duration-200 text-left font-bold text-lg lg:text-4xl mb-12">
@@ -70,8 +70,8 @@ export function DocumentUploadList() {
                     <div className="h-full flex flex-col">
                         <FileUploader
                             title={["Fotografía de medio cuerpo, sosteniendo tu", "DPI."]}
-                            note="*en formato jpg"
-                            accept=".jpg,.jpeg"
+                            note="*en formato pdf o jpg"
+                            accept=".pdf,.jpg,.jpeg"
                             buttonText="Seleccionar archivo"
                             onChange={handleSingle('uploads.selfieWithDpi')}
                             value={data.uploads.selfieWithDpi ? [data.uploads.selfieWithDpi] : null}

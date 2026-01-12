@@ -6,6 +6,9 @@ export interface FormPersonalData {
   phone?: string;
   dpi?: string;
   email?: string;
+  address: string;
+  addressWork: string;
+  phoneWork: string;
   hasSixMonths?: boolean;
 }
 
@@ -38,4 +41,9 @@ export interface FormData {
 
 export type FormErrors = Partial<Record<string, string>>;
 
-export type FormSection = "personal" | "uploads" | "personalRefs" | "workRefs" | "summary";
+export type FormSection =
+  | "personal"
+  | "uploads"
+  | "personalRefs"
+  | "workRefs"
+  | "summary";

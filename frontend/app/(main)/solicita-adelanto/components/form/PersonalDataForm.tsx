@@ -9,6 +9,7 @@ import { useFormCtx } from "./FormContext";
 const GRID_CLASSES = "grid grid-cols-1 md:grid-cols-2 gap-x-20 gap-y-6 max-w-2xl mx-auto";
 const INPUT_CLASSES = "border-none shadow-[0px_4px_4px_0px_#00000040]";
 const TITLE_CLASSES = "text-[#94CE29] hover:text-black transition-colors duration-200 text-left font-bold text-lg lg:text-4xl mb-12";
+const SUB_TITLE_CLASSES = "md:col-span-2 text-black hover:text-[#97D22A] transition-colors duration-200 font-bold text-lg lg:text-3xl";
 
 const sanitizeDigitsOnly = (value: string): string => value.replace(/\D/g, "");
 
@@ -109,6 +110,41 @@ export function PersonalDataForm() {
             onChange={(e) => setField("personal.email", e.target.value)}
           />
           <ErrorMessage message={errors["personal.email"]} />
+        </Field>
+        <Field className="lg:col-span-2">
+          <FieldLabel className="text-base font-normal">Dirección residencial</FieldLabel>
+          <Input
+            type="text"
+            value={data.personal.address}
+            className={INPUT_CLASSES}
+            onChange={(e) => setField("personal.address", e.target.value)}
+          />
+          <ErrorMessage message={errors["personal.address"]} />
+        </Field>
+        <h2 className={SUB_TITLE_CLASSES}>
+          Datos laborales
+        </h2>
+        <Field className="lg:col-span-2">
+          <FieldLabel className="text-base font-normal">Dirección del trabajo</FieldLabel>
+          <Input
+            type="text"
+            value={data.personal.addressWork}
+            className={INPUT_CLASSES}
+            onChange={(e) => setField("personal.addressWork", e.target.value)}
+          />
+          <ErrorMessage message={errors["personal.addressWork"]} />
+        </Field>
+        <Field className="lg:col-span-2">
+          <FieldLabel className="text-base font-normal">Teléfono del trabajo</FieldLabel>
+          <Input
+            type="tel"
+            inputMode="tel"
+            pattern="[0-9]*"
+            value={data.personal.phoneWork}
+            className={INPUT_CLASSES}
+            onChange={handlePhoneChange}
+          />
+          <ErrorMessage message={errors["personal.phoneWork"]} />
         </Field>
       </div>
 
