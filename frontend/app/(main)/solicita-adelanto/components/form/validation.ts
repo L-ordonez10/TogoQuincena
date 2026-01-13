@@ -47,7 +47,7 @@ const validatePersonal = (data: FormData, errors: FormErrors): void => {
   } else if (!isValidDPI(data.personal.dpi)) {
     errors["personal.dpi"] = "DPI inválido (13 dígitos)";
   }
-  
+
   if (!data.personal.email) {
     errors["personal.email"] = "Requerido";
   } else if (!isValidEmail(data.personal.email)) {
@@ -57,7 +57,11 @@ const validatePersonal = (data: FormData, errors: FormErrors): void => {
   if (!data.personal.address) {
     errors["personal.address"] = "Requerido";
   }
-  
+
+  if (!data.personal.workName) {
+    errors["personal.workName"] = "Requerido";
+  }
+
   if (!data.personal.addressWork) {
     errors["personal.addressWork"] = "Requerido";
   }
