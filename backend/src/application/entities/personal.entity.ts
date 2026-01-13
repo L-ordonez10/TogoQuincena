@@ -29,6 +29,9 @@ export class PersonalEntity {
   @Column({ length: 250 })
   address: string;
 
+  @Column({ length: 150 })
+  workName: string;
+
   @Column({ length: 250 })
   addressWork: string;
 

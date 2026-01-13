@@ -37,6 +37,9 @@ class PersonalDto {
   address?: string;
 
   @IsString()
+  workName: string;
+
+  @IsString()
   addressWork?: string;
 
   @IsString()
