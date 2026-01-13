@@ -128,17 +128,17 @@ export function PersonalDataForm() {
         <h2 className={SUB_TITLE_CLASSES}>
           Datos laborales
         </h2>
-        <Field className="lg:col-span-2">
-          <FieldLabel className="text-base font-normal">Dirección del trabajo</FieldLabel>
+        <Field >
+          <FieldLabel className="text-base font-normal">Nombre del trabajo</FieldLabel>
           <Input
             type="text"
-            value={data.personal.addressWork}
+            value={data.personal.workName}
             className={INPUT_CLASSES}
-            onChange={(e) => setField("personal.addressWork", e.target.value)}
+            onChange={(e) => setField("personal.workName", e.target.value)}
           />
-          <ErrorMessage message={errors["personal.addressWork"]} />
+          <ErrorMessage message={errors["personal.workName"]} />
         </Field>
-        <Field className="lg:col-span-2">
+        <Field>
           <FieldLabel className="text-base font-normal">Teléfono del trabajo</FieldLabel>
           <Input
             type="tel"
@@ -149,6 +149,16 @@ export function PersonalDataForm() {
             onChange={handlePhoneWorkChange}
           />
           <ErrorMessage message={errors["personal.phoneWork"]} />
+        </Field>
+        <Field className="lg:col-span-2">
+          <FieldLabel className="text-base font-normal">Dirección del trabajo</FieldLabel>
+          <Input
+            type="text"
+            value={data.personal.addressWork}
+            className={INPUT_CLASSES}
+            onChange={(e) => setField("personal.addressWork", e.target.value)}
+          />
+          <ErrorMessage message={errors["personal.addressWork"]} />
         </Field>
       </div>
 

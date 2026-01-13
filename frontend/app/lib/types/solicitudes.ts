@@ -10,6 +10,10 @@ export interface Personal {
   phone: string;
   dpi: string;
   email: string;
+  address: string;
+  workName: string;
+  addressWork: string;
+  phoneWork: string;
   hasSixMonths: boolean;
 }
 
