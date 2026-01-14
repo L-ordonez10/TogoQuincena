@@ -17,7 +17,8 @@ import {
     Mail,
     Phone,
     User,
-    XCircle
+    XCircle,
+    BriefcaseBusiness
 } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -89,6 +90,14 @@ export default function SolicitudDetailPage() {
             day: 'numeric',
             hour: '2-digit',
             minute: '2-digit'
+        });
+    };
+
+    const formatBirthday = (dateString: string) => {
+        return new Date(dateString).toLocaleDateString('es-ES', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
         });
     };
 
@@ -184,7 +193,7 @@ export default function SolicitudDetailPage() {
             </Button>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {/* Información Personal */}
-                <Card>
+                <Card className="lg:col-span-2">
                     <CardHeader>
                         <CardTitle className="flex items-center gap-2">
                             <User className="h-5 w-5" />
@@ -192,14 +201,14 @@ export default function SolicitudDetailPage() {
                         </CardTitle>
                     </CardHeader>
                     <CardContent className="space-y-4">
-                        <div>
-                            <p className="text-sm font-medium text-gray-500">Nombre Completo</p>
-                            <p className="font-semibold">{solicitud.personal.names} {solicitud.personal.surnames} {solicitud.personal.marriedLastName && solicitud.personal.marriedLastName}</p>
-                        </div>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
+                                <p className="text-sm font-medium text-gray-500">Nombre Completo</p>
+                                <p className="font-semibold">{solicitud.personal.names} {solicitud.personal.surnames} {solicitud.personal.marriedLastName && solicitud.personal.marriedLastName}</p>
+                            </div>
+                            <div>
                                 <p className="text-sm font-medium text-gray-500">Fecha de Nacimiento</p>
-                                <p className="font-semibold">{formatDate(solicitud.personal.birthDate)}</p>
+                                <p className="font-semibold">{formatBirthday(solicitud.personal.birthDate)}</p>
                             </div>
                             <div>
                                 <p className="text-sm font-medium text-gray-500">DPI</p>
@@ -214,10 +223,14 @@ export default function SolicitudDetailPage() {
                             </div>
                             <div>
                                 <p className="text-sm font-medium text-gray-500">Email</p>
-                                <p className="font-semibold flex items-center gap-1">
-                                    <Mail className="h-4 w-4" />
-                                    {solicitud.personal.email}
+                                <p className="font-semibold flex items-start gap-1">
+                                    <Mail className="h-4 w-4 shrink-0 mt-0.5" />
+                                    <span className="break-all">{solicitud.personal.email}</span>
                                 </p>
+                            </div>
+                            <div>
+                                <p className="text-sm font-medium text-gray-500">Dirección Residencial</p>
+                                <p className="font-semibold break-all">{solicitud.personal.address}</p>
                             </div>
                         </div>
                         <div>
@@ -227,10 +240,35 @@ export default function SolicitudDetailPage() {
                             </Badge>
                         </div>
                     </CardContent>
+                    <CardHeader>
+                        <CardTitle className="flex items-center gap-2">
+                            <BriefcaseBusiness className="h-5 w-5" />
+                            Información Laboral
+                        </CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <p className="text-sm font-medium text-gray-500">Nombre del Trabajo</p>
+                                <p className="font-semibold">{solicitud.personal.workName}</p>
+                            </div>
+                            <div>
+                                <p className="text-sm font-medium text-gray-500">Teléfono del Trabajo</p>
+                                <p className="font-semibold flex items-center gap-1">
+                                    <Phone className="h-4 w-4" />
+                                    {solicitud.personal.phoneWork}
+                                </p>
+                            </div>
+                            <div>
+                                <p className="text-sm font-medium text-gray-500">Dirección del Trabajo</p>
+                                <p className="font-semibold break-all">{solicitud.personal.addressWork}</p>
+                            </div>
+                        </div>
+                    </CardContent>
                 </Card>
 
                 {/* Información Financiera */}
-                <Card>
+                <Card className="lg:col-span-2">
                     <CardHeader>
                         <CardTitle className="flex items-center gap-2">
                             <CreditCard className="h-5 w-5" />
@@ -242,10 +280,7 @@ export default function SolicitudDetailPage() {
                             <p className="text-sm font-medium text-gray-500">Salario</p>
                             <p className="text-3xl font-bold text-green-600">{formatCurrency(solicitud.salary)}</p>
                         </div>
-                        <div>
-                            <p className="text-sm font-medium text-gray-500">¿Dónde escuchó del negocio?</p>
-                            <p className="font-semibold">{solicitud.source}</p>
-                        </div>
+
                     </CardContent>
                 </Card>
 
@@ -266,17 +301,18 @@ export default function SolicitudDetailPage() {
                                 'Recibo de Luz': solicitud.uploads.electricityBill,
                                 'Selfie con DPI': solicitud.uploads.selfieWithDpi
                             }).map(([label, path]) => (
-                                <div key={label} className="flex items-center justify-between p-3 border rounded-lg">
-                                    <div className="flex items-center gap-3">
-                                        <FileText className="h-5 w-5 text-gray-500" />
-                                        <div>
+                                <div key={label} className="flex items-center justify-between gap-3 p-3 border rounded-lg">
+                                    <div className="flex items-center gap-3 min-w-0 flex-1">
+                                        <FileText className="h-5 w-5 text-gray-500 shrink-0" />
+                                        <div className="min-w-0 flex-1">
                                             <p className="font-medium">{label}</p>
-                                            <p className="text-sm text-gray-500">{path.split('/').pop()}</p>
+                                            <p className="text-sm text-gray-500 truncate" title={path.split('/').pop()}>{path.split('/').pop()}</p>
                                         </div>
                                     </div>
                                     <Button
                                         variant="outline"
                                         size="sm"
+                                        className="shrink-0"
                                         onClick={async (e) => {
                                             e.stopPropagation();
                                             await downloadFile(path);
@@ -307,15 +343,15 @@ export default function SolicitudDetailPage() {
                         <div className="space-y-3">
                             {solicitud.references.map((ref) => (
                                 <div key={ref.id} className="p-3 border rounded-lg">
-                                    <div className="flex items-center justify-between mb-2">
-                                        <p className="font-semibold">{ref.name}</p>
-                                        <Badge variant={ref.kind === "personal" ? "default" : "secondary"}>
+                                    <div className="flex items-start justify-between gap-3 mb-2">
+                                        <p className="font-semibold flex-1 wrap-break-word line-clamp-2">{ref.name}</p>
+                                        <Badge variant={ref.kind === "personal" ? "default" : "secondary"} className="shrink-0">
                                             {ref.kind === "personal" ? "Personal" : "Laboral"}
                                         </Badge>
                                     </div>
                                     <p className="text-sm text-gray-600 flex items-center gap-1">
-                                        <Phone className="h-4 w-4" />
-                                        {ref.phone}
+                                        <Phone className="h-4 w-4 shrink-0" />
+                                        <span className="break-all">{ref.phone}</span>
                                     </p>
                                 </div>
                             ))}
@@ -354,7 +390,10 @@ export default function SolicitudDetailPage() {
                                 </div>
                             </div>
                         </div>
-
+                        <div>
+                            <p className="text-sm font-medium text-gray-500">¿Dónde escuchó del negocio?</p>
+                            <p className="font-semibold">{solicitud.source}</p>
+                        </div>
                         {/* Fechas */}
                         <div>
                             <p className="text-sm font-medium text-gray-500 mb-2">Fechas</p>
