@@ -94,7 +94,7 @@ const validateUploads = (data: FormData, errors: FormErrors): void => {
 const validateReferences = (
   references: FormData["personalRefs"],
   prefix: "personalRefs" | "workRefs",
-  errors: FormErrors
+  errors: FormErrors,
 ): void => {
   references.forEach((ref, index) => {
     if (!ref.name || !sanitizeInput(ref.name)) {
@@ -118,6 +118,19 @@ const validateSummary = (data: FormData, errors: FormErrors): void => {
     errors["salary"] = "Salario excede el límite permitido";
   }
 
+  if (!data.amountRequested || data.amountRequested <= 0) {
+    errors["amountRequested"] = "Monto solicitado inválido";
+  } else {
+    const maxAllowed = Math.min(data.salary * 0.2, 1500);
+    const minAllowed = 500;
+
+    if (data.amountRequested < minAllowed) {
+      errors["amountRequested"] = `El monto mínimo es Q${minAllowed.toFixed(2)}`;
+    } else if (data.amountRequested > maxAllowed) {
+      errors["amountRequested"] = `El monto máximo permitido es Q${maxAllowed.toFixed(2)}`;
+    }
+  }
+
   if (!data.source || !sanitizeInput(data.source)) {
     errors["source"] = "Fuente requerida";
   }
@@ -133,7 +146,7 @@ const validateSummary = (data: FormData, errors: FormErrors): void => {
 
 export const validateSection = (
   section: FormSection,
-  data: FormData
+  data: FormData,
 ): FormErrors => {
   const errors: FormErrors = {};
 

@@ -49,6 +49,7 @@ const INITIAL_DATA: FormData = {
   personalRefs: [createEmptyReference(), createEmptyReference()],
   workRefs: [createEmptyReference(), createEmptyReference()],
   salary: 0,
+  amountRequested: 0,
   source: "",
   legal: { acceptance: false, consent: false },
 };

@@ -11,16 +11,7 @@ const axiosInstance = axios.create({
 });
 
 // Mostrar NEXT_PUBLIC_API_URL solo en producción (útil para depurar)
-if (process.env.NODE_ENV === "production") {
-  if (typeof window !== "undefined") {
-    console.info("NEXT_PUBLIC_API_URL:", process.env.NEXT_PUBLIC_API_URL);
-  } else {
-    console.info(
-      "NEXT_PUBLIC_API_URL (server):",
-      process.env.NEXT_PUBLIC_API_URL
-    );
-  }
-}
+
 axiosInstance.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
     const apiKey = process.env.NEXT_PUBLIC_API_KEY;

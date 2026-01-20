@@ -36,6 +36,7 @@ export interface FormData {
   personalRefs: FormReference[];
   workRefs: FormReference[];
   salary: number;
+  amountRequested: number;
   source?: string;
   legal: FormLegal;
 }

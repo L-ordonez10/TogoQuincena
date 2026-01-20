@@ -39,6 +39,9 @@ export class ApplicationEntity {
   @Column({ type: 'varchar', length: 255 })
   salary?: string;
 
+  @Column({ type: 'varchar', length: 255 })
+  amountRequested?: string;
+
   @Column({ type: 'varchar', length: 255, nullable: true })
   source?: string;
 

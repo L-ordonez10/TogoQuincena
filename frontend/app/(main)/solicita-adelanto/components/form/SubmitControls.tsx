@@ -17,7 +17,7 @@ export const SubmitControls: React.FC = () => {
       alert('Hay errores en el formulario. Revisa los campos resaltados.');
       return;
     }
-
+    
     try {
       let uploadedFiles: Record<string, unknown> = {};
       if (data.uploads && (data.uploads.dpi || (data.uploads as any).bankStatements || data.uploads.electricityBill || data.uploads.selfieWithDpi)) {
@@ -29,6 +29,7 @@ export const SubmitControls: React.FC = () => {
         personalRefs: data.personalRefs as unknown as Reference[],
         workRefs: data.workRefs as unknown as Reference[],
         salary: data.salary.toString(),
+        amountRequested: data.amountRequested.toString(),
         source: data.source || "",
         legal: data.legal as unknown as Legal,
         uploads: uploadedFiles as unknown as Uploads,
@@ -40,7 +41,6 @@ export const SubmitControls: React.FC = () => {
 
     } catch (error) {
       alert('Error al subir los archivos. Intenta de nuevo.');
-      console.error('Error al subir archivos:', error);
     }
   };
 

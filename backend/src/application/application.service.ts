@@ -32,6 +32,7 @@ export class ApplicationService {
       uploads: dto.uploads || undefined,
       legal: dto.legal || undefined,
       salary: dto.salary,
+      amountRequested: dto.amountRequested,
       source: dto.source,
     });
 
@@ -75,7 +76,7 @@ export class ApplicationService {
       console.error('Error enviando email de confirmación:', error);
     }
 
-    return this.findOne(savedApplication.id);
+    return { message: 'Solicitud creada exitosamente' };
   }
 
   async findAll(page: number = 1, limit: number = 10) {

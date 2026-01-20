@@ -105,6 +105,9 @@ export class CreateApplicationDto {
   @IsString()
   salary?: string;
 
+  @IsString()
+  amountRequested?: string;
+
   @IsOptional()
   @IsString()
   source?: string;

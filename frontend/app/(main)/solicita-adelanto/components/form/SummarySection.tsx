@@ -4,15 +4,71 @@ import { useFormCtx } from './FormContext';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Checkbox } from '@/components/ui/checkbox';
+import { useMemo } from 'react';
+
+const formatCurrency = (value: number) => {
+    return value.toLocaleString('es-GT', { style: 'currency', currency: 'GTQ', maximumFractionDigits: 2 });
+};
+
+function MiniQuote({ salary, amountRequested }: { salary: number | string; amountRequested: number | string }) {
+    const salaryNum = useMemo(() => {
+        const num = typeof salary === 'string' ? parseFloat(salary.replace(/\D/g, '')) : salary;
+        return isNaN(num) ? 0 : num;
+    }, [salary]);
+
+    const requestedNum = useMemo(() => {
+        const num = typeof amountRequested === 'string' ? parseFloat(amountRequested.replace(/\D/g, '')) : amountRequested;
+        return isNaN(num) ? 0 : num;
+    }, [amountRequested]);
+
+    const max = useMemo(() => Math.min(salaryNum * 0.2, 1500), [salaryNum]);
+    const gastos = 75;
+    const deposit = useMemo(() => Math.round((requestedNum - gastos) * 100) / 100, [requestedNum]);
+    const toPay = useMemo(() => Math.round((requestedNum + requestedNum * 0.336) * 100) / 100, [requestedNum]);
+
+    if (salaryNum === 0) return null;
+
+    return (
+        <div className="w-full max-w-md mx-auto mt-6 rounded-xl border border-[#D9F3B6] bg-white shadow-sm">
+            <div className="p-6">
+                <h3 className="text-sm text-gray-500">Monto máximo que podríamos otorgarte</h3>
+                <p className="text-2xl font-bold text-[#90C928] mt-2">{formatCurrency(max)}</p>
+
+                {requestedNum > 0 && (
+                    <div className="mt-4 space-y-2 text-sm text-gray-700">
+                        <div className="flex justify-between text-red-500">
+                            <span>Gastos legales:</span>
+                            <span>-{formatCurrency(gastos)}</span>
+                        </div>
+                        <div className="flex justify-between font-semibold">
+                            <span>Te depositaremos:</span>
+                            <span className="text-[#90C928]">{formatCurrency(deposit)}</span>
+                        </div>
+                        <div className="flex justify-between text-gray-500">
+                            <span>Tú deberás pagar:</span>
+                            <span>{formatCurrency(toPay)}</span>
+                        </div>
+                    </div>
+                )}
+            </div>
+        </div>
+    );
+}
 
 function SalaryInput() {
     const { data, errors, setField } = useFormCtx();
+    
+    const maxAllowed = useMemo(() => {
+        const salaryNum = typeof data.salary === 'string' ? parseFloat(data.salary) : data.salary;
+        return isNaN(salaryNum) || salaryNum === 0 ? 1500 : Math.min(salaryNum * 0.2, 1500);
+    }, [data.salary]);
+
     return (
         <div>
             <h2 className='text-[#94CE29] hover:text-black transition-colors duration-200 font-bold text-lg lg:text-4xl mb-12'>
                 Ingresa tu Salario Mensual
             </h2>
-            <Field className='w-full lg:max-w-[300px] mx-auto'>
+            <Field className='w-full lg:max-w-75 mx-auto'>
                 <FieldLabel className='text-base font-normal flex lg:justify-center'>Ingresa tu Salario</FieldLabel>
                 <Input
                     type='text'
@@ -25,6 +81,25 @@ function SalaryInput() {
                 />
                 {errors['salary'] && <div className='text-rose-500 font-bold text-sm'>{errors['salary']}</div>}
             </Field>
+
+            <Field className='w-full lg:max-w-75 mx-auto mt-8'>
+                <FieldLabel className='text-base font-normal flex lg:justify-center'>¿Cuánto adelanto deseas solicitar?</FieldLabel>
+                <Input
+                    type='text'
+                    value={data.amountRequested}
+                    className='border-none shadow-[0px_4px_4px_0px_#00000040]'
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                        const digits = e.target.value.replace(/\D/g, '')
+                        const numValue = parseFloat(digits) || 0
+                        
+                        // Limitar al máximo permitido
+                        const limitedValue = numValue > maxAllowed ? Math.floor(maxAllowed) : numValue
+                        setField('amountRequested', limitedValue.toString())
+                    }}
+                />
+                {errors['amountRequested'] && <div className='text-rose-500 font-bold text-sm'>{errors['amountRequested']}</div>}
+            </Field>
+            <MiniQuote salary={data.salary} amountRequested={data.amountRequested} />
         </div>
     );
 };
