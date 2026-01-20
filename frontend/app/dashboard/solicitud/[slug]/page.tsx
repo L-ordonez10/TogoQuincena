@@ -7,6 +7,7 @@ import { useSolicitud } from "@/hooks/useApi";
 import { buildUrl } from "@/lib/constants";
 import { decryptId, isValidEncryptedId } from "@/lib/encryption";
 import type { Solicitud } from "@/lib/types/solicitudes";
+import { Separator } from "@/components/ui/separator";
 import {
     ArrowLeft,
     Calendar,
@@ -315,24 +316,28 @@ export default function SolicitudDetailPage() {
                                             {formatCurrencyNumber(calculateFinancials(solicitud.salary, solicitud.amountRequested)!.max)}
                                         </span>
                                     </div>
+                                    <Separator />
                                     <div className="flex justify-between items-center">
                                         <span className="text-sm text-gray-700">Monto solicitado por el cliente:</span>
                                         <span className="text-xl font-bold text-blue-600">
                                             {formatCurrencyNumber(calculateFinancials(solicitud.salary, solicitud.amountRequested)!.requested)}
                                         </span>
                                     </div>
+                                    <Separator />
                                     <div className="flex justify-between items-center text-red-500">
                                         <span className="text-sm">Gastos legales:</span>
                                         <span className="font-semibold">
                                             -{formatCurrencyNumber(calculateFinancials(solicitud.salary, solicitud.amountRequested)!.gastos)}
                                         </span>
                                     </div>
-                                    <div className="flex justify-between items-center border-t pt-2">
+                                    <Separator />
+                                    <div className="flex justify-between items-center">
                                         <span className="text-sm font-semibold text-gray-700">Se depositará:</span>
                                         <span className="text-lg font-bold text-[#90C928]">
                                             {formatCurrencyNumber(calculateFinancials(solicitud.salary, solicitud.amountRequested)!.deposit)}
                                         </span>
                                     </div>
+                                    <Separator />
                                     <div className="flex justify-between items-center">
                                         <span className="text-sm text-gray-600">Deberá pagar:</span>
                                         <span className="font-semibold text-gray-700">
