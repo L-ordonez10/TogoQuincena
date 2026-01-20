@@ -44,6 +44,7 @@ export interface Solicitud {
   uploads: Uploads;
   references: Reference[];
   salary: string;
+  amountRequested: string;
   source: string;
   legal: Legal;
   fechaSolicitud: string;

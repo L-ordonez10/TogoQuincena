@@ -114,17 +114,18 @@ export default function SolicitudDetailPage() {
         return value.toLocaleString('es-GT', { style: 'currency', currency: 'GTQ', maximumFractionDigits: 2 });
     };
 
-    const calculateFinancials = (salary: string) => {
+    const calculateFinancials = (salary: string, amountRequested: string) => {
         const salaryNum = parseInt(salary.replace(/[^\d]/g, ''));
-        if (isNaN(salaryNum)) return null;
+        const requestedNum = parseInt(amountRequested.replace(/[^\d]/g, ''));
+        
+        if (isNaN(salaryNum) || isNaN(requestedNum)) return null;
 
         const max = Math.min(salaryNum * 0.2, 1500);
-        const requested = Math.round(max * 100) / 100;
         const gastos = 75;
-        const deposit = Math.round((requested - gastos) * 100) / 100;
-        const toPay = Math.round((requested + requested * 0.336) * 100) / 100;
+        const deposit = Math.round((requestedNum - gastos) * 100) / 100;
+        const toPay = Math.round((requestedNum + requestedNum * 0.336) * 100) / 100;
 
-        return { max, requested, gastos, deposit, toPay };
+        return { max, requested: requestedNum, gastos, deposit, toPay };
     };
 
     if (isLoading) {
@@ -293,43 +294,49 @@ export default function SolicitudDetailPage() {
                         </CardTitle>
                     </CardHeader>
                     <CardContent className="space-y-4">
-                        <div>
-                            <p className="text-sm font-medium text-gray-500">Salario</p>
-                            <p className="text-3xl font-bold text-green-600">{formatCurrency(solicitud.salary)}</p>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <p className="text-sm font-medium text-gray-500">Salario Mensual</p>
+                                <p className="text-3xl font-bold text-green-600">{formatCurrency(solicitud.salary)}</p>
+                            </div>
+                            <div>
+                                <p className="text-sm font-medium text-gray-500">Monto Solicitado</p>
+                                <p className="text-3xl font-bold text-blue-600">{formatCurrency(solicitud.amountRequested)}</p>
+                            </div>
                         </div>
 
-                        {calculateFinancials(solicitud.salary) && (
+                        {calculateFinancials(solicitud.salary, solicitud.amountRequested) && (
                             <div className="border-t pt-4">
                                 <h4 className="text-sm font-medium text-gray-500 mb-3">Cálculo de Adelanto</h4>
                                 <div className="space-y-3">
                                     <div className="flex justify-between items-center">
                                         <span className="text-sm text-gray-700">Monto máximo que podríamos otorgar:</span>
                                         <span className="text-lg font-bold text-[#90C928]">
-                                            {formatCurrencyNumber(calculateFinancials(solicitud.salary)!.max)}
+                                            {formatCurrencyNumber(calculateFinancials(solicitud.salary, solicitud.amountRequested)!.max)}
                                         </span>
                                     </div>
                                     <div className="flex justify-between items-center">
-                                        <span className="text-sm text-gray-700">Monto calculado (100% del máx):</span>
-                                        <span className="font-semibold">
-                                            {formatCurrencyNumber(calculateFinancials(solicitud.salary)!.requested)}
+                                        <span className="text-sm text-gray-700">Monto solicitado por el cliente:</span>
+                                        <span className="text-xl font-bold text-blue-600">
+                                            {formatCurrencyNumber(calculateFinancials(solicitud.salary, solicitud.amountRequested)!.requested)}
                                         </span>
                                     </div>
                                     <div className="flex justify-between items-center text-red-500">
                                         <span className="text-sm">Gastos legales:</span>
                                         <span className="font-semibold">
-                                            -{formatCurrencyNumber(calculateFinancials(solicitud.salary)!.gastos)}
+                                            -{formatCurrencyNumber(calculateFinancials(solicitud.salary, solicitud.amountRequested)!.gastos)}
                                         </span>
                                     </div>
                                     <div className="flex justify-between items-center border-t pt-2">
-                                        <span className="text-sm font-semibold text-gray-700">Se depositaría:</span>
+                                        <span className="text-sm font-semibold text-gray-700">Se depositará:</span>
                                         <span className="text-lg font-bold text-[#90C928]">
-                                            {formatCurrencyNumber(calculateFinancials(solicitud.salary)!.deposit)}
+                                            {formatCurrencyNumber(calculateFinancials(solicitud.salary, solicitud.amountRequested)!.deposit)}
                                         </span>
                                     </div>
                                     <div className="flex justify-between items-center">
                                         <span className="text-sm text-gray-600">Deberá pagar:</span>
                                         <span className="font-semibold text-gray-700">
-                                            {formatCurrencyNumber(calculateFinancials(solicitud.salary)!.toPay)}
+                                            {formatCurrencyNumber(calculateFinancials(solicitud.salary, solicitud.amountRequested)!.toPay)}
                                         </span>
                                     </div>
                                 </div>
