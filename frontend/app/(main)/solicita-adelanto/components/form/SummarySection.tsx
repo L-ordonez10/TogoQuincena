@@ -4,10 +4,16 @@ import { useFormCtx } from './FormContext';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Checkbox } from '@/components/ui/checkbox';
-import { useMemo } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 
 const formatCurrency = (value: number) => {
     return value.toLocaleString('es-GT', { style: 'currency', currency: 'GTQ', maximumFractionDigits: 2 });
+};
+
+const formatCurrencyDisplay = (value: string | number): string => {
+    const num = typeof value === 'string' ? parseFloat(value.replace(/\D/g, '')) : value;
+    if (isNaN(num) || num === 0) return '';
+    return `Q${num.toLocaleString('es-GT', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 };
 
 function MiniQuote({ salary, amountRequested }: { salary: number | string; amountRequested: number | string }) {
@@ -58,10 +64,29 @@ function MiniQuote({ salary, amountRequested }: { salary: number | string; amoun
 function SalaryInput() {
     const { data, errors, setField } = useFormCtx();
     
+    const [salaryDisplay, setSalaryDisplay] = useState<string>('');
+    const [amountDisplay, setAmountDisplay] = useState<string>('');
+    const [isSalaryFocused, setIsSalaryFocused] = useState<boolean>(false);
+    const [isAmountFocused, setIsAmountFocused] = useState<boolean>(false);
+    
     const maxAllowed = useMemo(() => {
-        const salaryNum = typeof data.salary === 'string' ? parseFloat(data.salary) : data.salary;
+        const salaryValue = String(data.salary || '');
+        const salaryNum = parseFloat(salaryValue.replace(/\D/g, ''));
         return isNaN(salaryNum) || salaryNum === 0 ? 1500 : Math.min(salaryNum * 0.2, 1500);
     }, [data.salary]);
+
+    // Actualizar displays cuando cambian los datos y no están enfocados
+    useEffect(() => {
+        if (!isSalaryFocused) {
+            setSalaryDisplay(formatCurrencyDisplay(String(data.salary || '')));
+        }
+    }, [data.salary, isSalaryFocused]);
+
+    useEffect(() => {
+        if (!isAmountFocused) {
+            setAmountDisplay(formatCurrencyDisplay(String(data.amountRequested || '')));
+        }
+    }, [data.amountRequested, isAmountFocused]);
 
     return (
         <div>
@@ -72,11 +97,21 @@ function SalaryInput() {
                 <FieldLabel className='text-base font-normal flex lg:justify-center'>Ingresa tu Salario</FieldLabel>
                 <Input
                     type='text'
-                    value={data.salary}
-                    className='border-none shadow-[0px_4px_4px_0px_#00000040]'
+                    value={salaryDisplay}
+                    placeholder='Q0.00'
+                    className='border-none shadow-[0px_4px_4px_0px_#00000040] text-center'
+                    onFocus={() => {
+                        setIsSalaryFocused(true);
+                        setSalaryDisplay(String(data.salary || ''));
+                    }}
+                    onBlur={() => {
+                        setIsSalaryFocused(false);
+                        setSalaryDisplay(formatCurrencyDisplay(String(data.salary || '')));
+                    }}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                        const digits = e.target.value.replace(/\D/g, '')
-                        setField('salary', digits)
+                        const digits = e.target.value.replace(/\D/g, '');
+                        setSalaryDisplay(digits);
+                        setField('salary', digits);
                     }}
                 />
                 {errors['salary'] && <div className='text-rose-500 font-bold text-sm'>{errors['salary']}</div>}
@@ -86,15 +121,25 @@ function SalaryInput() {
                 <FieldLabel className='text-base font-normal flex lg:justify-center'>¿Cuánto adelanto deseas solicitar?</FieldLabel>
                 <Input
                     type='text'
-                    value={data.amountRequested}
-                    className='border-none shadow-[0px_4px_4px_0px_#00000040]'
+                    value={amountDisplay}
+                    placeholder='Q0.00'
+                    className='border-none shadow-[0px_4px_4px_0px_#00000040] text-center'
+                    onFocus={() => {
+                        setIsAmountFocused(true);
+                        setAmountDisplay(String(data.amountRequested || ''));
+                    }}
+                    onBlur={() => {
+                        setIsAmountFocused(false);
+                        setAmountDisplay(formatCurrencyDisplay(String(data.amountRequested || '')));
+                    }}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                        const digits = e.target.value.replace(/\D/g, '')
-                        const numValue = parseFloat(digits) || 0
+                        const digits = e.target.value.replace(/\D/g, '');
+                        const numValue = parseFloat(digits) || 0;
                         
                         // Limitar al máximo permitido
-                        const limitedValue = numValue > maxAllowed ? Math.floor(maxAllowed) : numValue
-                        setField('amountRequested', limitedValue.toString())
+                        const limitedValue = numValue > maxAllowed ? Math.floor(maxAllowed) : numValue;
+                        setAmountDisplay(String(limitedValue));
+                        setField('amountRequested', String(limitedValue));
                     }}
                 />
                 {errors['amountRequested'] && <div className='text-rose-500 font-bold text-sm'>{errors['amountRequested']}</div>}
