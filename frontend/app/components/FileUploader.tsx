@@ -99,6 +99,12 @@ const FileUploader: React.FC<FileUploaderProps> = ({
         if (inputRef.current) inputRef.current.value = '';
     }, [onChange]);
 
+    const formatFileSize = (bytes: number): string => {
+        if (bytes < 1024) return bytes + ' bytes';
+        if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(2) + ' KB';
+        return (bytes / (1024 * 1024)).toFixed(2) + ' MB';
+    };
+
     const renderTitle = () => {
         if (Array.isArray(title)) {
             return title.map((line, i) => (
@@ -123,6 +129,9 @@ const FileUploader: React.FC<FileUploaderProps> = ({
                 <div className="mb-8 flex w-full max-w-[200px] flex-col items-center text-center">
                     <p className="mb-1 w-full truncate text-lg font-bold text-gray-900" title={selectedFiles[0].name}>
                         {selectedFiles[0].name}
+                    </p>
+                    <p className="text-xs text-gray-500 mb-1">
+                        {formatFileSize(selectedFiles[0].size)}
                     </p>
                     <p className="text-sm font-medium text-[#90C928]">
                         ¡Archivo listo!
