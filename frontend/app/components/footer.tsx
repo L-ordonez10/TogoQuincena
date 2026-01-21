@@ -6,7 +6,7 @@ export default function Footer() {
   return (
     <footer className="bg-[#DEDEDE] text-black py-14">
       {/* Contenedor centrado con ancho máximo */}
-      <div className="max-w-[1400px] mx-auto px-6 md:px-12 lg:px-20">
+      <div className="max-w-350 mx-auto px-6 md:px-12 lg:px-20">
         {/* Contenido principal */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 items-start">
           {/* Columna 1: Logo y redes */}
@@ -27,18 +27,18 @@ export default function Footer() {
 
             {/* Redes sociales */}
             <div className="flex space-x-5 mt-3 text-[22px]">
-              <a href="#" className="hover:opacity-80">
+              <a href="https://www.facebook.com/share/1ExXg73QWC" className="hover:opacity-80">
                 <FaFacebookF />
               </a>
-              <a href="#" className="hover:opacity-80">
+              {/* <a href="#" className="hover:opacity-80">
                 <FaXTwitter />
-              </a>
-              <a href="#" className="hover:opacity-80">
+              </a> */}
+              <a href="https://www.instagram.com/quincenatogo?utm_source=qr&igsh=OWhjdnoycGpyOHhk" className="hover:opacity-80">
                 <FaInstagram />
               </a>
-              <a href="#" className="hover:opacity-80">
+              {/* <a href="#" className="hover:opacity-80">
                 <FaYoutube />
-              </a>
+              </a> */}
             </div>
           </div>
 
