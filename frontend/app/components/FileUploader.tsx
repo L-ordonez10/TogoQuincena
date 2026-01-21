@@ -118,7 +118,7 @@ const FileUploader: React.FC<FileUploaderProps> = ({
 
     if (selectedFiles.length > 0) {
         return (
-            <div className={`group cursor-pointer flex h-full min-h-[275px] flex-col items-center justify-start font-sans ${className}`}>
+            <div className={`group cursor-pointer flex h-full min-h-68.75 flex-col items-center justify-start font-sans ${className}`}>
                 <div className="relative mb-6 flex size-32 items-center justify-center rounded-2xl bg-white shadow-[0px_4px_4px_0px_rgba(0,0,0,0.13)] border-2 border-[#90C928]/20">
                     <FileText size={48} color={iconColor} />
                     <div className="absolute -right-2 -top-2 rounded-full bg-white p-1 shadow-md">
@@ -126,7 +126,7 @@ const FileUploader: React.FC<FileUploaderProps> = ({
                     </div>
                 </div>
 
-                <div className="mb-8 flex w-full max-w-[200px] flex-col items-center text-center">
+                <div className="mb-8 flex w-full max-w-50 flex-col items-center text-center">
                     <p className="mb-1 w-full truncate text-lg font-bold text-gray-900" title={selectedFiles[0].name}>
                         {selectedFiles[0].name}
                     </p>
@@ -159,7 +159,7 @@ const FileUploader: React.FC<FileUploaderProps> = ({
     }
 
     return (
-        <div onClick={openFileDialog} className={`group cursor-pointer flex h-full min-h-[275px] flex-col items-center justify-start font-sans ${className}`}>
+        <div onClick={openFileDialog} className={`group cursor-pointer flex h-full min-h-68.75 flex-col items-center justify-start font-sans ${className}`}>
             <div className="mb-6 flex size-32 items-center justify-center rounded-2xl bg-white shadow-[0px_4px_4px_0px_rgba(0,0,0,0.13)] cursor-pointer transition-colors duration-200 group-hover:bg-[#90C928]">
                 <Upload size={48} className="text-[#90C928] transition-colors duration-200 group-hover:text-white" />
             </div>
