@@ -100,13 +100,13 @@ export const contentItems = [
                     antes o en la fecha acordada.
                 </p>
                 <p className="text-base sm:text-lg md:text-xl lg:text-2xl">
-                    Transferencias a terceros desde tu cuenta en Banco Industrial.
+                    Transferencias a terceros desde tu cuenta en Banco Banrural.
                 </p>
                 <p className="text-base sm:text-lg md:text-xl lg:text-2xl">
                     Transferencias ACH si tu cuenta es de cualquier otro Banco.
                 </p>
                 <p className="text-base sm:text-lg md:text-xl lg:text-2xl">
-                    Depósito físico en Agencias de Banco Industrial  o en Agentes BI.
+                    Depósito físico en Agencias de Banco Banrural  o en Cajas Rurales.
                 </p>
             </div>
         )
