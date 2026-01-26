@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { encryptId } from "@/lib/encryption";
 import { Solicitud } from "@/lib/types/solicitudes";
+import { formatCurrency, parseNumericValue } from "@/lib/utils";
 import { Calendar, CreditCard, Eye, Phone, User } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { FaMoneyBill } from "react-icons/fa6";
@@ -20,16 +21,6 @@ export function CardApplication({ solicitud }: CardApplicationProps) {
             month: 'short',
             day: 'numeric',
         });
-    };
-
-    const formatCurrency = (amount: string) => {
-        const num = parseInt(amount.replace(/[^\d]/g, ''));
-        if (isNaN(num)) return amount;
-        return new Intl.NumberFormat('es-GT', {
-            style: 'currency',
-            currency: 'GTQ',
-            notation: 'compact'
-        }).format(num);
     };
 
     const handleViewDetails = () => {
@@ -83,7 +74,7 @@ export function CardApplication({ solicitud }: CardApplicationProps) {
                     <FaMoneyBill className="size-5 shrink-0 text-green-600" />
                     <div>
                         <span className="text-lg font-bold text-green-600">
-                            {formatCurrency(solicitud.salary)}
+                            {formatCurrency(parseNumericValue(solicitud.salary))}
                         </span>
                         <p className="text-xs text-gray-500">Salario</p>
                     </div>

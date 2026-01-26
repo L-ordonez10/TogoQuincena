@@ -5,27 +5,26 @@ import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { ErrorMessage } from "@/components/ui/error-message";
 import { useFormCtx } from "./FormContext";
+import { sanitizeDigits } from "@/lib/utils";
 
 const GRID_CLASSES = "grid grid-cols-1 md:grid-cols-2 gap-x-20 gap-y-6 max-w-2xl mx-auto";
 const INPUT_CLASSES = "border-none shadow-[0px_4px_4px_0px_#00000040]";
 const TITLE_CLASSES = "text-[#94CE29] hover:text-black transition-colors duration-200 text-left font-bold text-lg lg:text-4xl mb-12";
 const SUB_TITLE_CLASSES = "md:col-span-2 text-black hover:text-[#97D22A] transition-colors duration-200 font-bold text-lg lg:text-3xl";
 
-const sanitizeDigitsOnly = (value: string): string => value.replace(/\D/g, "");
-
 export function PersonalDataForm() {
   const { data, setField, errors } = useFormCtx();
 
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setField("personal.phone", sanitizeDigitsOnly(e.target.value));
+    setField("personal.phone", sanitizeDigits(e.target.value));
   };
 
   const handlePhoneWorkChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setField("personal.phoneWork", sanitizeDigitsOnly(e.target.value));
+    setField("personal.phoneWork", sanitizeDigits(e.target.value));
   }
 
   const handleDpiChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setField("personal.dpi", sanitizeDigitsOnly(e.target.value));
+    setField("personal.dpi", sanitizeDigits(e.target.value));
   };
 
   const handleCheckboxChange = (checked: boolean) => {

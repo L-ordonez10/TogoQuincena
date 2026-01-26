@@ -1,20 +1,11 @@
 "use client";
-import React, { useEffect, useRef, useState } from 'react';
-import { clamp, formatCurrency } from './utils';
+import React, { useEffect, useRef, useState, useMemo, useCallback, memo } from 'react';
+import { clamp, formatCurrency, parseCurrency } from '@/lib/utils';
+import { useCotizador } from '../CotizadorContext';
 
-interface Props {
-  salary: number;
-}
-
-const parseCurrency = (s: string) => {
-  const cleaned = s.replace(/[^\d.]/g, '');
-  const n = parseFloat(cleaned);
-  return isNaN(n) ? 0 : n;
-};
-
-const ResultCard: React.FC<Props> = ({ salary }) => {
-  const max = Math.min(salary * 0.2, 1500);
-  const defaultRequested = Math.round(max * 0.8 * 100) / 100; // 80% del max por defecto
+const ResultCard: React.FC = memo(() => {
+  const { salary, max } = useCotizador();
+  const defaultRequested = useMemo(() => Math.round(max * 0.8 * 100) / 100, [max]);
 
   const [requested, setRequested] = useState<number>(defaultRequested);
   const [display, setDisplay] = useState<string>(formatCurrency(defaultRequested));
@@ -27,34 +18,34 @@ const ResultCard: React.FC<Props> = ({ salary }) => {
       setRequested(newReq);
       if (!isEditing.current) setDisplay(formatCurrency(newReq));
     }
-  }, [salary, max]);
+  }, [salary, max, requested]);
 
   useEffect(() => {
     if (!isEditing.current) setDisplay(formatCurrency(requested));
   }, [requested]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     isEditing.current = true;
     const value = e.target.value;
     setDisplay(value);
     const n = parseCurrency(value);
     const clamped = clamp(n, 0, Math.min(max, 1500));
     setRequested(Math.round(clamped * 100) / 100);
-  };
+  }, [max]);
 
-  const handleBlur = () => {
+  const handleBlur = useCallback(() => {
     isEditing.current = false;
     setDisplay(formatCurrency(requested));
-  };
+  }, [requested]);
 
-  const handleFocus = () => {
+  const handleFocus = useCallback(() => {
     isEditing.current = true;
     setDisplay(requested ? requested.toString() : '');
-  };
+  }, [requested]);
 
-  const gastos = 75; // gastos legales fijos
-  const deposit = Math.round((requested - gastos) * 100) / 100;
-  const toPay = Math.round((requested + requested * 0.336) * 100) / 100;
+  const gastos = 75;
+  const deposit = useMemo(() => Math.round((requested - gastos) * 100) / 100, [requested]);
+  const toPay = useMemo(() => Math.round((requested + requested * 0.336) * 100) / 100, [requested]);
 
   return (
     <div className="w-full max-w-md mx-auto mt-6 rounded-xl border border-[#D9F3B6] bg-white shadow-sm">
@@ -91,6 +82,6 @@ const ResultCard: React.FC<Props> = ({ salary }) => {
       </div>
     </div>
   );
-};
+});
 
 export default ResultCard;

@@ -3,6 +3,7 @@
 import { Field, FieldLabel } from '@/components/ui/field'
 import { Input } from '@/components/ui/input'
 import { useFormCtx } from './FormContext'
+import { sanitizeDigits } from '@/lib/utils'
 
 export function WorkReferencesForm() {
     const { data, setField, errors } = useFormCtx()
@@ -43,7 +44,7 @@ export function WorkReferencesForm() {
                     type="tel"
                     value={data.workRefs[0].phone}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                        const digits = e.target.value.replace(/\D/g, '')
+                        const digits = sanitizeDigits(e.target.value)
                         setField('workRefs.0.phone', digits)
                     }}
                     className="border-none shadow-[0px_4px_4px_0px_#00000040]"
@@ -83,7 +84,7 @@ export function WorkReferencesForm() {
                     type="tel"
                     value={data.workRefs[1].phone}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                        const digits = e.target.value.replace(/\D/g, '')
+                        const digits = sanitizeDigits(e.target.value)
                         setField('workRefs.1.phone', digits)
                     }}
                     className="border-none shadow-[0px_4px_4px_0px_#00000040]"

@@ -7,6 +7,7 @@ import { useSolicitud } from "@/hooks/useApi";
 import { buildUrl } from "@/lib/constants";
 import { decryptId, isValidEncryptedId } from "@/lib/encryption";
 import type { Solicitud } from "@/lib/types/solicitudes";
+import { formatCurrency, parseNumericValue } from "@/lib/utils";
 import { Separator } from "@/components/ui/separator";
 import {
     ArrowLeft,
@@ -102,22 +103,9 @@ export default function SolicitudDetailPage() {
         });
     };
 
-    const formatCurrency = (amount: string) => {
-        const num = parseInt(amount.replace(/[^\d]/g, ''));
-        if (isNaN(num)) return amount;
-        return new Intl.NumberFormat('es-GT', {
-            style: 'currency',
-            currency: 'GTQ'
-        }).format(num);
-    };
-
-    const formatCurrencyNumber = (value: number) => {
-        return value.toLocaleString('es-GT', { style: 'currency', currency: 'GTQ', maximumFractionDigits: 2 });
-    };
-
     const calculateFinancials = (salary: string, amountRequested: string) => {
-        const salaryNum = parseInt(salary.replace(/[^\d]/g, ''));
-        const requestedNum = parseInt(amountRequested.replace(/[^\d]/g, ''));
+        const salaryNum = parseNumericValue(salary);
+        const requestedNum = parseNumericValue(amountRequested);
         
         if (isNaN(salaryNum) || isNaN(requestedNum)) return null;
 
@@ -298,11 +286,11 @@ export default function SolicitudDetailPage() {
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
                                 <p className="text-sm font-medium text-gray-500">Salario Mensual</p>
-                                <p className="text-3xl font-bold text-green-600">{formatCurrency(solicitud.salary)}</p>
+                                <p className="text-3xl font-bold text-green-600">{formatCurrency(parseNumericValue(solicitud.salary))}</p>
                             </div>
                             <div>
                                 <p className="text-sm font-medium text-gray-500">Monto Solicitado</p>
-                                <p className="text-3xl font-bold text-blue-600">{formatCurrency(solicitud.amountRequested)}</p>
+                                <p className="text-3xl font-bold text-blue-600">{formatCurrency(parseNumericValue(solicitud.amountRequested))}</p>
                             </div>
                         </div>
 
@@ -313,35 +301,35 @@ export default function SolicitudDetailPage() {
                                     <div className="flex justify-between items-center">
                                         <span className="text-sm text-gray-700">Monto máximo que podríamos otorgar:</span>
                                         <span className="text-lg font-bold text-[#90C928]">
-                                            {formatCurrencyNumber(calculateFinancials(solicitud.salary, solicitud.amountRequested)!.max)}
+                                            {formatCurrency(calculateFinancials(solicitud.salary, solicitud.amountRequested)!.max)}
                                         </span>
                                     </div>
                                     <Separator />
                                     <div className="flex justify-between items-center">
                                         <span className="text-sm text-gray-700">Monto solicitado por el cliente:</span>
                                         <span className="text-xl font-bold text-blue-600">
-                                            {formatCurrencyNumber(calculateFinancials(solicitud.salary, solicitud.amountRequested)!.requested)}
+                                            {formatCurrency(calculateFinancials(solicitud.salary, solicitud.amountRequested)!.requested)}
                                         </span>
                                     </div>
                                     <Separator />
                                     <div className="flex justify-between items-center text-red-500">
                                         <span className="text-sm">Gastos legales:</span>
                                         <span className="font-semibold">
-                                            -{formatCurrencyNumber(calculateFinancials(solicitud.salary, solicitud.amountRequested)!.gastos)}
+                                            -{formatCurrency(calculateFinancials(solicitud.salary, solicitud.amountRequested)!.gastos)}
                                         </span>
                                     </div>
                                     <Separator />
                                     <div className="flex justify-between items-center">
                                         <span className="text-sm font-semibold text-gray-700">Se depositará:</span>
                                         <span className="text-lg font-bold text-[#90C928]">
-                                            {formatCurrencyNumber(calculateFinancials(solicitud.salary, solicitud.amountRequested)!.deposit)}
+                                            {formatCurrency(calculateFinancials(solicitud.salary, solicitud.amountRequested)!.deposit)}
                                         </span>
                                     </div>
                                     <Separator />
                                     <div className="flex justify-between items-center">
                                         <span className="text-sm text-gray-600">Deberá pagar:</span>
                                         <span className="font-semibold text-gray-700">
-                                            {formatCurrencyNumber(calculateFinancials(solicitud.salary, solicitud.amountRequested)!.toPay)}
+                                            {formatCurrency(calculateFinancials(solicitud.salary, solicitud.amountRequested)!.toPay)}
                                         </span>
                                     </div>
                                 </div>

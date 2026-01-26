@@ -1,21 +1,10 @@
 "use client";
 import React, { useRef, useState } from "react";
+import { formatCurrencyDisplay, parseCurrency } from "@/lib/utils";
+import { useCotizador } from "../CotizadorContext";
 
-interface Props {
-  salary: number;
-  setSalary: (n: number) => void;
-}
-
-const formatCurrency = (n: number) =>
-  n ? `Q${n.toLocaleString("es-GT", { minimumFractionDigits: 2 })}` : "";
-
-const parseCurrency = (s: string) => {
-  const cleaned = s.replace(/[^\d.]/g, "");
-  const n = parseFloat(cleaned);
-  return isNaN(n) ? 0 : n;
-};
-
-const SalaryInputCard: React.FC<Props> = ({ salary, setSalary }) => {
+const SalaryInputCard: React.FC = () => {
+  const { salary, setSalary } = useCotizador();
   const [display, setDisplay] = useState("");
   const isEditing = useRef(false);
 
@@ -28,7 +17,7 @@ const SalaryInputCard: React.FC<Props> = ({ salary, setSalary }) => {
 
   const handleBlur = () => {
     isEditing.current = false;
-    setDisplay(formatCurrency(salary));
+    setDisplay(formatCurrencyDisplay(salary));
   };
 
   const handleFocus = () => {
