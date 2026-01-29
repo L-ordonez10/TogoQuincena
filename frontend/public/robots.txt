@@ -1,7 +1,6 @@
 # Robots.txt - QuincenaToGo
-# Esta configuración evita que Google y otros buscadores indexen el dashboard
+# Configuración optimizada para SEO
 
-# Bloquear a todos los bots
 User-agent: *
 
 # Permitir páginas públicas
@@ -16,9 +15,10 @@ Disallow: /dashboard
 Disallow: /dashboard/*
 Disallow: /api/
 
-# Archivos estáticos (opcional)
+# Permitir recursos estáticos
 Allow: /imagenes/
 Allow: /_next/static/
+Allow: /favicon.ico
 
-# Sitemap (si decides crear uno)
-Sitemap: https://tudominio.com/sitemap.xml
+# Sitemap
+Sitemap: https://quincenatogo.com.gt/sitemap.xml

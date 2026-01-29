@@ -12,11 +12,11 @@ export default function Footer() {
           {/* Columna 1: Logo y redes */}
           <div className="flex flex-col items-start space-y-4">
             <div className="flex flex-col">
-              <Link href="/" aria-label="Ir al inicio">
+              <Link href="/" aria-label="QuincenaToGo - Ir al inicio">
                 <div className="flex items-center space-x-2">
                   <Image
                     src="/imagenes/LogoQuincenaTooGo_negro.svg"
-                    alt="Logo"
+                    alt="QuincenaToGo"
                     width={250}
                     height={120}
                   />
@@ -26,34 +26,28 @@ export default function Footer() {
             </div>
 
             {/* Redes sociales */}
-            <div className="flex space-x-5 mt-3 text-[22px]">
-              <a href="https://www.facebook.com/share/1ExXg73QWC" className="hover:opacity-80">
+            <nav className="flex space-x-5 mt-3 text-[22px]" aria-label="Redes sociales">
+              <a href="https://www.facebook.com/share/1ExXg73QWC" className="hover:opacity-80" aria-label="Visitar Facebook de QuincenaToGo" target="_blank" rel="noopener noreferrer">
                 <FaFacebookF />
               </a>
-              {/* <a href="#" className="hover:opacity-80">
-                <FaXTwitter />
-              </a> */}
-              <a href="https://www.instagram.com/quincenatogo?utm_source=qr&igsh=OWhjdnoycGpyOHhk" className="hover:opacity-80">
+              <a href="https://www.instagram.com/quincenatogo?utm_source=qr&igsh=OWhjdnoycGpyOHhk" className="hover:opacity-80" aria-label="Visitar Instagram de QuincenaToGo" target="_blank" rel="noopener noreferrer">
                 <FaInstagram />
               </a>
-              {/* <a href="#" className="hover:opacity-80">
-                <FaYoutube />
-              </a> */}
-            </div>
+            </nav>
           </div>
 
           {/* Columna 2: Nosotros */}
-          <div>
+          <nav aria-label="Acerca de nosotros">
             <h3 className="font-semibold mb-3 md:text-[15px] lg:text-[18px]">Nosotros</h3>
             <ul className="space-y-2 md:text-[15px] lg:text-[18px]">
               <li><Link href="/nosotros?tab=objetivos">Nuestros objetivos</Link></li>
               <li><Link href="/nosotros?tab=mision">Nuestra misión</Link></li>
               <li><Link href="/nosotros?tab=vision">Nuestra visión</Link></li>
             </ul>
-          </div>
+          </nav>
 
           {/* Columna 3: Producto */}
-          <div>
+          <nav aria-label="Información del producto">
             <h3 className="font-semibold mb-3 md:text-[15px] lg:text-[18px]">Producto</h3>
             <ul className="space-y-2 md:text-[15px] text-[18px]">
               <li><Link href="/descubre-como?section=requisitos">Requisitos</Link></li>
@@ -62,19 +56,23 @@ export default function Footer() {
               <li><Link href="/descubre-como?section=control">Control y seguridad</Link></li>
               <li><Link href="/descubre-como?section=pasos">Pasos</Link></li>
             </ul>
-          </div>
+          </nav>
 
           {/* Columna 4: Cotizador / Contacto */}
           <div>
-            <h3 className="font-semibold mb-3 md:text-[15px] lg:text-[18px]">Cotizador</h3>
-            <ul className="space-y-2 md:text-[15px] text-[18px]">
-              <li><Link href="/cotizador">Cotizador</Link></li>
-            </ul>
+            <nav aria-label="Herramientas">
+              <h3 className="font-semibold mb-3 md:text-[15px] lg:text-[18px]">Cotizador</h3>
+              <ul className="space-y-2 md:text-[15px] text-[18px]">
+                <li><Link href="/cotizador">Cotizador</Link></li>
+              </ul>
+            </nav>
 
-            <h3 className="font-semibold mt-5 mb-3 md:text-[15px] lg:text-[18px]">Contacto</h3>
-            <ul className="space-y-2 md:text-[15px] lg:text-[18px]">
-              <li><Link href="/solicita-adelanto">Formulario</Link></li>
-            </ul>
+            <nav aria-label="Contacto" className="mt-5">
+              <h3 className="font-semibold mb-3 md:text-[15px] lg:text-[18px]">Contacto</h3>
+              <ul className="space-y-2 md:text-[15px] lg:text-[18px]">
+                <li><Link href="/solicita-adelanto">Formulario</Link></li>
+              </ul>
+            </nav>
           </div>
         </div>
 

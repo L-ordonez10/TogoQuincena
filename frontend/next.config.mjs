@@ -4,6 +4,20 @@ const nextConfig = {
   swcMinify: true,
   output: 'standalone',
   
+  // Optimización de imágenes
+  images: {
+    formats: ['image/avif', 'image/webp'],
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
+    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+    minimumCacheTTL: 60,
+  },
+  
+  // Compresión
+  compress: true,
+  
+  // Power By header removal para seguridad
+  poweredByHeader: false,
+  
   async headers() {
     return [
       {
@@ -28,6 +42,25 @@ const nextConfig = {
           {
             key: 'Permissions-Policy',
             value: 'camera=(), microphone=(), geolocation=()',
+          },
+        ],
+      },
+      // Cache optimizado para assets estáticos
+      {
+        source: '/imagenes/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+      {
+        source: '/_next/static/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
           },
         ],
       },

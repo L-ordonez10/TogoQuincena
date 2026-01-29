@@ -1,7 +1,10 @@
 "use client";
+import { Metadata } from "next";
 import React from 'react';
 import { HeaderSection, SalaryInputCard, ResultCard, CTASection } from './components';
 import { CotizadorProvider } from './CotizadorContext';
+
+// Nota: metadata se exporta desde metadata.ts debido a "use client"
 
 export default function Page() {
   return (

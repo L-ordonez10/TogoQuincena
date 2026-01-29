@@ -1,4 +1,14 @@
+import { Metadata } from 'next';
 import Link from 'next/link'
+
+export const metadata: Metadata = {
+  title: '404 - Página no encontrada',
+  description: 'La página que buscas no existe. Regresa al inicio de QuincenaToGo para solicitar tu adelanto de quincena.',
+  robots: {
+    index: false,
+    follow: true,
+  },
+};
 
 export default function NotFound() {
   return (
