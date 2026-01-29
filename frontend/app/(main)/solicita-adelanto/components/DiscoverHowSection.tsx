@@ -50,7 +50,7 @@ export function DiscoverHowSection() {
         setHeight()
         window.addEventListener('resize', setHeight)
         return () => window.removeEventListener('resize', setHeight)
-    }, [activeIndex, count])
+    }, [activeIndex, count, heights])
 
     useEffect(() => {
         const computeHeights = () => {
@@ -68,9 +68,9 @@ export function DiscoverHowSection() {
     }, [count, activeIndex])
 
     return (
-        <section className="w-full py-12 px-4 ">
-            <div className="w-full max-w-6xl mx-auto my-12">
-                <h1 className="hover:text-[#97D22A] transition-colors duration-200 text-xl sm:text-3xl md:text-[50px] text-center font-bold mb-8 leading-tight ">
+        <section className="w-full py-12 px-4" aria-labelledby="discover-heading">
+            <article className="w-full max-w-6xl mx-auto my-12">
+                <h1 id="discover-heading" className="hover:text-[#97D22A] transition-colors duration-200 text-xl sm:text-3xl md:text-[50px] text-center font-bold mb-8 leading-tight ">
                     Solicitar adelanto
                 </h1>
                 <h2 className="text-[#97D22A] text-xl sm:text-2xl text-center md:text-[40px] font-bold mb-6 leading-snug">
@@ -78,7 +78,13 @@ export function DiscoverHowSection() {
                 </h2>
 
                 <div className="mt-5 w-full max-w-4xl mx-auto">
-                    <Carousel opts={{ loop: true }} setApi={setCarouselApi} className="shadow-[0px_4px_4px_0px_rgba(0,0,0,0.15)] rounded-2xl p-6">
+                    <Carousel 
+                        opts={{ loop: true }} 
+                        setApi={setCarouselApi} 
+                        className="shadow-[0px_4px_4px_0px_rgba(0,0,0,0.15)] rounded-2xl p-6"
+                        role="region"
+                        aria-label="Requisitos para solicitar adelanto"
+                    >
                         <div ref={containerRef} className="overflow-hidden">
                             <CarouselContent>
                                 {contentItems.map((item, idx) => (
@@ -104,6 +110,7 @@ export function DiscoverHowSection() {
                                 carouselApi?.scrollPrev()
                                 setActiveIndex(prev)
                             }}
+                            aria-label="Requisito anterior"
                         />
                         <CarouselNext
                             className="text-[#97D22A]"
@@ -117,10 +124,11 @@ export function DiscoverHowSection() {
                                 carouselApi?.scrollNext()
                                 setActiveIndex(next)
                             }}
+                            aria-label="Siguiente requisito"
                         />
                     </Carousel>
 
-                    <div className="w-full flex justify-center gap-2 py-4">
+                    <nav className="w-full flex justify-center gap-2 py-4" aria-label="Indicadores de requisitos">
                         {Array.from({ length: count }).map((_, index) => (
                             <button
                                 key={index}
@@ -129,12 +137,13 @@ export function DiscoverHowSection() {
                                     setActiveIndex(index)
                                 }}
                                 className={`h-2.5 w-2.5 rounded-full transition-colors duration-200 ${activeIndex === index ? 'bg-[#017EFF]' : 'bg-gray-300'}`}
-                                aria-label={`Ir a la imagen ${index}`}
+                                aria-label={`Ver requisito ${index + 1}`}
+                                aria-current={activeIndex === index ? 'true' : 'false'}
                             />
                         ))}
-                    </div>
+                    </nav>
                 </div>
-            </div>
+            </article>
         </section>
     )
 }
