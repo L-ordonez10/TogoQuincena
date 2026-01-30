@@ -1,8 +1,10 @@
 import { Metadata } from "next";
 
 export const APP_NAME = "QuincenaToGo";
-export const APP_DESCRIPTION = "Adelantos de quincena fácil y rápido. Obtén tu dinero antes de la fecha de pago sin complicaciones. Proceso 100% en línea, aprobación rápida y sin requisitos complicados.";
-export const APP_URL = process.env.NEXT_PUBLIC_APP_URL || "https://quincenatogo.com.gt";
+export const APP_DESCRIPTION =
+  "Adelantos de quincena fácil y rápido. Obtén tu dinero antes de la fecha de pago sin complicaciones. Proceso 100% en línea, aprobación rápida y sin requisitos complicados.";
+export const APP_URL =
+  process.env.NEXT_PUBLIC_APP_URL || "https://quincenatogo.com.gt";
 export const APP_KEYWORDS = [
   "adelanto de quincena",
   "adelanto de nómina",
@@ -13,7 +15,7 @@ export const APP_KEYWORDS = [
   "préstamo en línea",
   "adelanto salarial",
   "QuincenaToGo",
-  "crédito instantáneo"
+  "crédito instantáneo",
 ];
 
 export const defaultMetadata: Metadata = {
@@ -66,8 +68,6 @@ export const defaultMetadata: Metadata = {
     },
   },
   verification: {
-    // Agregar códigos de verificación cuando estén disponibles
-    // google: "código-de-google",
-    // yandex: "código-de-yandex",
+    google: "WRgZutGmY1UIeBaKYEkMiU74d3axMnl4FtL_8rx-dEk",
   },
 };
