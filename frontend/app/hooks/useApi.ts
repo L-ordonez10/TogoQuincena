@@ -18,6 +18,26 @@ import { AxiosError } from "axios";
 
 type HttpMethod = "post" | "put" | "patch" | "delete";
 
+interface HubSpotSubmitPayload {
+  names: string;
+  surnames: string;
+  marriedLastName?: string;
+  birthDate?: string;
+  phone?: string;
+  dpi?: string;
+  email: string;
+  address: string;
+  workName: string;
+  salary: number;
+  amountRequested: number;
+}
+
+interface HubSpotResponse {
+  success: boolean;
+  message: string;
+  data?: any;
+}
+
 interface FileUploadResponse {
   message: string;
   filePath: string;
@@ -37,11 +57,12 @@ const APPLICATIONS_QUERY_KEY = "applications";
 const APPLICATION_QUERY_KEY = "application";
 const FILE_UPLOAD_ENDPOINT = "/file-upload/upload";
 const APPLICATIONS_ENDPOINT = "/applications";
+const HUBSPOT_ENDPOINT = "/hubspot/submit";
 
 export const useGetData = <T>(
   endpoint: string,
   queryKey: (string | number)[],
-  options?: Omit<UseQueryOptions<T, AxiosError>, "queryKey" | "queryFn">
+  options?: Omit<UseQueryOptions<T, AxiosError>, "queryKey" | "queryFn">,
 ) => {
   return useQuery<T, AxiosError>({
     queryKey,
@@ -60,7 +81,7 @@ export const useMutateData = <TData, TVariables, TContext = unknown>(
   options?: Omit<
     UseMutationOptions<TData, AxiosError, TVariables, TContext>,
     "mutationFn"
-  >
+  >,
 ) => {
   const queryClient = useQueryClient();
 
@@ -86,7 +107,7 @@ export const useCreateApplication = () => {
   return useMutateData<Solicitud, CreateApplicationPayload>(
     APPLICATIONS_ENDPOINT,
     "post",
-    [APPLICATIONS_QUERY_KEY]
+    [APPLICATIONS_QUERY_KEY],
   );
 };
 
@@ -111,7 +132,19 @@ export const useFileUpload = () => {
     mutationFn: async (formData: FormData) => {
       const { data } = await axiosInstance.post<FileUploadResponse>(
         FILE_UPLOAD_ENDPOINT,
-        formData
+        formData,
+      );
+      return data;
+    },
+  });
+};
+
+export const useHubSpotSubmit = () => {
+  return useMutation<HubSpotResponse, AxiosError, HubSpotSubmitPayload>({
+    mutationFn: async (payload: HubSpotSubmitPayload) => {
+      const { data } = await axiosInstance.post<HubSpotResponse>(
+        HUBSPOT_ENDPOINT,
+        payload,
       );
       return data;
     },

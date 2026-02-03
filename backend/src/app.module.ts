@@ -12,6 +12,7 @@ import { ReferenceEntity } from './application/entities/reference.entity';
 import { LegalEntity } from './application/entities/legal.entity';
 import { FileUploadModule } from './file-upload/file-upload.module';
 import { ApiKeyGuard } from './common/guards';
+import { HubspotModule } from './hubspot/hubspot.module';
 
 @Module({
   imports: [
@@ -41,6 +42,7 @@ import { ApiKeyGuard } from './common/guards';
     }),
     ApplicationModule,
     FileUploadModule,
+    HubspotModule,
   ],
   controllers: [AppController],
   providers: [

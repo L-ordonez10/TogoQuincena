@@ -1,13 +1,14 @@
 "use client"
 import React from "react";
 import { useFormCtx } from "./FormContext";
-import { useCreateApplication, useFileUpload } from "@/hooks/useApi";
+import { useCreateApplication, useFileUpload, useHubSpotSubmit } from "@/hooks/useApi";
 import { uploadAllFiles } from "./uploadFiles";
 import { Personal, Uploads, Reference, Legal, } from "@/lib/types/solicitudes";
 export const SubmitControls: React.FC = () => {
   const { data, validateAll, reset } = useFormCtx();
   const createApplication = useCreateApplication();
   const fileUpload = useFileUpload();
+  const hubspotSubmit = useHubSpotSubmit();
   const [successMessage, setSuccessMessage] = React.useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -17,7 +18,7 @@ export const SubmitControls: React.FC = () => {
       alert('Hay errores en el formulario. Revisa los campos resaltados.');
       return;
     }
-    
+
     try {
       let uploadedFiles: Record<string, unknown> = {};
       if (data.uploads && (data.uploads.dpi || (data.uploads as any).bankStatements || data.uploads.electricityBill || data.uploads.selfieWithDpi)) {
@@ -34,17 +35,41 @@ export const SubmitControls: React.FC = () => {
         legal: data.legal as unknown as Legal,
         uploads: uploadedFiles as unknown as Uploads,
       };
-      await createApplication.mutateAsync(applicationPayload);
-      setSuccessMessage('Solicitud enviada exitosamente. Pronto te contactaremos.');
 
-      reset();
+      // Enviar a la aplicación principal
+      await createApplication.mutateAsync(applicationPayload);
+
+      // Enviar a HubSpot en paralelo
+      try {
+        const hubspotPayload = {
+          names: data.personal.names,
+          surnames: data.personal.surnames,
+          marriedLastName: data.personal.marriedLastName,
+          birthDate: data.personal.birthDate,
+          phone: data.personal.phone,
+          dpi: data.personal.dpi,
+          email: data.personal.email || '',
+          address: data.personal.address,
+          workName: data.personal.workName,
+          addressWork: data.personal.addressWork,
+          phoneWork: data.personal.phoneWork,
+          salary: Number(data.salary) || 0,
+          amountRequested: Number(data.amountRequested) || 0,
+        };
+        await hubspotSubmit.mutateAsync(hubspotPayload);
+      } catch (hubspotError) {
+        console.error('Error al enviar a HubSpot (no crítico):', hubspotError);
+      }
+
+      setSuccessMessage('Solicitud enviada exitosamente. Pronto te contactaremos.');
+      // reset(); 
 
     } catch (error) {
       alert('Error al subir los archivos. Intenta de nuevo.');
     }
   };
 
-  const isLoading = createApplication.isPending || fileUpload.isPending;
+  const isLoading = createApplication.isPending || fileUpload.isPending || hubspotSubmit.isPending;
 
   return (
     <div className="flex flex-col items-center gap-4">
@@ -54,8 +79,9 @@ export const SubmitControls: React.FC = () => {
         className="bg-[#017EFF] hover:bg-[#000000] transition-colors duration-300 text-white px-8 py-2 text-base md:text-lg rounded-md font-bold hover:opacity-90 cursor-pointer shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
       >
         {fileUpload.isPending ? 'Subiendo archivos...' :
-          createApplication.isPending ? 'Enviando solicitud...' :
-            'Solicitar Adelanto'}
+          hubspotSubmit.isPending ? 'Enviando a HubSpot...' :
+            createApplication.isPending ? 'Enviando solicitud...' :
+              'Solicitar Adelanto'}
       </button>
 
       {successMessage && (
