@@ -48,7 +48,7 @@ export class HubspotService {
       { name: 'firstname', value: data.names },
       { name: 'lastname', value: fullLastName },
       { name: 'email', value: data.email },
-      { name: 'company', value: data.workName }, // Nombre de empresa (REQUERIDO en HubSpot)
+      { name: 'company', value: data.workName },
       { name: 'address', value: data.address },
     ];
 
@@ -63,11 +63,11 @@ export class HubspotService {
       fields.push({ name: 'dpi', value: data.dpi });
     }
     if (salaryValue && salaryValue !== '0') {
-      fields.push({ name: 'salary', value: salaryValue });
+      fields.push({ name: 'salario_mensual', value: salaryValue });
     }
     if (amountRequestedValue && amountRequestedValue !== '0') {
       fields.push({
-        name: 'amount_requested',
+        name: 'cantidad_solicitada',
         value: amountRequestedValue,
       });
     }
