@@ -11,6 +11,7 @@ export interface FormPersonalData {
   addressWork: string;
   phoneWork: string;
   hasSixMonths?: boolean;
+  gender?: 'masculino' | 'femenino';
 }
 
 export interface FormUploads {

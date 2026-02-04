@@ -58,6 +58,38 @@ export function PersonalDataForm() {
           <ErrorMessage message={errors["personal.surnames"]} />
         </Field>
 
+        <Field className="lg:col-span-2">
+          <FieldLabel className="text-base font-normal">Género</FieldLabel>
+          <div className="flex items-center gap-6 mt-2">
+            <div className="flex items-center gap-2">
+              <Checkbox
+                id="gender-male"
+                className="w-5 h-5"
+                checked={data.personal.gender === 'masculino'}
+                onCheckedChange={(checked) => {
+                  if (checked) setField("personal.gender", 'masculino');
+                }}
+              />
+              <label htmlFor="gender-male" className="text-base cursor-pointer">
+                Masculino
+              </label>
+            </div>
+            <div className="flex items-center gap-2">
+              <Checkbox
+                id="gender-female"
+                className="w-5 h-5"
+                checked={data.personal.gender === 'femenino'}
+                onCheckedChange={(checked) => {
+                  if (checked) setField("personal.gender", 'femenino');
+                }}
+              />
+              <label htmlFor="gender-female" className="text-base cursor-pointer">
+                Femenino
+              </label>
+            </div>
+          </div>
+        </Field>
+
         <Field>
           <FieldLabel className="text-base font-normal">Apellido de casada</FieldLabel>
           <Input

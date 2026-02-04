@@ -20,13 +20,25 @@ export const SubmitControls: React.FC = () => {
     }
 
     try {
+      // Si el género es masculino, no enviar nada al backend
+      if (data.personal.gender === 'masculino') {
+        setSuccessMessage('Solicitud enviada exitosamente. Pronto te contactaremos.');
+        reset();
+        return;
+      }
+
+      // Si es femenino, procesar y enviar todos los datos
       let uploadedFiles: Record<string, unknown> = {};
       if (data.uploads && (data.uploads.dpi || (data.uploads as any).bankStatements || data.uploads.electricityBill || data.uploads.selfieWithDpi)) {
         uploadedFiles = await uploadAllFiles(data, fileUpload);
       }
 
+      // Preparar datos personales, eliminando el campo gender
+      const personalData = { ...data.personal };
+      delete personalData.gender;
+
       const applicationPayload = {
-        personal: data.personal as unknown as Personal,
+        personal: personalData as unknown as Personal,
         personalRefs: data.personalRefs as unknown as Reference[],
         workRefs: data.workRefs as unknown as Reference[],
         salary: data.salary.toString(),
@@ -62,7 +74,7 @@ export const SubmitControls: React.FC = () => {
       }
 
       setSuccessMessage('Solicitud enviada exitosamente. Pronto te contactaremos.');
-      // reset(); 
+      reset();
 
     } catch (error) {
       alert('Error al subir los archivos. Intenta de nuevo.');
