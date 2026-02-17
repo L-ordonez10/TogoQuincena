@@ -111,10 +111,11 @@ export const useCreateApplication = () => {
   );
 };
 
-export const useSolicitudes = () => {
-  return useGetData<SolicitudResponse>(APPLICATIONS_ENDPOINT, [
-    APPLICATIONS_QUERY_KEY,
-  ]);
+export const useSolicitudes = (page: number = 1, limit: number = 10) => {
+  return useGetData<SolicitudResponse>(
+    `${APPLICATIONS_ENDPOINT}?page=${page}&limit=${limit}`,
+    [APPLICATIONS_QUERY_KEY, page, limit]
+  );
 };
 
 export const useSolicitud = (id?: number, enabled = true) => {

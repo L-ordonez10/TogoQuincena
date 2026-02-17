@@ -10,6 +10,7 @@ export const SubmitControls: React.FC = () => {
   const fileUpload = useFileUpload();
   const hubspotSubmit = useHubSpotSubmit();
   const [successMessage, setSuccessMessage] = React.useState<string | null>(null);
+  const [rejectionMessage, setRejectionMessage] = React.useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -22,8 +23,7 @@ export const SubmitControls: React.FC = () => {
     try {
       // Si el género es masculino, no enviar nada al backend
       if (data.personal.gender === 'masculino') {
-        setSuccessMessage('Solicitud enviada exitosamente. Pronto te contactaremos.');
-        reset();
+        setRejectionMessage('En este momento no es posible procesar su prestamo');
         return;
       }
 
@@ -108,6 +108,20 @@ export const SubmitControls: React.FC = () => {
             <div className="text-xs text-green-700">Te contactaremos pronto por los datos que proporcionaste.</div>
           </div>
           <button onClick={() => setSuccessMessage(null)} className="text-green-600 hover:text-green-800 ml-2">Cerrar</button>
+        </div>
+      )}
+
+      {rejectionMessage && (
+        <div role="alert" aria-live="assertive" className="w-full max-w-2xl mx-auto bg-orange-50 border border-orange-300 text-orange-900 px-4 py-3 rounded-md shadow-sm flex items-start gap-3">
+          <div className="shrink-0 mt-0.5">
+            <svg className="h-6 w-6 text-orange-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            </svg>
+          </div>
+          <div className="flex-1 text-sm">
+            <div className="font-semibold">{rejectionMessage}</div>
+          </div>
+          <button onClick={() => setRejectionMessage(null)} className="text-orange-600 hover:text-orange-800 ml-2">Cerrar</button>
         </div>
       )}
     </div>
