@@ -68,7 +68,7 @@ export function DiscoverHowSection() {
     }, [count, activeIndex])
 
     return (
-        <section className="w-full py-12 px-4" aria-labelledby="discover-heading">
+        <section className="w-full px-4" aria-labelledby="discover-heading">
             <article className="w-full max-w-6xl mx-auto my-12">
                 <h1 id="discover-heading" className="hover:text-[#97D22A] transition-colors duration-200 text-xl sm:text-3xl md:text-[50px] text-center font-bold mb-8 leading-tight ">
                     Solicitar adelanto

@@ -7,6 +7,10 @@ export const contentItems = [
                 <ul className="list-none p-0 m-0">
                     <li className="flex items-start mb-4">
                         <span className="w-3 h-3 rounded-full bg-[#97D22A] mt-2 mr-4 shrink-0" />
+                        <span className="text-base sm:text-lg md:text-xl lg:text-2xl">Atención exclusiva para mujeres.</span>
+                    </li>
+                    <li className="flex items-start mb-4">
+                        <span className="w-3 h-3 rounded-full bg-[#97D22A] mt-2 mr-4 shrink-0" />
                         <span className="text-base sm:text-lg md:text-xl lg:text-2xl">Edad mínima 23 años.</span>
                     </li>
 
