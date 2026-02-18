@@ -8,12 +8,7 @@ import {
 import { Inbox } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-
-const palette = {
-  black: "#000000",
-  green: "#97d22a",
-  white: "#ffffff",
-};
+import { THEME } from "@/lib/constants/theme";
 
 const menuItems = [
   {
@@ -39,11 +34,11 @@ export function DashboardNav() {
               style={
                 isActive
                   ? {
-                    backgroundColor: palette.green,
-                    color: palette.white,
+                    backgroundColor: THEME.colors.green,
+                    color: THEME.colors.white,
                   }
                   : {
-                    color: palette.black,
+                    color: THEME.colors.black,
                   }
               }
             >

@@ -20,7 +20,7 @@ export function HeroSection() {
                     Tu quincena, <span className="hover:text-black transition-colors duration-300">sin esperar la quincena</span>
                 </h1>
 
-                <nav className="mt-8 flex flex-col gap-4" aria-label="Acciones principales">
+                <div className="mt-8 flex flex-col gap-4">
                     <Link
                         href="/solicita-adelanto"
                         className="w-auto self-center lg:self-start bg-[#97D22A] text-white px-6 py-3 rounded-md font-semibold text-[20px] md:text-[27px] shadow-md hover:opacity-90 transition cursor-pointer text-center"
@@ -36,7 +36,7 @@ export function HeroSection() {
                     >
                         Quiero saber más
                     </Link>
-                </nav>
+                </div>
             </article>
         </section>
     )

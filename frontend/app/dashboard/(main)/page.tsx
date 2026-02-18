@@ -6,11 +6,46 @@ import { CardApplication } from "../components";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
+const ITEMS_PER_PAGE = 12;
+
+function getPageNumbers(currentPage: number, totalPages: number): (number | string)[] {
+    const pages: (number | string)[] = [];
+    const maxVisiblePages = 5;
+
+    if (totalPages <= maxVisiblePages) {
+        for (let i = 1; i <= totalPages; i++) {
+            pages.push(i);
+        }
+    } else {
+        if (currentPage <= 3) {
+            for (let i = 1; i <= 4; i++) {
+                pages.push(i);
+            }
+            pages.push('...');
+            pages.push(totalPages);
+        } else if (currentPage >= totalPages - 2) {
+            pages.push(1);
+            pages.push('...');
+            for (let i = totalPages - 3; i <= totalPages; i++) {
+                pages.push(i);
+            }
+        } else {
+            pages.push(1);
+            pages.push('...');
+            for (let i = currentPage - 1; i <= currentPage + 1; i++) {
+                pages.push(i);
+            }
+            pages.push('...');
+            pages.push(totalPages);
+        }
+    }
+    return pages;
+}
+
 export default function SolicitudesPage() {
     const [currentPage, setCurrentPage] = useState(1);
-    const [itemsPerPage] = useState(12);
 
-    const { data, isLoading, isError } = useSolicitudes(currentPage, itemsPerPage);
+    const { data, isLoading, isError } = useSolicitudes(currentPage, ITEMS_PER_PAGE);
 
     if (isLoading) {
         return (
@@ -36,8 +71,8 @@ export default function SolicitudesPage() {
 
     const totalPages = data?.meta?.totalPages || 1;
     const currentTotal = data?.meta?.total || 0;
-    const startItem = (currentPage - 1) * itemsPerPage + 1;
-    const endItem = Math.min(currentPage * itemsPerPage, currentTotal);
+    const startItem = (currentPage - 1) * ITEMS_PER_PAGE + 1;
+    const endItem = Math.min(currentPage * ITEMS_PER_PAGE, currentTotal);
 
     const handlePreviousPage = () => {
         if (currentPage > 1) {
@@ -53,40 +88,6 @@ export default function SolicitudesPage() {
 
     const handlePageClick = (page: number) => {
         setCurrentPage(page);
-    };
-
-    const getPageNumbers = () => {
-        const pages = [];
-        const maxVisiblePages = 5;
-
-        if (totalPages <= maxVisiblePages) {
-            for (let i = 1; i <= totalPages; i++) {
-                pages.push(i);
-            }
-        } else {
-            if (currentPage <= 3) {
-                for (let i = 1; i <= 4; i++) {
-                    pages.push(i);
-                }
-                pages.push('...');
-                pages.push(totalPages);
-            } else if (currentPage >= totalPages - 2) {
-                pages.push(1);
-                pages.push('...');
-                for (let i = totalPages - 3; i <= totalPages; i++) {
-                    pages.push(i);
-                }
-            } else {
-                pages.push(1);
-                pages.push('...');
-                for (let i = currentPage - 1; i <= currentPage + 1; i++) {
-                    pages.push(i);
-                }
-                pages.push('...');
-                pages.push(totalPages);
-            }
-        }
-        return pages;
     };
 
     return (
@@ -128,7 +129,7 @@ export default function SolicitudesPage() {
                     </Button>
 
                     <div className="flex gap-1">
-                        {getPageNumbers().map((page, index) => (
+                        {getPageNumbers(currentPage, totalPages).map((page, index) => (
                             page === '...' ? (
                                 <span key={`ellipsis-${index}`} className="px-3 py-2 text-gray-400">
                                     ...

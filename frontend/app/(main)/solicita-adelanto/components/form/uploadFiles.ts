@@ -1,4 +1,13 @@
-export async function uploadAllFiles(data: any, fileUpload: any): Promise<Record<string, string | string[]>> {
+import { FormUploads } from './types';
+
+interface FileUploader {
+  mutateAsync: (formData: globalThis.FormData) => Promise<{ filePath: string }>;
+}
+
+export async function uploadAllFiles(
+  data: { uploads?: FormUploads },
+  fileUpload: FileUploader,
+): Promise<Record<string, string | string[]>> {
   const result: Record<string, string | string[]> = {};
 
   const uploadSingle = async (file: File) => {

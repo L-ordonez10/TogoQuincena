@@ -36,7 +36,7 @@ export const defaultMetadata: Metadata = {
   },
   openGraph: {
     type: "website",
-    locale: "es_MX",
+    locale: "es_GT",
     url: APP_URL,
     siteName: APP_NAME,
     title: APP_NAME,

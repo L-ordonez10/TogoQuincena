@@ -15,7 +15,7 @@ export const metadata: Metadata = {
   },
 };
 
-export default function page() {
+export default function SolicitaAdelantoPage() {
     return (
         <div>
             <DiscoverHowSection />

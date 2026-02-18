@@ -33,7 +33,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es">
-      <GoogleTagManager gtmId="GTM-5BSXBBH9'" />
+      <GoogleTagManager gtmId="GTM-5BSXBBH9" />
       <body className={`${montserrat.variable} font-sans antialiased`}>
         <QueryProvider>{children}</QueryProvider>
       </body>

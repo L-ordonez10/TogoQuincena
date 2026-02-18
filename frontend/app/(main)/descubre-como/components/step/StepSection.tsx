@@ -24,7 +24,7 @@ export function StepSection() {
                 ))}
             </ol>
             
-            <nav className="flex justify-center w-full mt-6">
+            <div className="flex justify-center w-full mt-6">
                 <Link 
                     href="/solicita-adelanto" 
                     className="bg-[#017EFF] hover:bg-[#000000] transition-colors duration-300 text-white px-6 py-3 text-base md:text-lg rounded-md font-bold hover:opacity-90 cursor-pointer shadow-md"
@@ -32,7 +32,7 @@ export function StepSection() {
                 >
                     Solicitar adelanto
                 </Link>
-            </nav>
+            </div>
         </section>
     )
 }

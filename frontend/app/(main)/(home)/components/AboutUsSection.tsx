@@ -6,9 +6,9 @@ export function AboutUsSection() {
         <section className="bg-white text-black py-16 px-6 md:px-20" aria-labelledby="about-us-heading">
             <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
 
-                <header className="lg:col-span-4 col-span-1 text-center lg:text-right">
+                <div className="lg:col-span-4 col-span-1 text-center lg:text-right">
                     <h2 id="about-us-heading" className="text-2xl md:text-[40px] hover:text-[#98D229] transition-colors duration-300 cursor-default font-bold">Sobre nosotros</h2>
-                </header>
+                </div>
 
                 <article className="lg:col-span-8 col-span-1 text-center lg:text-left">
                     <p className="text-[18px] md:text-[24px] leading-relaxed mb-4">

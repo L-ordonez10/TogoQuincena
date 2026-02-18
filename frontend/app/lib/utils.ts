@@ -36,3 +36,6 @@ export const parseNumericValue = (value: string | number): number => {
 export const clamp = (value: number, min: number, max: number): number => {
   return Math.max(min, Math.min(max, value));
 };
+
+// Business constants
+export const LEGAL_FEES_GTQ = 75;

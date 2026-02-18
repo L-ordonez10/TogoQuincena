@@ -11,14 +11,16 @@ export const SubmitControls: React.FC = () => {
   const hubspotSubmit = useHubSpotSubmit();
   const [successMessage, setSuccessMessage] = React.useState<string | null>(null);
   const [rejectionMessage, setRejectionMessage] = React.useState<string | null>(null);
+  const [formError, setFormError] = React.useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const ok = validateAll();
     if (!ok) {
-      alert('Hay errores en el formulario. Revisa los campos resaltados.');
+      setFormError('Hay errores en el formulario. Revisa los campos resaltados.');
       return;
     }
+    setFormError(null);
 
     try {
       // Si el género es masculino, no enviar nada al backend
@@ -77,7 +79,7 @@ export const SubmitControls: React.FC = () => {
       reset();
 
     } catch (error) {
-      alert('Error al subir los archivos. Intenta de nuevo.');
+      setFormError('Error al enviar la solicitud. Intenta de nuevo.');
     }
   };
 
@@ -95,6 +97,13 @@ export const SubmitControls: React.FC = () => {
             createApplication.isPending ? 'Enviando solicitud...' :
               'Solicitar Adelanto'}
       </button>
+
+      {formError && (
+        <div role="alert" aria-live="assertive" className="w-full max-w-2xl mx-auto bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-md shadow-sm flex items-start gap-3">
+          <div className="flex-1 text-sm font-semibold">{formError}</div>
+          <button onClick={() => setFormError(null)} className="text-red-600 hover:text-red-800 ml-2">Cerrar</button>
+        </div>
+      )}
 
       {successMessage && (
         <div role="status" aria-live="polite" className="w-full max-w-2xl mx-auto bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded-md shadow-sm flex items-start gap-3">

@@ -38,7 +38,7 @@ export function OrganizationSchema() {
     },
     areaServed: {
       '@type': 'Country',
-      name: 'Mexico',
+      name: 'Guatemala',
     },
     serviceType: 'Adelantos de nómina',
   };
@@ -101,7 +101,7 @@ export function ServiceSchema() {
     },
     areaServed: {
       '@type': 'Country',
-      name: 'Mexico',
+      name: 'Guatemala',
     },
     hasOfferCatalog: {
       '@type': 'OfferCatalog',

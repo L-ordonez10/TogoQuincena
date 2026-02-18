@@ -32,8 +32,9 @@ const SalaryInputCard: React.FC = () => {
           El máximo a otorgar es el 20% de tu salario (mínimo Q.500.00 - máximo Q.1,500.00)
         </p>
         <div className="max-w-xs m-auto">
-          <label className="block text-gray-700 text-center font-medium">Ingresa el monto de tu salario</label>
+          <label htmlFor="salary-input" className="block text-gray-700 text-center font-medium">Ingresa el monto de tu salario</label>
           <input
+            id="salary-input"
             type="text"
             value={display}
             onChange={handleChange}

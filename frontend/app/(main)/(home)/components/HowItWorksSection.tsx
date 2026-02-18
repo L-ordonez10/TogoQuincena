@@ -23,7 +23,7 @@ export function HowItWorksSection() {
                         />
                     </figure>
 
-                    <nav className="mt-8 flex justify-center lg:justify-end">
+                    <div className="mt-8 flex justify-center lg:justify-end">
                         <Link
                             href="/descubre-como"
                             className="bg-[#017EFF] hover:bg-[#006EE6] text-white font-semibold px-6 sm:px-8 py-3 rounded-lg shadow-md transition text-[16px] sm:text-[18px]"
@@ -31,7 +31,7 @@ export function HowItWorksSection() {
                         >
                             Ver más
                         </Link>
-                    </nav>
+                    </div>
                 </article>
 
                 {/* RIGHT: cuadro de video (inline, sin modal) */}

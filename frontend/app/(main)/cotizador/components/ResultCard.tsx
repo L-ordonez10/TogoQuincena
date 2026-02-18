@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useRef, useState, useMemo, useCallback, memo } from 'react';
-import { clamp, formatCurrency, parseCurrency } from '@/lib/utils';
+import { clamp, formatCurrency, parseCurrency, LEGAL_FEES_GTQ } from '@/lib/utils';
 import { useCotizador } from '../CotizadorContext';
 
 const ResultCard: React.FC = memo(() => {
@@ -43,8 +43,7 @@ const ResultCard: React.FC = memo(() => {
     setDisplay(requested ? requested.toString() : '');
   }, [requested]);
 
-  const gastos = 75;
-  const deposit = useMemo(() => Math.round((requested - gastos) * 100) / 100, [requested]);
+  const deposit = useMemo(() => Math.round((requested - LEGAL_FEES_GTQ) * 100) / 100, [requested]);
   const toPay = useMemo(() => Math.round((requested + requested * 0.336) * 100) / 100, [requested]);
 
   return (
@@ -55,8 +54,9 @@ const ResultCard: React.FC = memo(() => {
 
         <div className="mt-4 space-y-2 text-sm text-gray-700">
           <div className="flex justify-between items-center">
-            <span>Monto solicitado:</span>
+            <label htmlFor="monto-solicitado" className="cursor-default">Monto solicitado:</label>
             <input
+              id="monto-solicitado"
               type="text"
               value={display}
               onChange={handleChange}
@@ -68,7 +68,7 @@ const ResultCard: React.FC = memo(() => {
           </div>
           <div className="flex justify-between text-red-500">
             <span>Gastos legales:</span>
-            <span>-{formatCurrency(gastos)}</span>
+            <span>-{formatCurrency(LEGAL_FEES_GTQ)}</span>
           </div>
           <div className="flex justify-between font-semibold">
             <span>Te depositaremos:</span>
@@ -83,5 +83,7 @@ const ResultCard: React.FC = memo(() => {
     </div>
   );
 });
+
+ResultCard.displayName = 'ResultCard';
 
 export default ResultCard;

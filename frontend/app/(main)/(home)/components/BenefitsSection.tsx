@@ -7,14 +7,14 @@ export function BenefitsSection() {
         >
             <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-12">
                 {/* Texto izquierdo */}
-                <header className="w-full lg:w-1/3 text-center lg:text-left flex flex-col justify-center">
+                <div className="w-full lg:w-1/3 text-center lg:text-left flex flex-col justify-center">
                     <h2 id="benefits-heading" className="text-[28px] sm:text-[34px] md:text-[40px] font-bold mb-4 leading-tight">
                         Únete a QuincenaToGo <br /> y disfruta todos los beneficios.
                     </h2>
                     <p className="text-white font-medium text-[18px] sm:text-[20px] leading-snug">
                         Adelanto de salario sin salir de tu oficina.
                     </p>
-                </header>
+                </div>
 
                 {/* Tarjetas */}
                 <div className="w-full lg:w-2/3 flex flex-col sm:flex-row flex-wrap justify-center lg:justify-end gap-6" role="list">

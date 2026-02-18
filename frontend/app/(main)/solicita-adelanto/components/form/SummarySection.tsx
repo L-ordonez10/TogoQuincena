@@ -5,15 +5,14 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useMemo, useState, useEffect, memo, useCallback } from 'react';
-import { formatCurrency, formatCurrencyDisplay, sanitizeDigits, parseNumericValue } from '@/lib/utils';
+import { formatCurrency, formatCurrencyDisplay, sanitizeDigits, parseNumericValue, LEGAL_FEES_GTQ } from '@/lib/utils';
 
 const MiniQuote = memo(function MiniQuote({ salary, amountRequested }: { salary: number | string; amountRequested: number | string }) {
     const salaryNum = useMemo(() => parseNumericValue(salary), [salary]);
     const requestedNum = useMemo(() => parseNumericValue(amountRequested), [amountRequested]);
 
     const max = useMemo(() => Math.min(salaryNum * 0.2, 1500), [salaryNum]);
-    const gastos = 75;
-    const deposit = useMemo(() => Math.round((requestedNum - gastos) * 100) / 100, [requestedNum]);
+    const deposit = useMemo(() => Math.round((requestedNum - LEGAL_FEES_GTQ) * 100) / 100, [requestedNum]);
     const toPay = useMemo(() => Math.round((requestedNum + requestedNum * 0.336) * 100) / 100, [requestedNum]);
 
     if (salaryNum === 0) return null;
@@ -28,7 +27,7 @@ const MiniQuote = memo(function MiniQuote({ salary, amountRequested }: { salary:
                     <div className="mt-4 space-y-2 text-sm text-gray-700">
                         <div className="flex justify-between text-red-500">
                             <span>Gastos legales:</span>
-                            <span>-{formatCurrency(gastos)}</span>
+                            <span>-{formatCurrency(LEGAL_FEES_GTQ)}</span>
                         </div>
                         <div className="flex justify-between font-semibold">
                             <span>Te depositaremos:</span>
