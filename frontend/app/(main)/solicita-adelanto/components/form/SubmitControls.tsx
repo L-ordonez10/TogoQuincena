@@ -25,7 +25,7 @@ export const SubmitControls: React.FC = () => {
     try {
       // Si el género es masculino, no enviar nada al backend
       if (data.personal.gender === 'masculino') {
-        setRejectionMessage('En este momento no es posible procesar su prestamo');
+        setRejectionMessage('Actualmente nuestro servicio es exclusivo para mujeres.');
         return;
       }
 
@@ -121,16 +121,16 @@ export const SubmitControls: React.FC = () => {
       )}
 
       {rejectionMessage && (
-        <div role="alert" aria-live="assertive" className="w-full max-w-2xl mx-auto bg-orange-50 border border-orange-300 text-orange-900 px-4 py-3 rounded-md shadow-sm flex items-start gap-3">
+        <div role="alert" aria-live="assertive" className="w-full max-w-2xl mx-auto bg-blue-50 border border-blue-200 text-blue-900 px-4 py-3 rounded-md shadow-sm flex items-start gap-3">
           <div className="shrink-0 mt-0.5">
-            <svg className="h-6 w-6 text-orange-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <svg className="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
             </svg>
           </div>
           <div className="flex-1 text-sm">
             <div className="font-semibold">{rejectionMessage}</div>
           </div>
-          <button onClick={() => setRejectionMessage(null)} className="text-orange-600 hover:text-orange-800 ml-2">Cerrar</button>
+          <button onClick={() => setRejectionMessage(null)} className="text-blue-600 hover:text-blue-800 ml-2">Cerrar</button>
         </div>
       )}
     </div>
