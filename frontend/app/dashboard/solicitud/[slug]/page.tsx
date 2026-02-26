@@ -146,74 +146,74 @@ export default function SolicitudDetailPage() {
             '<title>Contrato de Adelanto de Salario \u2014 ' + fullName + '</title>\n' +
             '<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet" />\n' +
             '<style>\n' +
-            '@page { size: letter; margin: 2.2cm 2.8cm; }\n' +
+            '@page { size: letter; margin: 1.5cm 2cm; }\n' +
             '* { box-sizing: border-box; margin: 0; padding: 0; }\n' +
-            'body { font-family: Lato, sans-serif; font-size: 10pt; color: #000000; line-height: 1.55; background: #fff; }\n' +
+            'body { font-family: Lato, sans-serif; font-size: 9pt; color: #000000; line-height: 1.45; background: #fff; }\n' +
 
             /* ---- HEADER ---- */
-            '.header { display: flex; align-items: center; justify-content: space-between; border-bottom: 3px solid #97d22a; padding-bottom: 12px; margin-bottom: 18px; }\n' +
-            '.logo { font-size: 20pt; font-weight: 900; color: #000; letter-spacing: 2px; text-transform: uppercase; line-height: 1; }\n' +
+            '.header { display: flex; align-items: center; justify-content: space-between; border-bottom: 3px solid #97d22a; padding-bottom: 8px; margin-bottom: 12px; }\n' +
+            '.logo { font-size: 16pt; font-weight: 900; color: #000; letter-spacing: 2px; text-transform: uppercase; line-height: 1; }\n' +
             '.logo span { color: #97d22a; }\n' +
-            '.header-right { text-align: right; font-size: 8.5pt; color: #555; line-height: 1.6; }\n' +
-            '.header-right strong { font-size: 10pt; color: #000; display: block; }\n' +
+            '.header-right { text-align: right; font-size: 7.5pt; color: #555; line-height: 1.5; }\n' +
+            '.header-right strong { font-size: 9pt; color: #000; display: block; }\n' +
 
             /* ---- DOC TITLE ---- */
-            '.doc-title-block { text-align: center; margin-bottom: 16px; }\n' +
-            '.doc-title-block h1 { font-size: 13pt; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; color: #000; }\n' +
-            '.doc-title-block p { font-size: 8.5pt; color: #555; margin-top: 3px; }\n' +
-            '.status-badge { display: inline-block; padding: 2px 12px; border-radius: 2px; font-size: 8.5pt; font-weight: 700; letter-spacing: 0.5px; margin-left: 6px; vertical-align: middle; }\n' +
+            '.doc-title-block { text-align: center; margin-bottom: 10px; }\n' +
+            '.doc-title-block h1 { font-size: 11pt; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; color: #000; }\n' +
+            '.doc-title-block p { font-size: 7.5pt; color: #555; margin-top: 2px; }\n' +
+            '.status-badge { display: inline-block; padding: 2px 10px; border-radius: 2px; font-size: 7.5pt; font-weight: 700; letter-spacing: 0.5px; margin-left: 6px; vertical-align: middle; }\n' +
             '.status-PENDIENTE { background: #fef9c3; color: #854d0e; }\n' +
             '.status-APROBADO  { background: #97d22a; color: #000000; }\n' +
             '.status-RECHAZADO { background: #fee2e2; color: #991b1b; }\n' +
 
             /* ---- INTRO PARAGRAPH ---- */
-            '.intro { font-size: 9.5pt; text-align: justify; margin-bottom: 16px; line-height: 1.65; }\n' +
+            '.intro { font-size: 8.5pt; text-align: justify; margin-bottom: 10px; line-height: 1.55; }\n' +
 
             /* ---- SECTION ---- */
-            '.section { margin-bottom: 14px; }\n' +
-            '.section-title { font-size: 9pt; font-weight: 900; color: #ffffff; background: #000000; text-transform: uppercase; letter-spacing: 1.5px; padding: 4px 8px; margin-bottom: 8px; border-left: 5px solid #97d22a; }\n' +
+            '.section { margin-bottom: 10px; }\n' +
+            '.section-title { font-size: 8pt; font-weight: 900; color: #ffffff; background: #000000; text-transform: uppercase; letter-spacing: 1.5px; padding: 3px 8px; margin-bottom: 6px; border-left: 5px solid #97d22a; }\n' +
 
             /* ---- DATA TABLE ---- */
-            '.data-table { width: 100%; border-collapse: collapse; font-size: 9.5pt; margin-bottom: 4px; }\n' +
-            '.data-table td { padding: 4px 8px; border-bottom: 1px solid #DEDEDE; vertical-align: top; }\n' +
-            '.data-table td.lbl { color: #555; font-weight: 700; text-transform: uppercase; font-size: 8pt; letter-spacing: 0.3px; width: 38%; white-space: nowrap; }\n' +
+            '.data-table { width: 100%; border-collapse: collapse; font-size: 8.5pt; margin-bottom: 3px; }\n' +
+            '.data-table td { padding: 3px 6px; border-bottom: 1px solid #DEDEDE; vertical-align: top; }\n' +
+            '.data-table td.lbl { color: #555; font-weight: 700; text-transform: uppercase; font-size: 7.5pt; letter-spacing: 0.3px; width: 38%; white-space: nowrap; }\n' +
             '.data-table td.val { color: #000; font-weight: 400; }\n' +
 
             /* ---- FINANCIAL TABLE ---- */
-            '.fin-table { width: 100%; border-collapse: collapse; font-size: 9.5pt; }\n' +
-            '.fin-table td { padding: 5px 8px; border-bottom: 1px solid #DEDEDE; }\n' +
+            '.fin-table { width: 100%; border-collapse: collapse; font-size: 8.5pt; }\n' +
+            '.fin-table td { padding: 3px 6px; border-bottom: 1px solid #DEDEDE; }\n' +
             '.fin-table td.lbl { color: #333; }\n' +
             '.fin-table td.val { text-align: right; font-weight: 700; }\n' +
             '.fin-table td.val.green { color: #5a8a00; }\n' +
             '.fin-table td.val.blue  { color: #017eff; }\n' +
             '.fin-table td.val.red   { color: #cc0000; }\n' +
-            '.fin-table tr.total td  { background: #000; color: #fff; border-bottom: none; font-weight: 700; font-size: 10pt; }\n' +
+            '.fin-table tr.total td  { background: #000; color: #fff; border-bottom: none; font-weight: 700; font-size: 9pt; }\n' +
             '.fin-table tr.total td.val { color: #97d22a; }\n' +
 
             /* ---- REFERENCES TABLE ---- */
-            '.ref-table { width: 100%; border-collapse: collapse; font-size: 9.5pt; }\n' +
-            '.ref-table th { background: #000; color: #fff; font-weight: 700; padding: 4px 8px; text-align: left; font-size: 8.5pt; text-transform: uppercase; letter-spacing: 0.5px; }\n' +
-            '.ref-table td { padding: 5px 8px; border-bottom: 1px solid #DEDEDE; }\n' +
+            '.ref-table { width: 100%; border-collapse: collapse; font-size: 8.5pt; }\n' +
+            '.ref-table th { background: #000; color: #fff; font-weight: 700; padding: 3px 6px; text-align: left; font-size: 7.5pt; text-transform: uppercase; letter-spacing: 0.5px; }\n' +
+            '.ref-table td { padding: 3px 6px; border-bottom: 1px solid #DEDEDE; }\n' +
             '.ref-table tr:nth-child(even) td { background: #f9f9f9; }\n' +
 
             /* ---- CLAUSES ---- */
-            '.clause { margin-bottom: 10px; font-size: 9.5pt; text-align: justify; line-height: 1.7; }\n' +
-            '.clause-title { font-weight: 900; text-transform: uppercase; font-size: 9pt; color: #000; margin-bottom: 2px; }\n' +
+            '.clause { margin-bottom: 7px; font-size: 8.5pt; text-align: justify; line-height: 1.55; }\n' +
+            '.clause-title { font-weight: 900; text-transform: uppercase; font-size: 8pt; color: #000; margin-bottom: 2px; }\n' +
             '.clause p { text-indent: 1em; }\n' +
 
             /* ---- SIGNATURES ---- */
-            '.signatures { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; margin-top: 36px; }\n' +
+            '.signatures { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 24px; }\n' +
             '.sig-block { text-align: center; }\n' +
-            '.sig-line { border-top: 1px solid #000; margin-top: 52px; padding-top: 5px; font-size: 9pt; line-height: 1.5; }\n' +
+            '.sig-line { border-top: 1px solid #000; margin-top: 36px; padding-top: 5px; font-size: 8pt; line-height: 1.5; }\n' +
             '.sig-line strong { display: block; }\n' +
 
             /* ---- FOOTER ---- */
-            '.doc-footer { margin-top: 24px; border-top: 2px solid #97d22a; padding-top: 8px; text-align: center; font-size: 7.5pt; color: #888; }\n' +
+            '.doc-footer { margin-top: 16px; border-top: 2px solid #97d22a; padding-top: 6px; text-align: center; font-size: 7pt; color: #888; }\n'+
             '</style>\n</head>\n<body>\n' +
 
             /* HEADER */
             '<div class="header">' +
-            '<div class="logo">Togo<span>Quincena</span><br/><span style="font-size:8pt;font-weight:400;color:#555;letter-spacing:0;text-transform:none;">Rapid Credit, S.A.</span></div>' +
+            '<div class="logo">Quincena<span>ToGo</span><br/><span style="font-size:7pt;font-weight:400;color:#555;letter-spacing:0;text-transform:none;">Rapid Credit, S.A.</span></div>' +
             '<div class="header-right">' +
             '<strong>Contrato de Adelanto de Salario</strong>' +
             'Expediente N.\u00B0 ' + expediente + '<br/>' +
